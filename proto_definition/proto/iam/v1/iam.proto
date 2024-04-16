@@ -1,0 +1,70 @@
+syntax = "proto3";
+package iam.v1;
+
+import "iam/v1/common.proto";
+import "google/api/annotations.proto";
+option go_package = "github.com/Nanhtu187/Online-Judge/proto/rpc/iam/v1";
+
+service IamService {
+  // CreateUser ...
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/users"
+      body: "*"
+    };
+  }
+
+  // GetUser ...
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/users"
+    };
+  }
+
+  // Login ...
+  rpc Login(LoginRequest) returns (LoginResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/login"
+      body: "*"
+    };
+  }
+
+  // Refresh token ...
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/token"
+      body: "*"
+    };
+  }
+}
+
+message CreateUserRequest {
+
+}
+message CreateUserResponse {
+
+}
+
+message GetUserRequest {
+
+}
+
+message GetUserResponse {
+
+}
+
+message LoginRequest {
+
+}
+
+message LoginResponse {
+
+}
+
+message RefreshTokenRequest {
+
+}
+
+message RefreshTokenResponse {
+
+}
