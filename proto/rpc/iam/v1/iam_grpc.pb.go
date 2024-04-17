@@ -4,7 +4,7 @@
 // - protoc             v3.12.4
 // source: iam/v1/iam.proto
 
-package v1
+package iam
 
 import (
 	context "context"

@@ -1,6 +1,6 @@
 syntax = "proto3";
 package iam.v1;
-option go_package = "github.com/Nanhtu187/Online-Judge/proto/rpc/iam/v1";
+option go_package = "github.com/Nanhtu187/Online-Judge/proto/rpc/iam";
 // Pagination...
 message Pagination {
   int32 page = 1 [json_name="page"];
