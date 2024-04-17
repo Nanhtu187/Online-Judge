@@ -2,11 +2,11 @@
 // source: iam/v1/iam.proto
 
 /*
-Package v1 is a reverse proxy.
+Package iam is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package v1
+package iam
 
 import (
 	"context"
