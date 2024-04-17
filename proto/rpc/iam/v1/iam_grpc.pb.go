@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v3.12.4
-// source: proto/iam/v1/iam.proto
+// source: iam/v1/iam.proto
 
 package v1
 
@@ -23,6 +23,7 @@ const (
 	IamService_GetUser_FullMethodName      = "/iam.v1.IamService/GetUser"
 	IamService_Login_FullMethodName        = "/iam.v1.IamService/Login"
 	IamService_RefreshToken_FullMethodName = "/iam.v1.IamService/RefreshToken"
+	IamService_GetListUser_FullMethodName  = "/iam.v1.IamService/GetListUser"
 )
 
 // IamServiceClient is the client API for IamService service.
@@ -37,6 +38,8 @@ type IamServiceClient interface {
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	// Refresh token ...
 	RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenResponse, error)
+	// Refresh token ...
+	GetListUser(ctx context.Context, in *GetListUserRequest, opts ...grpc.CallOption) (*GetListUserResponse, error)
 }
 
 type iamServiceClient struct {
@@ -83,6 +86,15 @@ func (c *iamServiceClient) RefreshToken(ctx context.Context, in *RefreshTokenReq
 	return out, nil
 }
 
+func (c *iamServiceClient) GetListUser(ctx context.Context, in *GetListUserRequest, opts ...grpc.CallOption) (*GetListUserResponse, error) {
+	out := new(GetListUserResponse)
+	err := c.cc.Invoke(ctx, IamService_GetListUser_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // IamServiceServer is the server API for IamService service.
 // All implementations must embed UnimplementedIamServiceServer
 // for forward compatibility
@@ -95,6 +107,8 @@ type IamServiceServer interface {
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	// Refresh token ...
 	RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error)
+	// Refresh token ...
+	GetListUser(context.Context, *GetListUserRequest) (*GetListUserResponse, error)
 	mustEmbedUnimplementedIamServiceServer()
 }
 
@@ -113,6 +127,9 @@ func (UnimplementedIamServiceServer) Login(context.Context, *LoginRequest) (*Log
 }
 func (UnimplementedIamServiceServer) RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
+}
+func (UnimplementedIamServiceServer) GetListUser(context.Context, *GetListUserRequest) (*GetListUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetListUser not implemented")
 }
 func (UnimplementedIamServiceServer) mustEmbedUnimplementedIamServiceServer() {}
 
@@ -199,6 +216,24 @@ func _IamService_RefreshToken_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _IamService_GetListUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetListUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IamServiceServer).GetListUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IamService_GetListUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IamServiceServer).GetListUser(ctx, req.(*GetListUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // IamService_ServiceDesc is the grpc.ServiceDesc for IamService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -222,7 +257,11 @@ var IamService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "RefreshToken",
 			Handler:    _IamService_RefreshToken_Handler,
 		},
+		{
+			MethodName: "GetListUser",
+			Handler:    _IamService_GetListUser_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/iam/v1/iam.proto",
+	Metadata: "iam/v1/iam.proto",
 }
