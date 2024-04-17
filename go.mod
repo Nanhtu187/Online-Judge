@@ -1,4 +1,4 @@
-module judge
+module github.com/tranHieuDev23/cato
 
 go 1.21
 
