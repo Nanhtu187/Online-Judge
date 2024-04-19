@@ -3,11 +3,12 @@ package iam.v1;
 
 import "iam/v1/common.proto";
 import "google/api/annotations.proto";
+import "validate/validate.proto";
 option go_package = "github.com/Nanhtu187/Online-Judge/proto/rpc/iam";
 
 service IamService {
-  // CreateUser ...
-  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+  // UpsertUser ...
+  rpc UpsertUser(UpsertUserRequest) returns (UpsertUserResponse) {
     option (google.api.http) = {
       post: "/api/v1/users"
       body: "*"
@@ -43,25 +44,29 @@ service IamService {
       body: "*"
     };
   }
+  // DeleteUser ...
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {
+    option (google.api.http) = {
+      delete: "/api/v1/users/{user_id}"
+    };
+  }
 }
 
-message CreateUserRequest {
-  string username = 1 [json_name = "username"];
-  string password = 2 [json_name = "password"];
-  string name = 3 [json_name = "name"];
-  string school = 4 [json_name = "school"];
-  string class = 5 [json_name = "class"];
-
+message UpsertUserRequest {
+  string username = 1 [json_name = "username", (validate.rules).string = {min_len: 1, max_len: 20}];
+  string password = 2 [json_name = "password", (validate.rules).string = {min_len: 8}];
+  string name = 3 [json_name = "name", (validate.rules).string = {min_len: 1, max_len: 30}];
+  string school = 4 [json_name = "school", (validate.rules).string = {min_len: 1, max_len: 100}];
+  string class = 5 [json_name = "class", (validate.rules).string = {min_len: 1, max_len: 30}];
 }
-message CreateUserResponse {
+message UpsertUserResponse {
   int32 code = 1 [json_name = "code"];
   string message = 2 [json_name = "message"];
   CreateUserData data = 3 [json_name = "data"];
 }
 
 message CreateUserData {
-  string access_token = 1 [json_name = "access_token"];
-  string refresh_token = 2 [json_name = "refresh_token"];
+  int32 user_id = 1 [json_name = "user_id"];
 }
 
 message GetUserRequest {
@@ -72,17 +77,12 @@ message GetUserRequest {
 message GetUserResponse {
   int32 code = 1 [json_name = "code"];
   string message = 2 [json_name = "message"];
-  GetUserData data = 3 [json_name = "data"];
-}
-
-message GetUserData {
-  int32 user_id = 1 [json_name = "user_id"];
-  string name = 2 [json_name = "name"];
+  UserData data = 3 [json_name = "data"];
 }
 
 message LoginRequest {
-  string username = 1 [json_name = "username"];
-  string password = 2 [json_name = "password"];
+  string username = 1 [json_name = "username", (validate.rules).string = {min_len: 1, max_len: 20}];
+  string password = 2 [json_name = "password", (validate.rules).string = {min_len: 8}];
 }
 
 message LoginResponse {
@@ -93,12 +93,10 @@ message LoginResponse {
 
 message LoginData {
   string access_token = 1 [json_name = "access_token"];
-  string refresh_token = 2 [json_name = "refresh_token"];
 }
 
 message RefreshTokenRequest {
   string access_token = 1 [json_name = "access_token"];
-  string refresh_token = 2 [json_name = "refresh_token"];
 }
 
 message RefreshTokenResponse {
@@ -109,7 +107,6 @@ message RefreshTokenResponse {
 
 message RefreshTokenData {
   string access_token = 1 [json_name = "access_token"];
-  string refresh_token = 2 [json_name = "refresh_token"];
 }
 
 message GetListUserRequest {
@@ -136,4 +133,13 @@ message UserData {
   string name = 2 [json_name = "name"];
   string school = 3 [json_name = "school"];
   string class = 4 [json_name = "class"];
+}
+
+message DeleteUserRequest {
+  int32 user_id = 1 [json_name = "user_id"];
+}
+
+message DeleteUserResponse {
+  int32 code = 1 [json_name = "code"];
+  string message = 2 [json_name = "message"];
 }

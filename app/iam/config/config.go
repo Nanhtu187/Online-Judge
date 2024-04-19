@@ -9,10 +9,13 @@ import (
 )
 
 type Config struct {
-	Database DatabaseConfig `json:"database" mapstructure:"database"`
-	Redis    RedisConfig    `json:"redis" mapstructure:"redis"`
-	Server   ServerConfig   `json:"server" mapstructure:"server"`
-	Log      LogConfig      `mapstructure:"log"`
+	Database           DatabaseConfig `json:"database" mapstructure:"database"`
+	Redis              RedisConfig    `json:"redis" mapstructure:"redis"`
+	Server             ServerConfig   `json:"server" mapstructure:"server"`
+	Log                LogConfig      `json:"log" mapstructure:"log"`
+	Jaeger             JaegerConfig   `json:"jaeger" mapstructure:"jaeger"`
+	PasswordEncryptKey int            `json:"password_encrypt_key" mapstructure:"password_encrypt_key"`
+	TokenEncryptKey    string         `json:"token_encrypt_key" mapstructure:"token_encrypt_key"`
 }
 
 // ServerListen for specifying host & port
@@ -51,10 +54,13 @@ func ServerDefaultConfig() ServerConfig {
 
 func Load() (*Config, error) {
 	c := &Config{
-		Server:   ServerDefaultConfig(),
-		Log:      LogDefaultConfig(),
-		Database: DatabaseDefaultConfig(),
-		Redis:    RedisDefaultConfig(),
+		Server:             ServerDefaultConfig(),
+		Log:                LogDefaultConfig(),
+		Database:           DatabaseDefaultConfig(),
+		Redis:              RedisDefaultConfig(),
+		Jaeger:             JaegerDefaultConfig(),
+		PasswordEncryptKey: 18,
+		TokenEncryptKey:    "secret",
 	}
 	// --- hacking to load reflect structure config into env ----//
 	viper.SetConfigType("json")
