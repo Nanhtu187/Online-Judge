@@ -1,15 +1,15 @@
-package service
+package iam
 
 type UpsertUserRequest struct {
 	Username string `validate:"required"`
-	Password string `validate:"required"`
-	Name     string `validate:"required"`
+	Password string `validate:"max=255"`
+	Name     string `validate:"max=255"`
 	School   string `validate:"max=255"`
 	Class    string `validate:"max=255"`
 }
 
 type UpsertUserResponse struct {
-	UserId int `json:"user_id"`
+	UserId int
 }
 
 type GetUserRequest struct {
