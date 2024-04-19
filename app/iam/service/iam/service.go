@@ -1,4 +1,4 @@
-package service
+package iam
 
 import (
 	"context"
@@ -41,6 +41,10 @@ func (s *service) UpsertUser(ctx context.Context, req UpsertUserRequest) (Upsert
 func (s *service) upsertUserInfo(ctx context.Context, req UpsertUserRequest) (int, error) {
 	user, err := s.userRepo.GetUser(ctx, req.Username)
 	if errors.Is(err, gorm.ErrRecordNotFound) {
+		if validateCreateUserErr := validateCreateUserRequest(req); validateCreateUserErr != nil {
+			return 0, validateCreateUserErr
+		}
+
 		user = model.User{
 			Username: req.Username,
 			Name:     req.Name,
@@ -63,7 +67,7 @@ func (s *service) upsertUserInfo(ctx context.Context, req UpsertUserRequest) (in
 		logger.Extract(ctx).Error("Error when get user", zap.Error(err))
 		return 0, err
 	}
-
+	logger.Extract(ctx).Info("Upsert user", zap.Any("user", user))
 	userId, err := s.userRepo.UpsertUser(ctx, user)
 	return userId, nil
 }

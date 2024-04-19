@@ -6,7 +6,7 @@ import (
 	"github.com/Nanhtu187/Online-Judge/app/iam/config"
 	"github.com/Nanhtu187/Online-Judge/app/iam/pkg/errors"
 	"github.com/Nanhtu187/Online-Judge/app/iam/pkg/otellib"
-	"github.com/Nanhtu187/Online-Judge/app/iam/service"
+	iam2 "github.com/Nanhtu187/Online-Judge/app/iam/service/iam"
 	"github.com/Nanhtu187/Online-Judge/proto/rpc/iam/v1"
 	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
@@ -92,7 +92,7 @@ func startServer() {
 		),
 	)
 
-	iamServer := service.InitServer(db, conf)
+	iamServer := iam2.InitServer(db, conf)
 	iam.RegisterIamServiceServer(grpcServer, iamServer)
 	grpc_prometheus.EnableHandlingTimeHistogram()
 	grpc_prometheus.Register(grpcServer)
