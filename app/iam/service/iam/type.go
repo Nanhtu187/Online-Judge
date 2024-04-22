@@ -13,9 +13,15 @@ type UpsertUserResponse struct {
 }
 
 type GetUserRequest struct {
+	UserId   int
+	Username string
 }
 
 type GetUserResponse struct {
+	UserId int
+	Name   string
+	School string
+	Class  string
 }
 
 type DeleteUserRequest struct {

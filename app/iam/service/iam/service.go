@@ -39,7 +39,7 @@ func (s *service) UpsertUser(ctx context.Context, req UpsertUserRequest) (Upsert
 
 // Upsert user info to user table
 func (s *service) upsertUserInfo(ctx context.Context, req UpsertUserRequest) (int, error) {
-	user, err := s.userRepo.GetUser(ctx, req.Username)
+	user, err := s.userRepo.GetUserByUsername(ctx, req.Username)
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		if validateCreateUserErr := validateCreateUserRequest(req); validateCreateUserErr != nil {
 			return 0, validateCreateUserErr
@@ -99,6 +99,37 @@ func (s *service) upsertUserPassword(ctx context.Context, userId int, password s
 }
 
 func (s *service) GetUser(ctx context.Context, req GetUserRequest) (GetUserResponse, error) {
+	if req.UserId != 0 {
+		user, err := s.userRepo.GetUserByUserId(ctx, req.UserId)
+		if err != nil {
+			logger.Extract(ctx).Error("Error when get user by user id", zap.Error(err))
+			if err == gorm.ErrRecordNotFound {
+				return GetUserResponse{}, ErrUserNotFound
+			} else {
+				return GetUserResponse{}, err
+			}
+		}
+		return GetUserResponse{
+			UserId: user.ID,
+			Name:   user.Name,
+			School: user.School,
+			Class:  user.Class,
+		}, nil
+	}
+	if req.Username != "" {
+		user, err := s.userRepo.GetUserByUsername(ctx, req.Username)
+		if err != nil {
+			logger.Extract(ctx).Error("Error when get user by username", zap.Error(err))
+			return GetUserResponse{}, err
+		}
+		return GetUserResponse{
+			UserId: user.ID,
+			Name:   user.Name,
+			School: user.School,
+			Class:  user.Class,
+		}, nil
+
+	}
 	return GetUserResponse{}, nil
 }
 

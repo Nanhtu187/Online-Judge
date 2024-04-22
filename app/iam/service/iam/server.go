@@ -38,6 +38,27 @@ func (s *Server) UpsertUser(ctx context.Context, request *iam.UpsertUserRequest)
 
 }
 
+func (s *Server) GetUser(ctx context.Context, request *iam.GetUserRequest) (*iam.GetUserResponse, error) {
+	req, err := vaildateGetUserRequest(request)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := s.service.GetUser(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return &iam.GetUserResponse{
+		Code:    200,
+		Message: "success",
+		Data: &iam.UserData{
+			UserId: int32(resp.UserId),
+			Name:   resp.Name,
+			School: resp.School,
+			Class:  resp.Class,
+		},
+	}, nil
+}
+
 func InitServer(db *gorm.DB, conf *config.Config) *Server {
 	userRepo := repo.NewUserRepo(db)
 	userPasswordRepo := repo.NewUserPasswordRepo(db)

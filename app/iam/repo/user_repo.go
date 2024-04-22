@@ -7,7 +7,8 @@ import (
 )
 
 type IUserRepo interface {
-	GetUser(ctx context.Context, username string) (model.User, error)
+	GetUserByUsername(ctx context.Context, username string) (model.User, error)
+	GetUserByUserId(ctx context.Context, userId int) (model.User, error)
 	UpsertUser(ctx context.Context, user model.User) (int, error)
 }
 
@@ -15,9 +16,15 @@ type userRepo struct {
 	db *gorm.DB
 }
 
-func (r *userRepo) GetUser(ctx context.Context, username string) (model.User, error) {
+func (r *userRepo) GetUserByUsername(ctx context.Context, username string) (model.User, error) {
 	var user model.User
 	err := r.db.WithContext(ctx).Where("username = ?", username).First(&user).Error
+	return user, err
+}
+
+func (r *userRepo) GetUserByUserId(ctx context.Context, userId int) (model.User, error) {
+	var user model.User
+	err := r.db.WithContext(ctx).Where("id = ?", userId).First(&user).Error
 	return user, err
 }
 

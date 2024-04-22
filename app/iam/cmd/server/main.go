@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/Nanhtu187/Online-Judge/app/iam/config"
 	"github.com/Nanhtu187/Online-Judge/app/iam/pkg/errors"
+	"github.com/Nanhtu187/Online-Judge/app/iam/pkg/grpclib"
+	log "github.com/Nanhtu187/Online-Judge/app/iam/pkg/logger"
 	"github.com/Nanhtu187/Online-Judge/app/iam/pkg/otellib"
 	iam2 "github.com/Nanhtu187/Online-Judge/app/iam/service/iam"
 	"github.com/Nanhtu187/Online-Judge/proto/rpc/iam/v1"
@@ -72,6 +74,14 @@ func startServer() {
 	otel.SetTextMapPropagator(propagation.TraceContext{})
 
 	grpcServer := grpc.NewServer(
+		grpclib.ChainUnaryInterceptorIgnoreHealthCheck(
+			grpc_ctxtags.UnaryServerInterceptor(),
+			grpc_recovery.UnaryServerInterceptor(grpc_recovery.WithRecoveryHandler(recoveryHandlerFunc)),
+			grpc_prometheus.UnaryServerInterceptor,
+			otellib.UnaryServerInterceptor(tracerProvider),
+			log.SetTraceInfoInterceptor(logger),
+			errors.UnaryServerInterceptor,
+		),
 		grpc.ChainStreamInterceptor(
 			grpc_recovery.StreamServerInterceptor(grpc_recovery.WithRecoveryHandler(recoveryHandlerFunc)),
 			grpc_ctxtags.StreamServerInterceptor(),

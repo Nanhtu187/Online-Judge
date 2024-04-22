@@ -10,3 +10,9 @@ var ErrNameIsRequiredWhenCreateUser = errors.WithMessage(common.ErrParamIsRequir
 
 // Error missing password when create user
 var ErrPasswordIsRequiredWhenCreateUser = errors.WithMessage(common.ErrParamIsRequired, "Password is required when create user")
+
+// ErrUserIdOrUsernameIsRequired ...
+var ErrUserIdOrUsernameIsRequired = errors.WithMessage(common.ErrParamIsRequired, "UserId or Username is required")
+
+// ErrUserNotFound ...
+var ErrUserNotFound = errors.WithMessage(common.ErrRecordNotFound, "User not found")
