@@ -7,7 +7,8 @@ import (
 )
 
 type IUserPasswordRepo interface {
-	GetUserPassword(ctx context.Context, userId int) (model.UserPassword, error)
+	GetUserPasswordByUserId(ctx context.Context, userId int) (model.UserPassword, error)
+	GetUserPasswordByUsername(ctx context.Context, username string) (model.UserPassword, error)
 	UpsertUserPassword(ctx context.Context, user model.UserPassword) error
 }
 
@@ -15,10 +16,17 @@ type userPasswordRepo struct {
 	db *gorm.DB
 }
 
-func (r *userPasswordRepo) GetUserPassword(ctx context.Context, userId int) (model.UserPassword, error) {
+func (r *userPasswordRepo) GetUserPasswordByUserId(ctx context.Context, userId int) (model.UserPassword, error) {
 	var userPassword model.UserPassword
 	err := r.db.WithContext(ctx).Where("user_id = ?", userId).First(&userPassword).Error
 	return userPassword, err
+}
+
+func (r *userPasswordRepo) GetUserPasswordByUsername(ctx context.Context, username string) (model.UserPassword, error) {
+	var userPassword model.UserPassword
+	err := r.db.WithContext(ctx).Where("username = ?", username).First(&userPassword).Error
+	return userPassword, err
+
 }
 
 func (r *userPasswordRepo) UpsertUserPassword(ctx context.Context, user model.UserPassword) error {

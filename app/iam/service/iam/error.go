@@ -16,3 +16,9 @@ var ErrUserIdOrUsernameIsRequired = errors.WithMessage(common.ErrParamIsRequired
 
 // ErrUserNotFound ...
 var ErrUserNotFound = errors.WithMessage(common.ErrRecordNotFound, "User not found")
+
+// ErrPasswordNotMatch ...
+var ErrPasswordNotMatch = errors.WithMessage(common.ErrUnauthorized, "Password not match")
+
+// ErrInvalidToken ...
+var ErrInvalidToken = errors.WithMessage(common.ErrUnauthorized, "Invalid token")

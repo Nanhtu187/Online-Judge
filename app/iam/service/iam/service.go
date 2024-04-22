@@ -8,6 +8,7 @@ import (
 	"github.com/Nanhtu187/Online-Judge/app/iam/repo"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
+	"time"
 )
 
 type IService interface {
@@ -15,7 +16,7 @@ type IService interface {
 	GetUser(ctx context.Context, req GetUserRequest) (GetUserResponse, error)
 	DeleteUser(ctx context.Context, req DeleteUserRequest) (DeleteUserResponse, error)
 	Login(ctx context.Context, req LoginRequest) (LoginResponse, error)
-	RefreshToken(ctx context.Context, req RefreshTokenRequest) (RefreshTokenResponse, error)
+	RefreshToken(ctx context.Context, token string) (RefreshTokenResponse, error)
 	GetListUser(ctx context.Context, req GetListUserRequest) (GetListUserResponse, error)
 }
 
@@ -26,7 +27,7 @@ func (s *service) UpsertUser(ctx context.Context, req UpsertUserRequest) (Upsert
 		return UpsertUserResponse{}, err
 	}
 	if req.Password != "" {
-		err = s.upsertUserPassword(ctx, userId, req.Password)
+		err = s.upsertUserPassword(ctx, userId, req.Username, req.Password)
 		if err != nil {
 			logger.Extract(ctx).Error("Error when upsert user", zap.Error(err))
 			return UpsertUserResponse{}, err
@@ -73,16 +74,17 @@ func (s *service) upsertUserInfo(ctx context.Context, req UpsertUserRequest) (in
 }
 
 // Encrypt password and upsert to user_password table
-func (s *service) upsertUserPassword(ctx context.Context, userId int, password string) error {
+func (s *service) upsertUserPassword(ctx context.Context, userId int, username string, password string) error {
 	password, err := s.encryptService.EncryptPassword(ctx, password)
 	if err != nil {
 		logger.Extract(ctx).Error("Error when encrypt password", zap.Error(err))
 		return err
 	}
-	userPassword, err := s.userPasswordRepo.GetUserPassword(ctx, userId)
+	userPassword, err := s.userPasswordRepo.GetUserPasswordByUserId(ctx, userId)
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		userPassword = model.UserPassword{
 			UserId:   userId,
+			Username: username,
 			Password: password,
 		}
 	} else if err == nil {
@@ -138,11 +140,43 @@ func (s *service) DeleteUser(ctx context.Context, req DeleteUserRequest) (Delete
 }
 
 func (s *service) Login(ctx context.Context, req LoginRequest) (LoginResponse, error) {
-	return LoginResponse{}, nil
+	userPassword, err := s.userPasswordRepo.GetUserPasswordByUsername(ctx, req.Username)
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return LoginResponse{}, ErrUserNotFound
+		} else {
+			return LoginResponse{}, err
+		}
+	}
+	if err = s.encryptService.ComparePassword(ctx, req.Password, userPassword.Password); err != nil {
+		return LoginResponse{}, err
+	}
+	accessToken, err := s.jwtService.GenerateToken(ctx, req.Username)
+	if err != nil {
+		logger.Extract(ctx).Error("Error when generate token", zap.Error(err))
+		return LoginResponse{}, err
+	}
+	return LoginResponse{
+		AccessToken: accessToken,
+	}, nil
 }
 
-func (s *service) RefreshToken(ctx context.Context, req RefreshTokenRequest) (RefreshTokenResponse, error) {
-	return RefreshTokenResponse{}, nil
+func (s *service) RefreshToken(ctx context.Context, token string) (RefreshTokenResponse, error) {
+	username, exp, err := s.jwtService.ExtractToken(ctx, token)
+	if err != nil {
+		logger.Extract(ctx).Error("Error when validate token", zap.Error(err))
+		return RefreshTokenResponse{}, err
+	}
+	if time.Unix(exp, 0).Before(time.Now().Add(time.Minute * 5)) {
+		tokenString, err := s.jwtService.GenerateToken(ctx, username)
+		if err != nil {
+			logger.Extract(ctx).Error("Error when generate token", zap.Error(err))
+		}
+		return RefreshTokenResponse{
+			AccessToken: tokenString,
+		}, nil
+	}
+	return RefreshTokenResponse{AccessToken: token}, nil
 }
 
 func (s *service) GetListUser(ctx context.Context, req GetListUserRequest) (GetListUserResponse, error) {
@@ -153,12 +187,14 @@ type service struct {
 	userRepo         repo.IUserRepo
 	userPasswordRepo repo.IUserPasswordRepo
 	encryptService   ICryptographyService
+	jwtService       ITokenService
 }
 
-func NewService(repo repo.IUserRepo, userPasswordRepo repo.IUserPasswordRepo, encryptService ICryptographyService) IService {
+func NewService(repo repo.IUserRepo, userPasswordRepo repo.IUserPasswordRepo, encryptService ICryptographyService, jwtService ITokenService) IService {
 	return &service{
 		userRepo:         repo,
 		userPasswordRepo: userPasswordRepo,
 		encryptService:   encryptService,
+		jwtService:       jwtService,
 	}
 }

@@ -31,15 +31,20 @@ type DeleteUserResponse struct {
 }
 
 type LoginRequest struct {
+	Username string
+	Password string
 }
 
 type LoginResponse struct {
+	AccessToken string
 }
 
 type RefreshTokenRequest struct {
+	AccessToken string
 }
 
 type RefreshTokenResponse struct {
+	AccessToken string
 }
 
 type GetListUserRequest struct {

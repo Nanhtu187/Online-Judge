@@ -15,6 +15,7 @@ CREATE TABLE user_passwords
 (
     id         INT AUTO_INCREMENT PRIMARY KEY,
     user_id    INT       NOT NULL,
+    username   varchar(30) NOT NULL UNIQUE,
     password   VARCHAR(128),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
