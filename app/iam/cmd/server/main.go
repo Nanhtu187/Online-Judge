@@ -50,17 +50,6 @@ func registerGRPCGateway(ctx context.Context, mux *runtime.ServeMux, endpoint st
 	_ = iam.RegisterIamServiceHandlerFromEndpoint(ctx, mux, endpoint, opts)
 }
 
-func unaryServerLoggerDecider(fullMethodName string, _ error) bool {
-	const healthLive = "/health.v1.HealthCheckService/Liveness"
-	const healthReady = "/health.v1.HealthCheckService/Readiness"
-
-	if fullMethodName == healthLive || fullMethodName == healthReady {
-		return false
-	}
-
-	return true
-}
-
 func startServer() {
 	conf, err := config.Load()
 	if err != nil {

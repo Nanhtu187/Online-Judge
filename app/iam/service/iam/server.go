@@ -14,6 +14,10 @@ type Server struct {
 }
 
 func (s *Server) UpsertUser(ctx context.Context, request *iam.UpsertUserRequest) (*iam.UpsertUserResponse, error) {
+	err := request.Validate()
+	if err != nil {
+		return nil, err
+	}
 	resp, err := s.service.UpsertUser(ctx, UpsertUserRequest{
 		Username: request.Username,
 		Name:     request.Name,

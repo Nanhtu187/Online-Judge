@@ -33,15 +33,15 @@ service IamService {
   // Refresh token ...
   rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {
     option (google.api.http) = {
-      get: "/api/v1/users"
+      post: "/api/v1/refresh-token"
+      body: "*"
     };
   }
 
-  // Refresh token ...
+  // GetListUser ...
   rpc GetListUser(GetListUserRequest) returns (GetListUserResponse) {
     option (google.api.http) = {
-      post: "/api/v1/x"
-      body: "*"
+      get: "/api/v1/users"
     };
   }
   // DeleteUser ...
@@ -56,8 +56,8 @@ message UpsertUserRequest {
   string username = 1 [json_name = "username", (validate.rules).string = {min_len: 1, max_len: 20}];
   string password = 2 [json_name = "password", (validate.rules).string = {min_len: 8}];
   string name = 3 [json_name = "name", (validate.rules).string = {min_len: 1, max_len: 30}];
-  string school = 4 [json_name = "school", (validate.rules).string = {min_len: 1, max_len: 100}];
-  string class = 5 [json_name = "class", (validate.rules).string = {min_len: 1, max_len: 30}];
+  string school = 4 [json_name = "school", (validate.rules).string = {max_len: 100}];
+  string class = 5 [json_name = "class", (validate.rules).string = {max_len: 30}];
 }
 message UpsertUserResponse {
   int32 code = 1 [json_name = "code"];
@@ -96,7 +96,7 @@ message LoginData {
 }
 
 message RefreshTokenRequest {
-  string access_token = 1 [json_name = "access_token"];
+  string access_token = 1 [json_name = "access_token", (validate.rules).string = {min_len: 1}];
 }
 
 message RefreshTokenResponse {
@@ -136,7 +136,7 @@ message UserData {
 }
 
 message DeleteUserRequest {
-  int32 user_id = 1 [json_name = "user_id"];
+  int32 user_id = 1 [json_name = "user_id", (validate.rules).int32 = {gt: 0}];
 }
 
 message DeleteUserResponse {
