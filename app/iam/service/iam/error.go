@@ -22,3 +22,9 @@ var ErrPasswordNotMatch = errors.WithMessage(common.ErrUnauthorized, "Password n
 
 // ErrInvalidToken ...
 var ErrInvalidToken = errors.WithMessage(common.ErrUnauthorized, "Invalid token")
+
+// ErrForbiddenToDeleteUser ...
+var ErrForbiddenToDeleteUser = errors.WithMessage(common.ErrForbidden, "Forbidden to delete user")
+
+// ErrUserExisted ...
+var ErrUserExisted = errors.WithMessage(common.ErrConflict, "User existed")

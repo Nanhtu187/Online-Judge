@@ -96,7 +96,6 @@ message LoginData {
 }
 
 message RefreshTokenRequest {
-  string access_token = 1 [json_name = "access_token", (validate.rules).string = {min_len: 1}];
 }
 
 message RefreshTokenResponse {

@@ -14,10 +14,11 @@ import (
 type IService interface {
 	UpsertUser(ctx context.Context, req UpsertUserRequest) (UpsertUserResponse, error)
 	GetUser(ctx context.Context, req GetUserRequest) (GetUserResponse, error)
-	DeleteUser(ctx context.Context, req DeleteUserRequest) (DeleteUserResponse, error)
+	DeleteUser(ctx context.Context, req DeleteUserRequest) error
 	Login(ctx context.Context, req LoginRequest) (LoginResponse, error)
 	RefreshToken(ctx context.Context, token string) (RefreshTokenResponse, error)
 	GetListUser(ctx context.Context, req GetListUserRequest) (GetListUserResponse, error)
+	ValidateTokenToDeleteUser(ctx context.Context, token string, userId int) error
 }
 
 // UpsertUser Upsert user info and password
@@ -26,6 +27,7 @@ func (s *service) UpsertUser(ctx context.Context, req UpsertUserRequest) (Upsert
 	if err != nil {
 		return UpsertUserResponse{}, err
 	}
+
 	if req.Password != "" {
 		err = s.upsertUserPassword(ctx, userId, req.Username, req.Password)
 		if err != nil {
@@ -33,6 +35,7 @@ func (s *service) UpsertUser(ctx context.Context, req UpsertUserRequest) (Upsert
 			return UpsertUserResponse{}, err
 		}
 	}
+
 	return UpsertUserResponse{
 		UserId: userId,
 	}, nil
@@ -42,6 +45,13 @@ func (s *service) UpsertUser(ctx context.Context, req UpsertUserRequest) (Upsert
 func (s *service) upsertUserInfo(ctx context.Context, req UpsertUserRequest) (int, error) {
 	user, err := s.userRepo.GetUserByUsername(ctx, req.Username)
 	if errors.Is(err, gorm.ErrRecordNotFound) {
+		if ok, err := s.userRepo.ExistedUser(ctx, req.Username); err != nil {
+			logger.Extract(ctx).Error("Error when check existed user", zap.Error(err))
+			return 0, err
+		} else if ok {
+			return 0, ErrUserExisted
+		}
+
 		if validateCreateUserErr := validateCreateUserRequest(req); validateCreateUserErr != nil {
 			return 0, validateCreateUserErr
 		}
@@ -51,6 +61,7 @@ func (s *service) upsertUserInfo(ctx context.Context, req UpsertUserRequest) (in
 			Name:     req.Name,
 			School:   req.School,
 			Class:    req.Class,
+			Role:     model.UserRoleContestant,
 		}
 	} else if err == nil {
 		if req.Name != "" {
@@ -135,8 +146,49 @@ func (s *service) GetUser(ctx context.Context, req GetUserRequest) (GetUserRespo
 	return GetUserResponse{}, nil
 }
 
-func (s *service) DeleteUser(ctx context.Context, req DeleteUserRequest) (DeleteUserResponse, error) {
-	return DeleteUserResponse{}, nil
+func (s *service) DeleteUser(ctx context.Context, req DeleteUserRequest) error {
+	err := s.userRepo.DeleteUser(ctx, req.UserId)
+	if err != nil {
+		logger.Extract(ctx).Error("Error when delete user", zap.Error(err))
+		return err
+	}
+
+	err = s.userPasswordRepo.DeleteUserPassword(ctx, req.UserId)
+	if err != nil {
+		logger.Extract(ctx).Error("Error when delete user password", zap.Error(err))
+		return err
+	}
+
+	return nil
+}
+
+// Allow user to delete themselves or admin to delete other users
+func (s *service) ValidateTokenToDeleteUser(ctx context.Context, token string, userId int) error {
+	err := s.jwtService.ValidateToken(ctx, token)
+	if err != nil {
+		return err
+	}
+
+	currentUserId, _, err := s.jwtService.ExtractToken(ctx, token)
+	if err != nil {
+		return err
+	}
+
+	if currentUserId == userId {
+		return nil
+	}
+
+	currentUser, err := s.userRepo.GetUserByUserId(ctx, currentUserId)
+	if err != nil {
+		return err
+	}
+
+	if currentUser.Role == model.UserRoleAdmin {
+		return nil
+	}
+
+	return ErrForbiddenToDeleteUser
+
 }
 
 func (s *service) Login(ctx context.Context, req LoginRequest) (LoginResponse, error) {
@@ -151,7 +203,11 @@ func (s *service) Login(ctx context.Context, req LoginRequest) (LoginResponse, e
 	if err = s.encryptService.ComparePassword(ctx, req.Password, userPassword.Password); err != nil {
 		return LoginResponse{}, err
 	}
-	accessToken, err := s.jwtService.GenerateToken(ctx, req.Username)
+	user, err := s.userRepo.GetUserByUsername(ctx, req.Username)
+	if err != nil {
+		return LoginResponse{}, err
+	}
+	accessToken, err := s.jwtService.GenerateToken(ctx, user.ID)
 	if err != nil {
 		logger.Extract(ctx).Error("Error when generate token", zap.Error(err))
 		return LoginResponse{}, err

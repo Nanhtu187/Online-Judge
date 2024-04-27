@@ -59,7 +59,7 @@ func Load() (*Config, error) {
 		Database:           DatabaseDefaultConfig(),
 		Redis:              RedisDefaultConfig(),
 		Jaeger:             JaegerDefaultConfig(),
-		PasswordEncryptKey: 18,
+		PasswordEncryptKey: 4,
 		TokenEncryptKey:    "secret",
 	}
 	// --- hacking to load reflect structure config into env ----//

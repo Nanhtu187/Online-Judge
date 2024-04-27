@@ -101,6 +101,36 @@ func (s *Server) RefreshToken(ctx context.Context, request *iam.RefreshTokenRequ
 
 }
 
+func (s *Server) DeleteUser(ctx context.Context, request *iam.DeleteUserRequest) (*iam.DeleteUserResponse, error) {
+	token, err := getTokenFromContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	err = request.Validate()
+	if err != nil {
+		return nil, err
+	}
+
+	err = s.service.ValidateTokenToDeleteUser(ctx, token, int(request.UserId))
+	if err != nil {
+		return nil, ErrForbiddenToDeleteUser
+	}
+
+	err = s.service.DeleteUser(ctx, DeleteUserRequest{
+		UserId: int(request.UserId),
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &iam.DeleteUserResponse{
+		Code:    200,
+		Message: "success",
+	}, nil
+
+}
+
 func getTokenFromContext(ctx context.Context) (string, error) {
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {

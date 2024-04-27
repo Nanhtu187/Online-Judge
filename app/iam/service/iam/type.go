@@ -25,9 +25,7 @@ type GetUserResponse struct {
 }
 
 type DeleteUserRequest struct {
-}
-
-type DeleteUserResponse struct {
+	UserId int
 }
 
 type LoginRequest struct {
