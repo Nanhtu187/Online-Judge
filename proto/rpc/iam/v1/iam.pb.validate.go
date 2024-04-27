@@ -68,21 +68,12 @@ func (m *UpsertUserRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if utf8.RuneCountInString(m.GetPassword()) < 8 {
-		err := UpsertUserRequestValidationError{
-			field:  "Password",
-			reason: "value length must be at least 8 runes",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
+	// no validation rules for Password
 
-	if l := utf8.RuneCountInString(m.GetName()); l < 1 || l > 30 {
+	if utf8.RuneCountInString(m.GetName()) > 30 {
 		err := UpsertUserRequestValidationError{
 			field:  "Name",
-			reason: "value length must be between 1 and 30 runes, inclusive",
+			reason: "value length must be at most 30 runes",
 		}
 		if !all {
 			return err
@@ -2095,3 +2086,240 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = DeleteUserResponseValidationError{}
+
+// Validate checks the field values on GetCurrentUserInfoRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetCurrentUserInfoRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetCurrentUserInfoRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetCurrentUserInfoRequestMultiError, or nil if none found.
+func (m *GetCurrentUserInfoRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetCurrentUserInfoRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return GetCurrentUserInfoRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetCurrentUserInfoRequestMultiError is an error wrapping multiple validation
+// errors returned by GetCurrentUserInfoRequest.ValidateAll() if the
+// designated constraints aren't met.
+type GetCurrentUserInfoRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetCurrentUserInfoRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetCurrentUserInfoRequestMultiError) AllErrors() []error { return m }
+
+// GetCurrentUserInfoRequestValidationError is the validation error returned by
+// GetCurrentUserInfoRequest.Validate if the designated constraints aren't met.
+type GetCurrentUserInfoRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetCurrentUserInfoRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetCurrentUserInfoRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetCurrentUserInfoRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetCurrentUserInfoRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetCurrentUserInfoRequestValidationError) ErrorName() string {
+	return "GetCurrentUserInfoRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetCurrentUserInfoRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetCurrentUserInfoRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetCurrentUserInfoRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetCurrentUserInfoRequestValidationError{}
+
+// Validate checks the field values on GetCurrentUserInfoResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetCurrentUserInfoResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetCurrentUserInfoResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetCurrentUserInfoResponseMultiError, or nil if none found.
+func (m *GetCurrentUserInfoResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetCurrentUserInfoResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for Message
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetCurrentUserInfoResponseValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetCurrentUserInfoResponseValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetCurrentUserInfoResponseValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return GetCurrentUserInfoResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetCurrentUserInfoResponseMultiError is an error wrapping multiple
+// validation errors returned by GetCurrentUserInfoResponse.ValidateAll() if
+// the designated constraints aren't met.
+type GetCurrentUserInfoResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetCurrentUserInfoResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetCurrentUserInfoResponseMultiError) AllErrors() []error { return m }
+
+// GetCurrentUserInfoResponseValidationError is the validation error returned
+// by GetCurrentUserInfoResponse.Validate if the designated constraints aren't met.
+type GetCurrentUserInfoResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetCurrentUserInfoResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetCurrentUserInfoResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetCurrentUserInfoResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetCurrentUserInfoResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetCurrentUserInfoResponseValidationError) ErrorName() string {
+	return "GetCurrentUserInfoResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetCurrentUserInfoResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetCurrentUserInfoResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetCurrentUserInfoResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetCurrentUserInfoResponseValidationError{}

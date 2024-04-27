@@ -50,12 +50,19 @@ service IamService {
       delete: "/api/v1/users/{user_id}"
     };
   }
+
+  // GetCurrentUserInfo ...
+  rpc GetCurrentUserInfo(GetCurrentUserInfoRequest) returns (GetCurrentUserInfoResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/users/me"
+    };
+  }
 }
 
 message UpsertUserRequest {
   string username = 1 [json_name = "username", (validate.rules).string = {min_len: 1, max_len: 20}];
-  string password = 2 [json_name = "password", (validate.rules).string = {min_len: 8}];
-  string name = 3 [json_name = "name", (validate.rules).string = {min_len: 1, max_len: 30}];
+  string password = 2 [json_name = "password"];
+  string name = 3 [json_name = "name", (validate.rules).string = {max_len: 30}];
   string school = 4 [json_name = "school", (validate.rules).string = {max_len: 100}];
   string class = 5 [json_name = "class", (validate.rules).string = {max_len: 30}];
 }
@@ -141,4 +148,14 @@ message DeleteUserRequest {
 message DeleteUserResponse {
   int32 code = 1 [json_name = "code"];
   string message = 2 [json_name = "message"];
+}
+
+
+message GetCurrentUserInfoRequest {
+}
+
+message GetCurrentUserInfoResponse {
+  int32 code = 1 [json_name = "code"];
+  string message = 2 [json_name = "message"];
+  UserData data = 3 [json_name = "data"];
 }

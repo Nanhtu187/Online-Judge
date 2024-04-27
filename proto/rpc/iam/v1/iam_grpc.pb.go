@@ -19,12 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	IamService_UpsertUser_FullMethodName   = "/iam.v1.IamService/UpsertUser"
-	IamService_GetUser_FullMethodName      = "/iam.v1.IamService/GetUser"
-	IamService_Login_FullMethodName        = "/iam.v1.IamService/Login"
-	IamService_RefreshToken_FullMethodName = "/iam.v1.IamService/RefreshToken"
-	IamService_GetListUser_FullMethodName  = "/iam.v1.IamService/GetListUser"
-	IamService_DeleteUser_FullMethodName   = "/iam.v1.IamService/DeleteUser"
+	IamService_UpsertUser_FullMethodName         = "/iam.v1.IamService/UpsertUser"
+	IamService_GetUser_FullMethodName            = "/iam.v1.IamService/GetUser"
+	IamService_Login_FullMethodName              = "/iam.v1.IamService/Login"
+	IamService_RefreshToken_FullMethodName       = "/iam.v1.IamService/RefreshToken"
+	IamService_GetListUser_FullMethodName        = "/iam.v1.IamService/GetListUser"
+	IamService_DeleteUser_FullMethodName         = "/iam.v1.IamService/DeleteUser"
+	IamService_GetCurrentUserInfo_FullMethodName = "/iam.v1.IamService/GetCurrentUserInfo"
 )
 
 // IamServiceClient is the client API for IamService service.
@@ -43,6 +44,8 @@ type IamServiceClient interface {
 	GetListUser(ctx context.Context, in *GetListUserRequest, opts ...grpc.CallOption) (*GetListUserResponse, error)
 	// DeleteUser ...
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
+	// GetCurrentUserInfo ...
+	GetCurrentUserInfo(ctx context.Context, in *GetCurrentUserInfoRequest, opts ...grpc.CallOption) (*GetCurrentUserInfoResponse, error)
 }
 
 type iamServiceClient struct {
@@ -107,6 +110,15 @@ func (c *iamServiceClient) DeleteUser(ctx context.Context, in *DeleteUserRequest
 	return out, nil
 }
 
+func (c *iamServiceClient) GetCurrentUserInfo(ctx context.Context, in *GetCurrentUserInfoRequest, opts ...grpc.CallOption) (*GetCurrentUserInfoResponse, error) {
+	out := new(GetCurrentUserInfoResponse)
+	err := c.cc.Invoke(ctx, IamService_GetCurrentUserInfo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // IamServiceServer is the server API for IamService service.
 // All implementations must embed UnimplementedIamServiceServer
 // for forward compatibility
@@ -123,6 +135,8 @@ type IamServiceServer interface {
 	GetListUser(context.Context, *GetListUserRequest) (*GetListUserResponse, error)
 	// DeleteUser ...
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
+	// GetCurrentUserInfo ...
+	GetCurrentUserInfo(context.Context, *GetCurrentUserInfoRequest) (*GetCurrentUserInfoResponse, error)
 	mustEmbedUnimplementedIamServiceServer()
 }
 
@@ -147,6 +161,9 @@ func (UnimplementedIamServiceServer) GetListUser(context.Context, *GetListUserRe
 }
 func (UnimplementedIamServiceServer) DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
+}
+func (UnimplementedIamServiceServer) GetCurrentUserInfo(context.Context, *GetCurrentUserInfoRequest) (*GetCurrentUserInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCurrentUserInfo not implemented")
 }
 func (UnimplementedIamServiceServer) mustEmbedUnimplementedIamServiceServer() {}
 
@@ -269,6 +286,24 @@ func _IamService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _IamService_GetCurrentUserInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCurrentUserInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IamServiceServer).GetCurrentUserInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IamService_GetCurrentUserInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IamServiceServer).GetCurrentUserInfo(ctx, req.(*GetCurrentUserInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // IamService_ServiceDesc is the grpc.ServiceDesc for IamService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -299,6 +334,10 @@ var IamService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteUser",
 			Handler:    _IamService_DeleteUser_Handler,
+		},
+		{
+			MethodName: "GetCurrentUserInfo",
+			Handler:    _IamService_GetCurrentUserInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

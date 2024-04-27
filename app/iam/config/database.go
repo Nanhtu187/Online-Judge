@@ -46,5 +46,6 @@ func (c DatabaseConfig) MustConnect() *gorm.DB {
 	DB.SetMaxOpenConns(c.MaxConnections)
 	DB.SetMaxIdleConns(c.MaxIdleConnections)
 	DB.SetConnMaxIdleTime(4 * time.Hour)
+	DB.SetConnMaxLifetime(4 * time.Hour)
 	return db
 }
