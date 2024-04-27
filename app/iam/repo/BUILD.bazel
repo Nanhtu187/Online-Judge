@@ -1,0 +1,21 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "repo",
+    srcs = [
+        "user_password_repo.go",
+        "user_repo.go",
+    ],
+    importpath = "github.com/Nanhtu187/Online-Judge/app/iam/repo",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//app/iam/model",
+        "@io_gorm_gorm//:gorm",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":repo",
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,15 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "common",
+    srcs = ["error.go"],
+    importpath = "github.com/Nanhtu187/Online-Judge/app/iam/service/common",
+    visibility = ["//visibility:public"],
+    deps = ["//app/iam/pkg/errors"],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":common",
+    visibility = ["//visibility:public"],
+)

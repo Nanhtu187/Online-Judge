@@ -1,0 +1,38 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "errors",
+    srcs = [
+        "errors.go",
+        "interceptor.go",
+    ],
+    importpath = "github.com/Nanhtu187/Online-Judge/app/iam/pkg/errors",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//app/iam/pkg/errors/generated",
+        "@com_github_grpc_ecosystem_grpc_gateway_v2//runtime",
+        "@org_golang_google_grpc//:grpc",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//grpclog",
+        "@org_golang_google_grpc//status",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":errors",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "errors_test",
+    srcs = [
+        "errors_test.go",
+        "interceptor_test.go",
+    ],
+    embed = [":errors"],
+    deps = [
+        "@com_github_stretchr_testify//assert",
+        "@org_golang_google_grpc//status",
+    ],
+)

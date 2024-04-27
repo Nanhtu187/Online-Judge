@@ -1,0 +1,21 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "migrate_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/Nanhtu187/Online-Judge/app/iam/cmd/migrate",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//app/iam/config",
+        "//app/iam/pkg/migration",
+        "@com_github_go_sql_driver_mysql//:mysql",
+        "@com_github_golang_migrate_migrate_v4//database/mysql",
+        "@com_github_golang_migrate_migrate_v4//source/file",
+    ],
+)
+
+go_binary(
+    name = "migrate",
+    embed = [":migrate_lib"],
+    visibility = ["//visibility:public"],
+)

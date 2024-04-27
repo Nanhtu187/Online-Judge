@@ -1,0 +1,20 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "migration",
+    srcs = ["migration.go"],
+    importpath = "github.com/Nanhtu187/Online-Judge/app/iam/pkg/migration",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//app/iam/config",
+        "@com_github_golang_migrate_migrate_v4//:migrate",
+        "@com_github_jmoiron_sqlx//:sqlx",
+        "@com_github_spf13_cobra//:cobra",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":migration",
+    visibility = ["//visibility:public"],
+)

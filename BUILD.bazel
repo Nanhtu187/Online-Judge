@@ -1,0 +1,52 @@
+load("@bazel_gazelle//:def.bzl", "gazelle", "gazelle_binary")
+
+
+gazelle_binary(
+    name = "gazelle",
+    languages = [
+        "@bazel_gazelle//language/go",  # Built-in rule from gazelle for Golang.
+        "@bazel_gazelle//language/proto",  # Built-in rule from gazelle for Protos.
+    ],
+    visibility = ["//visibility:public"],
+)
+
+gazelle(
+    name = "gazelle-update-repos",
+    args = [
+        "-from_file=go.mod",
+        "-to_macro=deps.bzl%go_dependencies",
+        "-build_file_proto_mode=disable_global",
+        "-prune",
+    ],
+    command = "update-repos",
+)
+
+# make sure that others can import tendermint either using the
+# import or go_default_library naming conventions
+# gazelle:go_naming_convention import_alias
+
+# disable proto things, so that it uses .pb.go files instead
+# https://github.com/bazelbuild/rules_go/blob/master/proto/core.rst#option-2-use-pre-generated-pb-go-files
+# gazelle:proto disable_global
+
+# BAZEL DIFF
+load("@rules_java//java:defs.bzl", "java_binary")
+load(
+    "@bazel_tools//tools/jdk:default_java_toolchain.bzl",
+    "VANILLA_TOOLCHAIN_CONFIGURATION",
+    "default_java_toolchain",
+)
+
+default_java_toolchain(
+    name = "repository_default_toolchain",
+    configuration = VANILLA_TOOLCHAIN_CONFIGURATION,  # One of predefined configurations
+    java_runtime = "@remotejdk//:jdk",  # JDK to use for compilation and toolchain's tools execution
+    jvm_opts = [],
+    source_version = "11",
+)
+
+java_binary(
+    name = "bazel-diff",
+    main_class = "com.bazel_diff.Main",
+    runtime_deps = ["@bazel_diff//jar"],
+)

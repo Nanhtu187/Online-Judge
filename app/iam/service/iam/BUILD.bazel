@@ -1,0 +1,36 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "iam",
+    srcs = [
+        "cryptography.go",
+        "error.go",
+        "jwt.go",
+        "server.go",
+        "service.go",
+        "type.go",
+        "validator.go",
+    ],
+    importpath = "github.com/Nanhtu187/Online-Judge/app/iam/service/iam",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//app/iam/config",
+        "//app/iam/model",
+        "//app/iam/pkg/errors",
+        "//app/iam/pkg/logger",
+        "//app/iam/repo",
+        "//app/iam/service/common",
+        "@com_github_golang_jwt_jwt_v4//:jwt",
+        "@com_github_nanhtu187_online_judge//proto/rpc/iam/v1:go_default_library",
+        "@io_gorm_gorm//:gorm",
+        "@org_golang_google_grpc//metadata",
+        "@org_golang_x_crypto//bcrypt",
+        "@org_uber_go_zap//:zap",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":iam",
+    visibility = ["//visibility:public"],
+)
