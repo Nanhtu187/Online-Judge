@@ -7,9 +7,3 @@ go_library(
     visibility = ["//visibility:public"],
     deps = ["//app/iam/pkg/errors"],
 )
-
-alias(
-    name = "go_default_library",
-    actual = ":common",
-    visibility = ["//visibility:public"],
-)

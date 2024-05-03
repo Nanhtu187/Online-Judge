@@ -1,0 +1,51 @@
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_tarball",  "oci_push")
+load("@aspect_bazel_lib//lib:transitions.bzl", "platform_transition_filegroup")
+load("@rules_pkg//:pkg.bzl", "pkg_tar")
+
+pkg_tar(
+    name = "migrate_tar",
+    srcs = [
+        "//app/iam/migrations:migration_files",
+    ],
+    package_dir = "migrations",
+)
+
+pkg_tar(
+    name = "tar",
+    srcs = [
+        "//app/iam/cmd/migrate",
+        "//app/iam/cmd/server",
+    ],
+)
+
+platform_transition_filegroup(
+    name = "transition",
+    srcs = [
+        ":migrate_tar",
+        ":tar",
+    ],
+    target_platform = select({
+        "@platforms//cpu:arm64": "@io_bazel_rules_go//go/toolchain:linux_arm64",
+        "@platforms//cpu:x86_64": "@io_bazel_rules_go//go/toolchain:linux_amd64",
+    }),
+)
+
+oci_image(
+    name = "iam_image",
+    base = "@distroless_base",
+    tars = [":transition"],
+)
+
+oci_tarball(
+    name = "tarball",
+    image = ":iam_image",
+    repo_tags = ["iam:latest"],
+)
+
+
+oci_push(
+    name = "push",
+    image = ":image",
+    remote_tags = ["v0.0.1"],
+    repository = "nanhtu/iam",
+)

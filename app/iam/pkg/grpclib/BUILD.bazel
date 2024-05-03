@@ -5,11 +5,5 @@ go_library(
     srcs = ["interceptors.go"],
     importpath = "github.com/Nanhtu187/Online-Judge/app/iam/pkg/grpclib",
     visibility = ["//visibility:public"],
-    deps = ["@org_golang_google_grpc//:grpc"],
-)
-
-alias(
-    name = "go_default_library",
-    actual = ":grpclib",
-    visibility = ["//visibility:public"],
+    deps = ["@org_golang_google_grpc//:go_default_library"],
 )

@@ -10,9 +10,3 @@ go_library(
     visibility = ["//visibility:public"],
     deps = ["@io_gorm_gorm//:gorm"],
 )
-
-alias(
-    name = "go_default_library",
-    actual = ":model",
-    visibility = ["//visibility:public"],
-)

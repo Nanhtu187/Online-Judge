@@ -2019,12 +2019,6 @@ def go_dependencies():
     )
 
     go_repository(
-        name = "github_com_golang_protobuf",
-        importpath = "github.com/golang/protobuf",
-        sum = "h1:i7eJL8qZTpSEXOPTxNKhASYpMn+8e5Q6AdndVa1dWek=",
-        version = "v1.5.4",
-    )
-    go_repository(
         name = "in_gopkg_check_v1",
         importpath = "gopkg.in/check.v1",
         sum = "h1:Hei/4ADfdWqJk1ZMxUNpqntNwaWcugrBjAiHlqqRiVk=",

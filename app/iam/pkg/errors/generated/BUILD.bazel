@@ -10,9 +10,3 @@ go_library(
         "@org_golang_google_protobuf//runtime/protoimpl",
     ],
 )
-
-alias(
-    name = "go_default_library",
-    actual = ":generated",
-    visibility = ["//visibility:public"],
-)

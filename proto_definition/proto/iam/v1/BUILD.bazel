@@ -1,0 +1,15 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "iam_proto",
+    srcs = [
+        "common.proto",
+        "iam.proto",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//google/api:api_proto",
+        "//iam/v1:v1_proto",
+        "//validate:validate_proto",
+    ],
+)
