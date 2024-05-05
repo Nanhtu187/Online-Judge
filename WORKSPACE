@@ -104,7 +104,7 @@ rules_oci_dependencies()
 
 load("@rules_oci//oci:repositories.bzl", "LATEST_CRANE_VERSION", "LATEST_ZOT_VERSION", "oci_register_toolchains")
 
-register_toolchains("//registry:registry_toolchain")
+#register_toolchains("//registry:registry_toolchain")
 
 oci_register_toolchains(
     name = "oci",
@@ -131,19 +131,18 @@ oci_pull(
     image = "gcr.io/distroless/base",
     platforms = [
         "linux/amd64",
-        "linux/arm64",
     ],
 )
 
-http_archive(
-    name = "io_bazel_rules_docker",
-    sha256 = "b1e80761a8a8243d03ebca8845e9cc1ba6c82ce7c5179ce2b295cd36f7e394bf",
-    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.25.0/rules_docker-v0.25.0.tar.gz"],
-)
-
-load(
-    "@io_bazel_rules_docker//repositories:repositories.bzl",
-    container_repositories = "repositories",
-)
-
-container_repositories()
+#http_archive(
+#    name = "io_bazel_rules_docker",
+#    sha256 = "b1e80761a8a8243d03ebca8845e9cc1ba6c82ce7c5179ce2b295cd36f7e394bf",
+#    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.25.0/rules_docker-v0.25.0.tar.gz"],
+#)
+#
+#load(
+#    "@io_bazel_rules_docker//repositories:repositories.bzl",
+#    container_repositories = "repositories",
+#)
+#
+#container_repositories()

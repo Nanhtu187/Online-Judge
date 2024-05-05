@@ -1,4 +1,4 @@
-load("@rules_oci//oci:defs.bzl", "oci_image", "oci_tarball",  "oci_push")
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_push", "oci_tarball")
 load("@aspect_bazel_lib//lib:transitions.bzl", "platform_transition_filegroup")
 load("@rules_pkg//:pkg.bzl", "pkg_tar")
 
@@ -25,7 +25,6 @@ platform_transition_filegroup(
         ":tar",
     ],
     target_platform = select({
-        "@platforms//cpu:arm64": "@io_bazel_rules_go//go/toolchain:linux_arm64",
         "@platforms//cpu:x86_64": "@io_bazel_rules_go//go/toolchain:linux_amd64",
     }),
 )
@@ -42,10 +41,9 @@ oci_tarball(
     repo_tags = ["iam:latest"],
 )
 
-
 oci_push(
     name = "push",
     image = ":image",
     remote_tags = ["v0.0.1"],
-    repository = "nanhtu/iam",
+    repository = "nanhtu187",
 )
