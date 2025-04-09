@@ -5,14 +5,12 @@ package migration
 // _ "github.com/golang-migrate/migrate/v4/source/file"
 import (
 	"fmt"
-	"github.com/Nanhtu187/Online-Judge/app/iam/config"
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/jmoiron/sqlx"
-	"github.com/spf13/cobra"
-	"io/ioutil"
-	"path"
+	"os"
 	"strconv"
 	"time"
+
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/spf13/cobra"
 )
 
 const versionTimeFormat = "20060102150405"
@@ -114,12 +112,12 @@ func migrateCreateCommand(migrationDir string) *cobra.Command {
 			up := fmt.Sprintf("%s/%s_%s.up.sql", migrationDir, version, name)
 			down := fmt.Sprintf("%s/%s_%s.down.sql", migrationDir, version, name)
 
-			err := ioutil.WriteFile(up, []byte{}, 0644)
+			err := os.WriteFile(up, []byte{}, 0644)
 			if err != nil {
 				panic(err)
 			}
 
-			err = ioutil.WriteFile(down, []byte{}, 0644)
+			err = os.WriteFile(down, []byte{}, 0644)
 			if err != nil {
 				panic(err)
 			}
@@ -156,39 +154,39 @@ func MigrateCommand(dsn string) *cobra.Command {
 	return cmd
 }
 
-// MigrateUpForTesting ...
-func MigrateUpForTesting(rootDir string, dsn string) {
-	sourceURL := fmt.Sprintf("file://%s", path.Join(rootDir, migrationDirectory))
-	databaseURL := fmt.Sprintf("mysql://%s", dsn)
+// // MigrateUpForTesting ...
+// func MigrateUpForTesting(rootDir string, dsn string) {
+// 	sourceURL := fmt.Sprintf("file://%s", path.Join(rootDir, migrationDirectory))
+// 	databaseURL := fmt.Sprintf("mysql://%s", dsn)
 
-	fmt.Println("SourceURL:", sourceURL)
-	fmt.Println("DatabaseURL:", databaseURL)
+// 	fmt.Println("SourceURL:", sourceURL)
+// 	fmt.Println("DatabaseURL:", databaseURL)
 
-	m, err := migrate.New(sourceURL, databaseURL)
-	if err != nil {
-		cfg, _ := config.Load()
-		dsnWithoutDB := fmt.Sprintf("%s:%s@tcp(%s:%d)/", cfg.Database.User, cfg.Database.Password, cfg.Database.Host, cfg.Database.Port)
-		db, err := sqlx.Connect("mysql", dsnWithoutDB)
-		if err != nil {
-			panic(err)
-		}
+// 	m, err := migrate.New(sourceURL, databaseURL)
+// 	if err != nil {
+// 		cfg, _ := config.Load()
+// 		dsnWithoutDB := fmt.Sprintf("%s:%s@tcp(%s:%d)/", cfg.Database.User, cfg.Database.Password, cfg.Database.Host, cfg.Database.Port)
+// 		db, err := sqlx.Connect("mysql", dsnWithoutDB)
+// 		if err != nil {
+// 			panic(err)
+// 		}
 
-		db.MustExec(fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s", cfg.Database.Database))
-		m, err = migrate.New(sourceURL, databaseURL)
-		if err != nil {
-			panic(err)
-		}
+// 		db.MustExec(fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s", cfg.Database.Database))
+// 		m, err = migrate.New(sourceURL, databaseURL)
+// 		if err != nil {
+// 			panic(err)
+// 		}
 
-		fmt.Println("Init DB Done")
-	}
+// 		fmt.Println("Init DB Done")
+// 	}
 
-	err = m.Up()
-	if err == migrate.ErrNoChange {
-		fmt.Println("No change in migration")
-		return
-	}
+// 	err = m.Up()
+// 	if err == migrate.ErrNoChange {
+// 		fmt.Println("No change in migration")
+// 		return
+// 	}
 
-	if err != nil {
-		panic(err)
-	}
-}
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// }

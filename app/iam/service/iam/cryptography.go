@@ -2,7 +2,8 @@ package iam
 
 import (
 	"context"
-	"github.com/Nanhtu187/Online-Judge/app/iam/pkg/logger"
+
+	"github.com/Nanhtu187/Online-Judge/app/common/logger"
 	"go.uber.org/zap"
 	"golang.org/x/crypto/bcrypt"
 )

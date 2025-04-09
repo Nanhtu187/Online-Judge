@@ -2,13 +2,14 @@ package iam
 
 import (
 	"context"
+	"strings"
+
+	"github.com/Nanhtu187/Online-Judge/app/common/logger"
 	"github.com/Nanhtu187/Online-Judge/app/iam/config"
-	"github.com/Nanhtu187/Online-Judge/app/iam/pkg/logger"
 	"github.com/Nanhtu187/Online-Judge/app/iam/repo"
-	"github.com/Nanhtu187/Online-Judge/proto/rpc/iam/v1"
+	"github.com/Nanhtu187/Online-Judge/proto/rpc/proto/iam/v1"
 	"google.golang.org/grpc/metadata"
 	"gorm.io/gorm"
-	"strings"
 )
 
 type Server struct {

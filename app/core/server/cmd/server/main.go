@@ -14,11 +14,10 @@ import (
 
 	"github.com/Nanhtu187/Online-Judge/app/common/grpclib"
 	log "github.com/Nanhtu187/Online-Judge/app/common/logger"
-	"github.com/Nanhtu187/Online-Judge/app/iam/config"
-	"github.com/Nanhtu187/Online-Judge/app/iam/pkg/errors"
+	"github.com/Nanhtu187/Online-Judge/app/core/server/config"
+	"github.com/Nanhtu187/Online-Judge/app/core/server/pkg/errors"
 	"github.com/Nanhtu187/Online-Judge/app/iam/pkg/otellib"
-	iam2 "github.com/Nanhtu187/Online-Judge/app/iam/service/iam"
-	"github.com/Nanhtu187/Online-Judge/proto/rpc/proto/iam/v1"
+	"github.com/Nanhtu187/Online-Judge/proto/rpc/iam/v1"
 	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
@@ -92,8 +91,6 @@ func startServer() {
 		),
 	)
 
-	iamServer := iam2.InitServer(db, conf)
-	iam.RegisterIamServiceServer(grpcServer, iamServer)
 	grpc_prometheus.EnableHandlingTimeHistogram()
 	grpc_prometheus.Register(grpcServer)
 

@@ -3,7 +3,8 @@ package otellib
 import (
 	"context"
 	"fmt"
-	"github.com/Nanhtu187/Online-Judge/app/iam/config"
+
+	"github.com/Nanhtu187/Online-Judge/app/core/server/config"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/jaeger"

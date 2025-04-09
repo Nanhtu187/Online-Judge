@@ -1,0 +1,141 @@
+syntax = "proto3";
+package core.judger_server.v1;
+
+import "core/judger_server/v1/common.proto";
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+option go_package = "github.com/Nanhtu187/Online-Judge/proto/rpc/core/judger_server";
+
+service IamService {
+    // Upsert Problem ...
+    rpc UpsertProblem(UpsertProblemRequest) returns (UpsertProblemResponse) {
+      option (google.api.http) = {
+        post: "/api/v1/problems"
+        body: "*"
+      };
+    }
+
+    // Upsert Contest ...
+    rpc UpsertContest(UpsertContestRequest) returns (UpsertContestResponse) {
+        option (google.api.http) = {
+          post: "/api/v1/contests"
+          body: "*"
+        };
+    }
+
+    // Submit ...
+    rpc Submit(SubmitRequest) returns (SubmitResponse) {
+        option (google.api.http) = {
+          post: "/api/v1/submissions"
+          body: "*"
+        };
+    }
+}
+
+message UpsertProblemRequest {
+    // Problem ID
+    int32 problem_id = 1 [json_name="problemId"];
+
+    // Problem Name
+    string name = 2 [json_name="name"];
+
+    // Problem Description
+    string description = 3 [json_name="description"];
+
+
+}
+
+message UpsertProblemResponse {
+    // code ...
+    int32 code = 1 [json_name="code"];
+    // message ...
+    string message = 2 [json_name="message"];
+    // data ...
+    ProblemResponseData problem = 3 [json_name="problem"];
+}
+
+message ProblemResponseData {
+    // Problem ID
+    int32 problem_id = 1 [json_name="problemId"];
+}
+
+message UpsertContestRequest {
+    // Contest ID
+    int32 contest_id = 1 [json_name="contestId"];
+
+    // Contest Name
+    string name = 2 [json_name="name"];
+
+    // Contest Description
+    string description = 3 [json_name="description"];
+
+    // Start Time
+    int64 start_time = 4 [json_name="startTime"];
+
+    // End Time
+    int64 end_time = 5 [json_name="endTime"];
+
+    // Problem IDs
+    repeated int32 problem_ids = 6 [json_name="problemIds"];
+    
+}
+
+message UpsertContestResponse {
+    // code ...
+    int32 code = 1 [json_name="code"];
+    // message ...
+    string message = 2 [json_name="message"];
+    // data ...
+    ContestResponseData contest = 3 [json_name="contest"];
+}
+
+message ContestResponseData {
+    // Contest ID
+    int32 contest_id = 1 [json_name="contestId"];
+}
+
+message SubmitRequest {
+    // Problem ID
+    int32 problem_id = 1 [json_name="problemId"];
+
+    // Language
+    string language = 2 [json_name="language"];
+
+    // Code
+    string code = 3 [json_name="code"];
+
+    // Input
+    string input = 4 [json_name="input"];
+
+    // Output
+    string output = 5 [json_name="output"];
+
+    // Test Case ID
+    int32 test_case_id = 6 [json_name="testCaseId"];
+}
+
+message SubmitResponse {
+    // code ...
+    int32 code = 1 [json_name="code"];
+    // message ...
+    string message = 2 [json_name="message"];
+    // data ...
+    SubmitResponseData submit = 3 [json_name="submit"];
+}
+
+message SubmitResponseData {
+    // Submission ID
+    int32 submission_id = 1 [json_name="submitId"];
+
+    // Status
+    string status = 2 [json_name="status"];
+
+    // Score
+    int32 score = 3 [json_name="score"];
+
+    // Time
+    int32 time = 4 [json_name="time"];
+
+    // Memory
+    int32 memory = 5 [json_name="memory"];
+}

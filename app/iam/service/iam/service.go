@@ -3,12 +3,13 @@ package iam
 import (
 	"context"
 	"errors"
+	"time"
+
+	"github.com/Nanhtu187/Online-Judge/app/common/logger"
 	"github.com/Nanhtu187/Online-Judge/app/iam/model"
-	"github.com/Nanhtu187/Online-Judge/app/iam/pkg/logger"
 	"github.com/Nanhtu187/Online-Judge/app/iam/repo"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
-	"time"
 )
 
 type IService interface {
