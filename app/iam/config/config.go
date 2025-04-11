@@ -4,18 +4,21 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/spf13/viper"
 	"strings"
+
+	cnf "github.com/Nanhtu187/Online-Judge/app/common/config"
+
+	"github.com/spf13/viper"
 )
 
 type Config struct {
-	Database           DatabaseConfig `json:"database" mapstructure:"database"`
-	Redis              RedisConfig    `json:"redis" mapstructure:"redis"`
-	Server             ServerConfig   `json:"server" mapstructure:"server"`
-	Log                LogConfig      `json:"log" mapstructure:"log"`
-	Jaeger             JaegerConfig   `json:"jaeger" mapstructure:"jaeger"`
-	PasswordEncryptKey int            `json:"password_encrypt_key" mapstructure:"password_encrypt_key"`
-	TokenEncryptKey    string         `json:"token_encrypt_key" mapstructure:"token_encrypt_key"`
+	Database           DatabaseConfig   `json:"database" mapstructure:"database"`
+	Redis              RedisConfig      `json:"redis" mapstructure:"redis"`
+	Server             ServerConfig     `json:"server" mapstructure:"server"`
+	Log                LogConfig        `json:"log" mapstructure:"log"`
+	Jaeger             cnf.JaegerConfig `json:"jaeger" mapstructure:"jaeger"`
+	PasswordEncryptKey int              `json:"password_encrypt_key" mapstructure:"password_encrypt_key"`
+	TokenEncryptKey    string           `json:"token_encrypt_key" mapstructure:"token_encrypt_key"`
 }
 
 // ServerListen for specifying host & port
@@ -58,7 +61,7 @@ func Load() (*Config, error) {
 		Log:                LogDefaultConfig(),
 		Database:           DatabaseDefaultConfig(),
 		Redis:              RedisDefaultConfig(),
-		Jaeger:             JaegerDefaultConfig(),
+		Jaeger:             cnf.JaegerDefaultConfig(),
 		PasswordEncryptKey: 4,
 		TokenEncryptKey:    "secret",
 	}

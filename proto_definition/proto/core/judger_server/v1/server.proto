@@ -1,12 +1,12 @@
 syntax = "proto3";
-package core.judger_server.v1;
+package judger_server.v1;
 
-import "core/judger_server/v1/common.proto";
+// import "judger_server/v1/common.proto";
 import "google/api/annotations.proto";
 import "validate/validate.proto";
-option go_package = "github.com/Nanhtu187/Online-Judge/proto/rpc/core/judger_server";
+option go_package = "proto/rpc/judger_server";
 
-service IamService {
+service JudgerService {
     // Upsert Problem ...
     rpc UpsertProblem(UpsertProblemRequest) returns (UpsertProblemResponse) {
       option (google.api.http) = {
@@ -51,7 +51,7 @@ message UpsertProblemResponse {
     // message ...
     string message = 2 [json_name="message"];
     // data ...
-    ProblemResponseData problem = 3 [json_name="problem"];
+    ProblemResponseData data = 3 [json_name="data"];
 }
 
 message ProblemResponseData {

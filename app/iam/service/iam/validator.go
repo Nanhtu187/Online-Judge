@@ -1,6 +1,6 @@
 package iam
 
-import "github.com/Nanhtu187/Online-Judge/proto/rpc/proto/iam/v1"
+import "github.com/Nanhtu187/Online-Judge/proto/rpc/iam"
 
 func validateCreateUserRequest(request UpsertUserRequest) error {
 	if request.Name == "" {

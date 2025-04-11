@@ -4,7 +4,7 @@ package iam.v1;
 import "iam/v1/common.proto";
 import "google/api/annotations.proto";
 import "validate/validate.proto";
-option go_package = "github.com/Nanhtu187/Online-Judge/proto/rpc/iam";
+option go_package = "proto/rpc/iam";
 
 service IamService {
   // UpsertUser ...

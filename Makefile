@@ -7,10 +7,10 @@ gen-proto:
 			-I ./proto_definition/.third_party/googleapis \
 			-I ./proto_definition/.third_party/envoyproxy \
 			-I ./proto_definition/.third_party/protoc-gen-swagger \
-			--go_out proto/rpc --go_opt paths=source_relative \
-			--go-grpc_out proto/rpc --go-grpc_opt paths=source_relative \
-			--grpc-gateway_out proto/rpc --grpc-gateway_opt paths=source_relative \
-			--validate_out="lang=go,paths=source_relative:proto/rpc" \
+			--go_out proto/rpc --go_opt=module=proto/rpc \
+			--go-grpc_out proto/rpc --go-grpc_opt=module=proto/rpc \
+			--grpc-gateway_out proto/rpc --grpc-gateway_opt=module=proto/rpc \
+			--validate_out="lang=go,module=proto/rpc:proto/rpc"  \
 			$$proto_file; \
     done
 

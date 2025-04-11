@@ -15,10 +15,10 @@ import (
 	"github.com/Nanhtu187/Online-Judge/app/common/grpclib"
 	log "github.com/Nanhtu187/Online-Judge/app/common/logger"
 	"github.com/Nanhtu187/Online-Judge/app/common/otellib"
-	"github.com/Nanhtu187/Online-Judge/app/iam/config"
-	"github.com/Nanhtu187/Online-Judge/app/iam/pkg/errors"
-	iam2 "github.com/Nanhtu187/Online-Judge/app/iam/service/iam"
-	"github.com/Nanhtu187/Online-Judge/proto/rpc/iam"
+	"github.com/Nanhtu187/Online-Judge/app/core/judger_server/config"
+	"github.com/Nanhtu187/Online-Judge/app/core/judger_server/pkg/errors"
+	"github.com/Nanhtu187/Online-Judge/app/core/judger_server/service/server"
+	"github.com/Nanhtu187/Online-Judge/proto/rpc/judger_server"
 	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
@@ -50,7 +50,7 @@ func main() {
 }
 
 func registerGRPCGateway(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) {
-	_ = iam.RegisterIamServiceHandlerFromEndpoint(ctx, mux, endpoint, opts)
+	_ = judger_server.RegisterJudgerServiceHandlerFromEndpoint(ctx, mux, endpoint, opts)
 }
 
 func startServer() {
@@ -91,9 +91,8 @@ func startServer() {
 			//grpc_zap.PayloadStreamServerInterceptor(logger, loggingDecider),
 		),
 	)
-
-	iamServer := iam2.InitServer(db, conf)
-	iam.RegisterIamServiceServer(grpcServer, iamServer)
+	server := server.NewServer(db, rdb)
+	judger_server.RegisterJudgerServiceServer(grpcServer, server)
 	grpc_prometheus.EnableHandlingTimeHistogram()
 	grpc_prometheus.Register(grpcServer)
 
