@@ -15,6 +15,20 @@ service JudgerService {
       };
     }
 
+    // Get Problem ...
+    rpc GetProblem(GetProblemRequest) returns (GetProblemResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/problems/{problem_id}"
+      };
+    }
+
+    // Get List Problems ...
+    rpc GetListProblems(GetListProblemsRequest) returns (GetListProblemsResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/problems"
+      };
+    }
+
     // Upsert Contest ...
     rpc UpsertContest(UpsertContestRequest) returns (UpsertContestResponse) {
         option (google.api.http) = {
@@ -23,12 +37,54 @@ service JudgerService {
         };
     }
 
-    // Submit ...
-    rpc Submit(SubmitRequest) returns (SubmitResponse) {
+    // Get Contest ...
+    rpc GetContest(GetContestRequest) returns (GetContestResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/contests/{contest_id}"
+      };
+    }
+
+    // Get List Contests ...
+    rpc GetListContests(GetListContestsRequest) returns (GetListContestsResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/contests"
+      };
+    }
+
+    // UpsertSubmission ...
+    rpc UpsertSubmission(UpsertSubmissionRequest) returns (UpsertSubmissionResponse) {
         option (google.api.http) = {
           post: "/api/v1/submissions"
           body: "*"
         };
+    }
+
+    // Get Submission ...
+    rpc GetSubmission(GetSubmissionRequest) returns (GetSubmissionResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/submissions/{submission_id}"
+      };
+    }
+
+    // Get List Submissions ...
+    rpc GetListSubmissions(GetListSubmissionsRequest) returns (GetListSubmissionsResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/submissions"
+      };
+    }
+
+    // Get List Results ...
+    rpc GetListResults(GetListResultsRequest) returns (GetListResultsResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/results"
+      };
+    }
+
+    // Get Result ...
+    rpc GetResult(GetResultRequest) returns (GetResultResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/results/{result_id}"
+      };
     }
 }
 
@@ -51,10 +107,10 @@ message UpsertProblemResponse {
     // message ...
     string message = 2 [json_name="message"];
     // data ...
-    ProblemResponseData data = 3 [json_name="data"];
+    UpsertProblemResponseData data = 3 [json_name="data"];
 }
 
-message ProblemResponseData {
+message UpsertProblemResponseData {
     // Problem ID
     int32 problem_id = 1 [json_name="problemId"];
 }
@@ -94,36 +150,34 @@ message ContestResponseData {
     int32 contest_id = 1 [json_name="contestId"];
 }
 
-message SubmitRequest {
+message UpsertSubmissionRequest {
     // Problem ID
     int32 problem_id = 1 [json_name="problemId"];
 
+    // Contest ID
+    int32 contest_id = 2 [json_name="contestId"];
+
+    // User ID
+    int32 user_id = 3 [json_name="userId"];
+
     // Language
-    string language = 2 [json_name="language"];
+    string language = 4 [json_name="language"];
 
     // Code
-    string code = 3 [json_name="code"];
+    string code = 5 [json_name="code"];
 
-    // Input
-    string input = 4 [json_name="input"];
-
-    // Output
-    string output = 5 [json_name="output"];
-
-    // Test Case ID
-    int32 test_case_id = 6 [json_name="testCaseId"];
 }
 
-message SubmitResponse {
+message UpsertSubmissionResponse {
     // code ...
     int32 code = 1 [json_name="code"];
     // message ...
     string message = 2 [json_name="message"];
     // data ...
-    SubmitResponseData submit = 3 [json_name="submit"];
+    UpsertSubmissionResponseData data = 3 [json_name="data"];
 }
 
-message SubmitResponseData {
+message UpsertSubmissionResponseData {
     // Submission ID
     int32 submission_id = 1 [json_name="submitId"];
 
@@ -138,4 +192,272 @@ message SubmitResponseData {
 
     // Memory
     int32 memory = 5 [json_name="memory"];
+}
+
+message Problem {
+    // Problem ID
+    int32 problem_id = 1 [json_name="problemId"];
+
+    // Problem Name
+    string name = 2 [json_name="name"];
+
+    // Problem Description
+    string description = 3 [json_name="description"];
+}
+
+message GetProblemRequest {
+    // Problem ID
+    int32 problem_id = 1 [json_name="problemId"];
+}
+
+message GetProblemResponse {
+    // code ...
+    int32 code = 1 [json_name="code"];
+    // message ...
+    string message = 2 [json_name="message"];
+    // data ...
+    Problem problem = 3 [json_name="problem"];
+}
+
+message GetListProblemsRequest {
+    // Page Number
+    int32 page = 1 [json_name="page"];
+
+    // Page Size
+    int32 page_size = 2 [json_name="pageSize"];
+
+    // Keyword
+    string keyword = 3 [json_name="keyword"];
+}
+
+message GetListProblemsResponse {
+    // code ...
+    int32 code = 1 [json_name="code"];
+    // message ...
+    string message = 2 [json_name="message"];
+    // data ...
+    GetListProblemsResponseData data = 3 [json_name="data"];
+}
+
+message ListProblemResponseData {
+    // Problem ID
+    int32 problem_id = 1 [json_name="problemId"];
+    // Problem Title
+    string title = 2 [json_name="title"];
+}
+
+message GetListProblemsResponseData {
+    repeated ListProblemResponseData problems = 1 [json_name="problems"];
+    int32 total = 2 [json_name="total"];
+    int32 page = 3 [json_name="page"];
+    int32 page_size = 4 [json_name="pageSize"];
+}
+
+message GetContestRequest {
+    // Contest ID
+    int32 contest_id = 1 [json_name="contestId"];
+
+    // Keyword
+    string keyword = 2 [json_name="keyword"];
+}
+
+message GetContestResponse {
+    // code ...
+    int32 code = 1 [json_name="code"];
+    // message ...
+    string message = 2 [json_name="message"];
+    // data ...
+    Contest data = 3 [json_name="data"];
+}
+
+message Contest {
+    // Contest ID
+    int32 contest_id = 1 [json_name="contestId"];
+
+    // Contest Name
+    string name = 2 [json_name="name"];
+
+    // Contest Description
+    string description = 3 [json_name="description"];
+
+    // Start Time
+    int64 start_time = 4 [json_name="startTime"];
+
+    // End Time
+    int64 end_time = 5 [json_name="endTime"];
+
+    // Problem IDs
+    repeated int32 problem_ids = 6 [json_name="problemIds"];
+}
+
+message GetListContestsRequest {
+    // Page Number
+    int32 page = 1 [json_name="page"];
+
+    // Page Size
+    int32 page_size = 2 [json_name="pageSize"];
+
+    // Keyword
+    string keyword = 3 [json_name="keyword"];
+}
+
+message GetListContestsResponse {
+    // code ...
+    int32 code = 1 [json_name="code"];
+    // message ...
+    string message = 2 [json_name="message"];
+    // data ...
+    GetListContestsResponseData data = 3 [json_name="data"];
+}
+
+message ListContestResponseData {
+    // Contest ID
+    int32 contest_id = 1 [json_name="contestId"];
+    // Contest Title
+    string title = 2 [json_name="title"];
+}
+
+message GetListContestsResponseData {
+    repeated ListContestResponseData contests = 1 [json_name="contests"];
+    int32 total = 2 [json_name="total"];
+    int32 page = 3 [json_name="page"];
+    int32 page_size = 4 [json_name="pageSize"];
+}
+
+message GetSubmissionRequest {
+    // Submission ID
+    int32 submission_id = 1 [json_name="submissionId"];
+}
+
+message GetSubmissionResponse {
+    // code ...
+    int32 code = 1 [json_name="code"];
+    // message ...
+    string message = 2 [json_name="message"];
+    // data ...
+    Submission data = 3 [json_name="data"];
+}
+
+message Submission {
+    // Submission ID
+    int32 submission_id = 1 [json_name="submissionId"];
+
+    // Problem ID
+    int32 problem_id = 2 [json_name="problemId"];
+
+    // Language
+    string language = 3 [json_name="language"];
+
+    // Code
+    string code = 4 [json_name="code"];
+
+    // Input
+    string input = 5 [json_name="input"];
+
+    // Output
+    string output = 6 [json_name="output"];
+
+    // Test Case ID
+    int32 test_case_id = 7 [json_name="testCaseId"];
+}
+
+message GetListSubmissionsRequest {
+    // Page Number
+    int32 page = 1 [json_name="page"];
+
+    // Page Size
+    int32 page_size = 2 [json_name="pageSize"];
+
+    // Keyword
+    string keyword = 3 [json_name="keyword"];
+}
+
+message GetListSubmissionsResponse {
+    // code ...
+    int32 code = 1 [json_name="code"];
+    // message ...
+    string message = 2 [json_name="message"];
+    // data ...
+    GetListSubmissionsResponseData data = 3 [json_name="data"];
+}
+
+message ListSubmissionResponseData {
+    // Submission ID
+    int32 submission_id = 1 [json_name="submissionId"];
+}
+
+message GetListSubmissionsResponseData {
+    repeated ListSubmissionResponseData submissions = 1 [json_name="submissions"];
+    int32 total = 2 [json_name="total"];
+    int32 page = 3 [json_name="page"];
+    int32 page_size = 4 [json_name="pageSize"];
+}
+
+message GetResultRequest {
+    // Result ID
+    int32 result_id = 1 [json_name="resultId"];
+}
+
+message GetResultResponse {
+    // code ...
+    int32 code = 1 [json_name="code"];
+    // message ...
+    string message = 2 [json_name="message"];
+    // data ...
+    Result data = 3 [json_name="data"];
+}
+
+message Result {
+    // Result ID
+    int32 result_id = 1 [json_name="resultId"];
+
+    // Problem ID
+    int32 problem_id = 2 [json_name="problemId"];
+
+    // Language
+    string language = 3 [json_name="language"];
+
+    // Code
+    string code = 4 [json_name="code"];
+
+    // Input
+    string input = 5 [json_name="input"];
+
+    // Output
+    string output = 6 [json_name="output"];
+
+    // Test Case ID
+    int32 test_case_id = 7 [json_name="testCaseId"];
+}
+
+message GetListResultsRequest {
+    // Page Number
+    int32 page = 1 [json_name="page"];
+
+    // Page Size
+    int32 page_size = 2 [json_name="pageSize"];
+
+    // user_id
+    int32 user_id = 3 [json_name="user_id"];
+
+}
+
+message GetListResultsResponse {
+    // code ...
+    int32 code = 1 [json_name="code"];
+    // message ...
+    string message = 2 [json_name="message"];
+    // data ...
+    GetListResultsResponseData data = 3 [json_name="data"];
+}
+message ListResultResponseData {
+    // Result ID
+    int32 result_id = 1 [json_name="resultId"];
+}
+
+message GetListResultsResponseData {
+    repeated ListResultResponseData results = 1 [json_name="results"];
+    int32 total = 2 [json_name="total"];
+    int32 page = 3 [json_name="page"];
+    int32 page_size = 4 [json_name="pageSize"];
 }

@@ -19,9 +19,17 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	JudgerService_UpsertProblem_FullMethodName = "/judger_server.v1.JudgerService/UpsertProblem"
-	JudgerService_UpsertContest_FullMethodName = "/judger_server.v1.JudgerService/UpsertContest"
-	JudgerService_Submit_FullMethodName        = "/judger_server.v1.JudgerService/Submit"
+	JudgerService_UpsertProblem_FullMethodName      = "/judger_server.v1.JudgerService/UpsertProblem"
+	JudgerService_GetProblem_FullMethodName         = "/judger_server.v1.JudgerService/GetProblem"
+	JudgerService_GetListProblems_FullMethodName    = "/judger_server.v1.JudgerService/GetListProblems"
+	JudgerService_UpsertContest_FullMethodName      = "/judger_server.v1.JudgerService/UpsertContest"
+	JudgerService_GetContest_FullMethodName         = "/judger_server.v1.JudgerService/GetContest"
+	JudgerService_GetListContests_FullMethodName    = "/judger_server.v1.JudgerService/GetListContests"
+	JudgerService_UpsertSubmission_FullMethodName   = "/judger_server.v1.JudgerService/UpsertSubmission"
+	JudgerService_GetSubmission_FullMethodName      = "/judger_server.v1.JudgerService/GetSubmission"
+	JudgerService_GetListSubmissions_FullMethodName = "/judger_server.v1.JudgerService/GetListSubmissions"
+	JudgerService_GetListResults_FullMethodName     = "/judger_server.v1.JudgerService/GetListResults"
+	JudgerService_GetResult_FullMethodName          = "/judger_server.v1.JudgerService/GetResult"
 )
 
 // JudgerServiceClient is the client API for JudgerService service.
@@ -30,10 +38,26 @@ const (
 type JudgerServiceClient interface {
 	// Upsert Problem ...
 	UpsertProblem(ctx context.Context, in *UpsertProblemRequest, opts ...grpc.CallOption) (*UpsertProblemResponse, error)
+	// Get Problem ...
+	GetProblem(ctx context.Context, in *GetProblemRequest, opts ...grpc.CallOption) (*GetProblemResponse, error)
+	// Get List Problems ...
+	GetListProblems(ctx context.Context, in *GetListProblemsRequest, opts ...grpc.CallOption) (*GetListProblemsResponse, error)
 	// Upsert Contest ...
 	UpsertContest(ctx context.Context, in *UpsertContestRequest, opts ...grpc.CallOption) (*UpsertContestResponse, error)
-	// Submit ...
-	Submit(ctx context.Context, in *SubmitRequest, opts ...grpc.CallOption) (*SubmitResponse, error)
+	// Get Contest ...
+	GetContest(ctx context.Context, in *GetContestRequest, opts ...grpc.CallOption) (*GetContestResponse, error)
+	// Get List Contests ...
+	GetListContests(ctx context.Context, in *GetListContestsRequest, opts ...grpc.CallOption) (*GetListContestsResponse, error)
+	// UpsertSubmission ...
+	UpsertSubmission(ctx context.Context, in *UpsertSubmissionRequest, opts ...grpc.CallOption) (*UpsertSubmissionResponse, error)
+	// Get Submission ...
+	GetSubmission(ctx context.Context, in *GetSubmissionRequest, opts ...grpc.CallOption) (*GetSubmissionResponse, error)
+	// Get List Submissions ...
+	GetListSubmissions(ctx context.Context, in *GetListSubmissionsRequest, opts ...grpc.CallOption) (*GetListSubmissionsResponse, error)
+	// Get List Results ...
+	GetListResults(ctx context.Context, in *GetListResultsRequest, opts ...grpc.CallOption) (*GetListResultsResponse, error)
+	// Get Result ...
+	GetResult(ctx context.Context, in *GetResultRequest, opts ...grpc.CallOption) (*GetResultResponse, error)
 }
 
 type judgerServiceClient struct {
@@ -54,6 +78,26 @@ func (c *judgerServiceClient) UpsertProblem(ctx context.Context, in *UpsertProbl
 	return out, nil
 }
 
+func (c *judgerServiceClient) GetProblem(ctx context.Context, in *GetProblemRequest, opts ...grpc.CallOption) (*GetProblemResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetProblemResponse)
+	err := c.cc.Invoke(ctx, JudgerService_GetProblem_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *judgerServiceClient) GetListProblems(ctx context.Context, in *GetListProblemsRequest, opts ...grpc.CallOption) (*GetListProblemsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetListProblemsResponse)
+	err := c.cc.Invoke(ctx, JudgerService_GetListProblems_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *judgerServiceClient) UpsertContest(ctx context.Context, in *UpsertContestRequest, opts ...grpc.CallOption) (*UpsertContestResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(UpsertContestResponse)
@@ -64,10 +108,70 @@ func (c *judgerServiceClient) UpsertContest(ctx context.Context, in *UpsertConte
 	return out, nil
 }
 
-func (c *judgerServiceClient) Submit(ctx context.Context, in *SubmitRequest, opts ...grpc.CallOption) (*SubmitResponse, error) {
+func (c *judgerServiceClient) GetContest(ctx context.Context, in *GetContestRequest, opts ...grpc.CallOption) (*GetContestResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SubmitResponse)
-	err := c.cc.Invoke(ctx, JudgerService_Submit_FullMethodName, in, out, cOpts...)
+	out := new(GetContestResponse)
+	err := c.cc.Invoke(ctx, JudgerService_GetContest_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *judgerServiceClient) GetListContests(ctx context.Context, in *GetListContestsRequest, opts ...grpc.CallOption) (*GetListContestsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetListContestsResponse)
+	err := c.cc.Invoke(ctx, JudgerService_GetListContests_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *judgerServiceClient) UpsertSubmission(ctx context.Context, in *UpsertSubmissionRequest, opts ...grpc.CallOption) (*UpsertSubmissionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpsertSubmissionResponse)
+	err := c.cc.Invoke(ctx, JudgerService_UpsertSubmission_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *judgerServiceClient) GetSubmission(ctx context.Context, in *GetSubmissionRequest, opts ...grpc.CallOption) (*GetSubmissionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSubmissionResponse)
+	err := c.cc.Invoke(ctx, JudgerService_GetSubmission_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *judgerServiceClient) GetListSubmissions(ctx context.Context, in *GetListSubmissionsRequest, opts ...grpc.CallOption) (*GetListSubmissionsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetListSubmissionsResponse)
+	err := c.cc.Invoke(ctx, JudgerService_GetListSubmissions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *judgerServiceClient) GetListResults(ctx context.Context, in *GetListResultsRequest, opts ...grpc.CallOption) (*GetListResultsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetListResultsResponse)
+	err := c.cc.Invoke(ctx, JudgerService_GetListResults_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *judgerServiceClient) GetResult(ctx context.Context, in *GetResultRequest, opts ...grpc.CallOption) (*GetResultResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetResultResponse)
+	err := c.cc.Invoke(ctx, JudgerService_GetResult_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -80,10 +184,26 @@ func (c *judgerServiceClient) Submit(ctx context.Context, in *SubmitRequest, opt
 type JudgerServiceServer interface {
 	// Upsert Problem ...
 	UpsertProblem(context.Context, *UpsertProblemRequest) (*UpsertProblemResponse, error)
+	// Get Problem ...
+	GetProblem(context.Context, *GetProblemRequest) (*GetProblemResponse, error)
+	// Get List Problems ...
+	GetListProblems(context.Context, *GetListProblemsRequest) (*GetListProblemsResponse, error)
 	// Upsert Contest ...
 	UpsertContest(context.Context, *UpsertContestRequest) (*UpsertContestResponse, error)
-	// Submit ...
-	Submit(context.Context, *SubmitRequest) (*SubmitResponse, error)
+	// Get Contest ...
+	GetContest(context.Context, *GetContestRequest) (*GetContestResponse, error)
+	// Get List Contests ...
+	GetListContests(context.Context, *GetListContestsRequest) (*GetListContestsResponse, error)
+	// UpsertSubmission ...
+	UpsertSubmission(context.Context, *UpsertSubmissionRequest) (*UpsertSubmissionResponse, error)
+	// Get Submission ...
+	GetSubmission(context.Context, *GetSubmissionRequest) (*GetSubmissionResponse, error)
+	// Get List Submissions ...
+	GetListSubmissions(context.Context, *GetListSubmissionsRequest) (*GetListSubmissionsResponse, error)
+	// Get List Results ...
+	GetListResults(context.Context, *GetListResultsRequest) (*GetListResultsResponse, error)
+	// Get Result ...
+	GetResult(context.Context, *GetResultRequest) (*GetResultResponse, error)
 	mustEmbedUnimplementedJudgerServiceServer()
 }
 
@@ -97,11 +217,35 @@ type UnimplementedJudgerServiceServer struct{}
 func (UnimplementedJudgerServiceServer) UpsertProblem(context.Context, *UpsertProblemRequest) (*UpsertProblemResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpsertProblem not implemented")
 }
+func (UnimplementedJudgerServiceServer) GetProblem(context.Context, *GetProblemRequest) (*GetProblemResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProblem not implemented")
+}
+func (UnimplementedJudgerServiceServer) GetListProblems(context.Context, *GetListProblemsRequest) (*GetListProblemsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetListProblems not implemented")
+}
 func (UnimplementedJudgerServiceServer) UpsertContest(context.Context, *UpsertContestRequest) (*UpsertContestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpsertContest not implemented")
 }
-func (UnimplementedJudgerServiceServer) Submit(context.Context, *SubmitRequest) (*SubmitResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Submit not implemented")
+func (UnimplementedJudgerServiceServer) GetContest(context.Context, *GetContestRequest) (*GetContestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetContest not implemented")
+}
+func (UnimplementedJudgerServiceServer) GetListContests(context.Context, *GetListContestsRequest) (*GetListContestsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetListContests not implemented")
+}
+func (UnimplementedJudgerServiceServer) UpsertSubmission(context.Context, *UpsertSubmissionRequest) (*UpsertSubmissionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpsertSubmission not implemented")
+}
+func (UnimplementedJudgerServiceServer) GetSubmission(context.Context, *GetSubmissionRequest) (*GetSubmissionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSubmission not implemented")
+}
+func (UnimplementedJudgerServiceServer) GetListSubmissions(context.Context, *GetListSubmissionsRequest) (*GetListSubmissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetListSubmissions not implemented")
+}
+func (UnimplementedJudgerServiceServer) GetListResults(context.Context, *GetListResultsRequest) (*GetListResultsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetListResults not implemented")
+}
+func (UnimplementedJudgerServiceServer) GetResult(context.Context, *GetResultRequest) (*GetResultResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetResult not implemented")
 }
 func (UnimplementedJudgerServiceServer) mustEmbedUnimplementedJudgerServiceServer() {}
 func (UnimplementedJudgerServiceServer) testEmbeddedByValue()                       {}
@@ -142,6 +286,42 @@ func _JudgerService_UpsertProblem_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _JudgerService_GetProblem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProblemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JudgerServiceServer).GetProblem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: JudgerService_GetProblem_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JudgerServiceServer).GetProblem(ctx, req.(*GetProblemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _JudgerService_GetListProblems_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetListProblemsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JudgerServiceServer).GetListProblems(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: JudgerService_GetListProblems_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JudgerServiceServer).GetListProblems(ctx, req.(*GetListProblemsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _JudgerService_UpsertContest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpsertContestRequest)
 	if err := dec(in); err != nil {
@@ -160,20 +340,128 @@ func _JudgerService_UpsertContest_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _JudgerService_Submit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SubmitRequest)
+func _JudgerService_GetContest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetContestRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(JudgerServiceServer).Submit(ctx, in)
+		return srv.(JudgerServiceServer).GetContest(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: JudgerService_Submit_FullMethodName,
+		FullMethod: JudgerService_GetContest_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(JudgerServiceServer).Submit(ctx, req.(*SubmitRequest))
+		return srv.(JudgerServiceServer).GetContest(ctx, req.(*GetContestRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _JudgerService_GetListContests_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetListContestsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JudgerServiceServer).GetListContests(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: JudgerService_GetListContests_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JudgerServiceServer).GetListContests(ctx, req.(*GetListContestsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _JudgerService_UpsertSubmission_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpsertSubmissionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JudgerServiceServer).UpsertSubmission(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: JudgerService_UpsertSubmission_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JudgerServiceServer).UpsertSubmission(ctx, req.(*UpsertSubmissionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _JudgerService_GetSubmission_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSubmissionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JudgerServiceServer).GetSubmission(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: JudgerService_GetSubmission_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JudgerServiceServer).GetSubmission(ctx, req.(*GetSubmissionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _JudgerService_GetListSubmissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetListSubmissionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JudgerServiceServer).GetListSubmissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: JudgerService_GetListSubmissions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JudgerServiceServer).GetListSubmissions(ctx, req.(*GetListSubmissionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _JudgerService_GetListResults_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetListResultsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JudgerServiceServer).GetListResults(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: JudgerService_GetListResults_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JudgerServiceServer).GetListResults(ctx, req.(*GetListResultsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _JudgerService_GetResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetResultRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JudgerServiceServer).GetResult(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: JudgerService_GetResult_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JudgerServiceServer).GetResult(ctx, req.(*GetResultRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -190,12 +478,44 @@ var JudgerService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _JudgerService_UpsertProblem_Handler,
 		},
 		{
+			MethodName: "GetProblem",
+			Handler:    _JudgerService_GetProblem_Handler,
+		},
+		{
+			MethodName: "GetListProblems",
+			Handler:    _JudgerService_GetListProblems_Handler,
+		},
+		{
 			MethodName: "UpsertContest",
 			Handler:    _JudgerService_UpsertContest_Handler,
 		},
 		{
-			MethodName: "Submit",
-			Handler:    _JudgerService_Submit_Handler,
+			MethodName: "GetContest",
+			Handler:    _JudgerService_GetContest_Handler,
+		},
+		{
+			MethodName: "GetListContests",
+			Handler:    _JudgerService_GetListContests_Handler,
+		},
+		{
+			MethodName: "UpsertSubmission",
+			Handler:    _JudgerService_UpsertSubmission_Handler,
+		},
+		{
+			MethodName: "GetSubmission",
+			Handler:    _JudgerService_GetSubmission_Handler,
+		},
+		{
+			MethodName: "GetListSubmissions",
+			Handler:    _JudgerService_GetListSubmissions_Handler,
+		},
+		{
+			MethodName: "GetListResults",
+			Handler:    _JudgerService_GetListResults_Handler,
+		},
+		{
+			MethodName: "GetResult",
+			Handler:    _JudgerService_GetResult_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -1,8 +1,8 @@
 package iam
 
 import (
-	"github.com/Nanhtu187/Online-Judge/app/iam/pkg/errors"
-	"github.com/Nanhtu187/Online-Judge/app/iam/service/common"
+	"github.com/Nanhtu187/Online-Judge/app/common/errors"
+	common "github.com/Nanhtu187/Online-Judge/app/common/share"
 )
 
 // Error missing name when create user

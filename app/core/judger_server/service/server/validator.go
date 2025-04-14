@@ -9,3 +9,19 @@ func validateUpsertProblemRequest(request *judger_server.UpsertProblemRequest) (
 		description: request.Description,
 	}, nil
 }
+
+func validateUpsertSubmissionRequest(req *judger_server.UpsertSubmissionRequest) (UpsertSubmissionRequest, error) {
+	if req.ProblemId == 0 {
+		return UpsertSubmissionRequest{}, ErrMissingProblemId
+	}
+	if req.UserId == 0 {
+		return UpsertSubmissionRequest{}, ErrMissingUserId
+	}
+	return UpsertSubmissionRequest{
+		problemId: req.ProblemId,
+		contestId: req.ContestId,
+		userId:    req.UserId,
+		language:  req.Language,
+		code:      req.Code,
+	}, nil
+}

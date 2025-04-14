@@ -4,15 +4,16 @@ import (
 	"context"
 	stderrors "errors"
 	"fmt"
-	"github.com/Nanhtu187/Online-Judge/app/iam/pkg/errors/generated"
+	"io"
+	"net/http"
+	"strconv"
+
+	"github.com/Nanhtu187/Online-Judge/app/common/errors/generated"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/status"
-	"io"
-	"net/http"
-	"strconv"
 )
 
 func (e domainError) toRPCError() error {

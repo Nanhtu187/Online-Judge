@@ -93,7 +93,7 @@ type UpsertProblemResponse struct {
 	// message ...
 	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 	// data ...
-	Data          *ProblemResponseData `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	Data          *UpsertProblemResponseData `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -142,14 +142,14 @@ func (x *UpsertProblemResponse) GetMessage() string {
 	return ""
 }
 
-func (x *UpsertProblemResponse) GetData() *ProblemResponseData {
+func (x *UpsertProblemResponse) GetData() *UpsertProblemResponseData {
 	if x != nil {
 		return x.Data
 	}
 	return nil
 }
 
-type ProblemResponseData struct {
+type UpsertProblemResponseData struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Problem ID
 	ProblemId     int32 `protobuf:"varint,1,opt,name=problem_id,json=problemId,proto3" json:"problem_id,omitempty"`
@@ -157,20 +157,20 @@ type ProblemResponseData struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ProblemResponseData) Reset() {
-	*x = ProblemResponseData{}
+func (x *UpsertProblemResponseData) Reset() {
+	*x = UpsertProblemResponseData{}
 	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ProblemResponseData) String() string {
+func (x *UpsertProblemResponseData) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ProblemResponseData) ProtoMessage() {}
+func (*UpsertProblemResponseData) ProtoMessage() {}
 
-func (x *ProblemResponseData) ProtoReflect() protoreflect.Message {
+func (x *UpsertProblemResponseData) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -182,12 +182,12 @@ func (x *ProblemResponseData) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ProblemResponseData.ProtoReflect.Descriptor instead.
-func (*ProblemResponseData) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpsertProblemResponseData.ProtoReflect.Descriptor instead.
+func (*UpsertProblemResponseData) Descriptor() ([]byte, []int) {
 	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *ProblemResponseData) GetProblemId() int32 {
+func (x *UpsertProblemResponseData) GetProblemId() int32 {
 	if x != nil {
 		return x.ProblemId
 	}
@@ -392,38 +392,36 @@ func (x *ContestResponseData) GetContestId() int32 {
 	return 0
 }
 
-type SubmitRequest struct {
+type UpsertSubmissionRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Problem ID
 	ProblemId int32 `protobuf:"varint,1,opt,name=problem_id,json=problemId,proto3" json:"problem_id,omitempty"`
+	// Contest ID
+	ContestId int32 `protobuf:"varint,2,opt,name=contest_id,json=contestId,proto3" json:"contest_id,omitempty"`
+	// User ID
+	UserId int32 `protobuf:"varint,3,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	// Language
-	Language string `protobuf:"bytes,2,opt,name=language,proto3" json:"language,omitempty"`
+	Language string `protobuf:"bytes,4,opt,name=language,proto3" json:"language,omitempty"`
 	// Code
-	Code string `protobuf:"bytes,3,opt,name=code,proto3" json:"code,omitempty"`
-	// Input
-	Input string `protobuf:"bytes,4,opt,name=input,proto3" json:"input,omitempty"`
-	// Output
-	Output string `protobuf:"bytes,5,opt,name=output,proto3" json:"output,omitempty"`
-	// Test Case ID
-	TestCaseId    int32 `protobuf:"varint,6,opt,name=test_case_id,json=testCaseId,proto3" json:"test_case_id,omitempty"`
+	Code          string `protobuf:"bytes,5,opt,name=code,proto3" json:"code,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SubmitRequest) Reset() {
-	*x = SubmitRequest{}
+func (x *UpsertSubmissionRequest) Reset() {
+	*x = UpsertSubmissionRequest{}
 	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SubmitRequest) String() string {
+func (x *UpsertSubmissionRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SubmitRequest) ProtoMessage() {}
+func (*UpsertSubmissionRequest) ProtoMessage() {}
 
-func (x *SubmitRequest) ProtoReflect() protoreflect.Message {
+func (x *UpsertSubmissionRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -435,79 +433,72 @@ func (x *SubmitRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SubmitRequest.ProtoReflect.Descriptor instead.
-func (*SubmitRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpsertSubmissionRequest.ProtoReflect.Descriptor instead.
+func (*UpsertSubmissionRequest) Descriptor() ([]byte, []int) {
 	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *SubmitRequest) GetProblemId() int32 {
+func (x *UpsertSubmissionRequest) GetProblemId() int32 {
 	if x != nil {
 		return x.ProblemId
 	}
 	return 0
 }
 
-func (x *SubmitRequest) GetLanguage() string {
+func (x *UpsertSubmissionRequest) GetContestId() int32 {
+	if x != nil {
+		return x.ContestId
+	}
+	return 0
+}
+
+func (x *UpsertSubmissionRequest) GetUserId() int32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *UpsertSubmissionRequest) GetLanguage() string {
 	if x != nil {
 		return x.Language
 	}
 	return ""
 }
 
-func (x *SubmitRequest) GetCode() string {
+func (x *UpsertSubmissionRequest) GetCode() string {
 	if x != nil {
 		return x.Code
 	}
 	return ""
 }
 
-func (x *SubmitRequest) GetInput() string {
-	if x != nil {
-		return x.Input
-	}
-	return ""
-}
-
-func (x *SubmitRequest) GetOutput() string {
-	if x != nil {
-		return x.Output
-	}
-	return ""
-}
-
-func (x *SubmitRequest) GetTestCaseId() int32 {
-	if x != nil {
-		return x.TestCaseId
-	}
-	return 0
-}
-
-type SubmitResponse struct {
+type UpsertSubmissionResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// code ...
 	Code int32 `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
 	// message ...
 	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 	// data ...
-	Submit        *SubmitResponseData `protobuf:"bytes,3,opt,name=submit,proto3" json:"submit,omitempty"`
+	Data          *UpsertSubmissionResponseData `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SubmitResponse) Reset() {
-	*x = SubmitResponse{}
+func (x *UpsertSubmissionResponse) Reset() {
+	*x = UpsertSubmissionResponse{}
 	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SubmitResponse) String() string {
+func (x *UpsertSubmissionResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SubmitResponse) ProtoMessage() {}
+func (*UpsertSubmissionResponse) ProtoMessage() {}
 
-func (x *SubmitResponse) ProtoReflect() protoreflect.Message {
+func (x *UpsertSubmissionResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -519,33 +510,33 @@ func (x *SubmitResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SubmitResponse.ProtoReflect.Descriptor instead.
-func (*SubmitResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpsertSubmissionResponse.ProtoReflect.Descriptor instead.
+func (*UpsertSubmissionResponse) Descriptor() ([]byte, []int) {
 	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *SubmitResponse) GetCode() int32 {
+func (x *UpsertSubmissionResponse) GetCode() int32 {
 	if x != nil {
 		return x.Code
 	}
 	return 0
 }
 
-func (x *SubmitResponse) GetMessage() string {
+func (x *UpsertSubmissionResponse) GetMessage() string {
 	if x != nil {
 		return x.Message
 	}
 	return ""
 }
 
-func (x *SubmitResponse) GetSubmit() *SubmitResponseData {
+func (x *UpsertSubmissionResponse) GetData() *UpsertSubmissionResponseData {
 	if x != nil {
-		return x.Submit
+		return x.Data
 	}
 	return nil
 }
 
-type SubmitResponseData struct {
+type UpsertSubmissionResponseData struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Submission ID
 	SubmissionId int32 `protobuf:"varint,1,opt,name=submission_id,json=submitId,proto3" json:"submission_id,omitempty"`
@@ -561,20 +552,20 @@ type SubmitResponseData struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SubmitResponseData) Reset() {
-	*x = SubmitResponseData{}
+func (x *UpsertSubmissionResponseData) Reset() {
+	*x = UpsertSubmissionResponseData{}
 	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SubmitResponseData) String() string {
+func (x *UpsertSubmissionResponseData) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SubmitResponseData) ProtoMessage() {}
+func (*UpsertSubmissionResponseData) ProtoMessage() {}
 
-func (x *SubmitResponseData) ProtoReflect() protoreflect.Message {
+func (x *UpsertSubmissionResponseData) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -586,42 +577,1808 @@ func (x *SubmitResponseData) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SubmitResponseData.ProtoReflect.Descriptor instead.
-func (*SubmitResponseData) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpsertSubmissionResponseData.ProtoReflect.Descriptor instead.
+func (*UpsertSubmissionResponseData) Descriptor() ([]byte, []int) {
 	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *SubmitResponseData) GetSubmissionId() int32 {
+func (x *UpsertSubmissionResponseData) GetSubmissionId() int32 {
 	if x != nil {
 		return x.SubmissionId
 	}
 	return 0
 }
 
-func (x *SubmitResponseData) GetStatus() string {
+func (x *UpsertSubmissionResponseData) GetStatus() string {
 	if x != nil {
 		return x.Status
 	}
 	return ""
 }
 
-func (x *SubmitResponseData) GetScore() int32 {
+func (x *UpsertSubmissionResponseData) GetScore() int32 {
 	if x != nil {
 		return x.Score
 	}
 	return 0
 }
 
-func (x *SubmitResponseData) GetTime() int32 {
+func (x *UpsertSubmissionResponseData) GetTime() int32 {
 	if x != nil {
 		return x.Time
 	}
 	return 0
 }
 
-func (x *SubmitResponseData) GetMemory() int32 {
+func (x *UpsertSubmissionResponseData) GetMemory() int32 {
 	if x != nil {
 		return x.Memory
+	}
+	return 0
+}
+
+type Problem struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Problem ID
+	ProblemId int32 `protobuf:"varint,1,opt,name=problem_id,json=problemId,proto3" json:"problem_id,omitempty"`
+	// Problem Name
+	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	// Problem Description
+	Description   string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Problem) Reset() {
+	*x = Problem{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Problem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Problem) ProtoMessage() {}
+
+func (x *Problem) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Problem.ProtoReflect.Descriptor instead.
+func (*Problem) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *Problem) GetProblemId() int32 {
+	if x != nil {
+		return x.ProblemId
+	}
+	return 0
+}
+
+func (x *Problem) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Problem) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+type GetProblemRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Problem ID
+	ProblemId     int32 `protobuf:"varint,1,opt,name=problem_id,json=problemId,proto3" json:"problem_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetProblemRequest) Reset() {
+	*x = GetProblemRequest{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetProblemRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetProblemRequest) ProtoMessage() {}
+
+func (x *GetProblemRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetProblemRequest.ProtoReflect.Descriptor instead.
+func (*GetProblemRequest) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *GetProblemRequest) GetProblemId() int32 {
+	if x != nil {
+		return x.ProblemId
+	}
+	return 0
+}
+
+type GetProblemResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// code ...
+	Code int32 `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	// message ...
+	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	// data ...
+	Problem       *Problem `protobuf:"bytes,3,opt,name=problem,proto3" json:"problem,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetProblemResponse) Reset() {
+	*x = GetProblemResponse{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetProblemResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetProblemResponse) ProtoMessage() {}
+
+func (x *GetProblemResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetProblemResponse.ProtoReflect.Descriptor instead.
+func (*GetProblemResponse) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *GetProblemResponse) GetCode() int32 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *GetProblemResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *GetProblemResponse) GetProblem() *Problem {
+	if x != nil {
+		return x.Problem
+	}
+	return nil
+}
+
+type GetListProblemsRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Page Number
+	Page int32 `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
+	// Page Size
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	// Keyword
+	Keyword       string `protobuf:"bytes,3,opt,name=keyword,proto3" json:"keyword,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetListProblemsRequest) Reset() {
+	*x = GetListProblemsRequest{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetListProblemsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetListProblemsRequest) ProtoMessage() {}
+
+func (x *GetListProblemsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetListProblemsRequest.ProtoReflect.Descriptor instead.
+func (*GetListProblemsRequest) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *GetListProblemsRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *GetListProblemsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *GetListProblemsRequest) GetKeyword() string {
+	if x != nil {
+		return x.Keyword
+	}
+	return ""
+}
+
+type GetListProblemsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// code ...
+	Code int32 `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	// message ...
+	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	// data ...
+	Data          *GetListProblemsResponseData `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetListProblemsResponse) Reset() {
+	*x = GetListProblemsResponse{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetListProblemsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetListProblemsResponse) ProtoMessage() {}
+
+func (x *GetListProblemsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetListProblemsResponse.ProtoReflect.Descriptor instead.
+func (*GetListProblemsResponse) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *GetListProblemsResponse) GetCode() int32 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *GetListProblemsResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *GetListProblemsResponse) GetData() *GetListProblemsResponseData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+type ListProblemResponseData struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Problem ID
+	ProblemId int32 `protobuf:"varint,1,opt,name=problem_id,json=problemId,proto3" json:"problem_id,omitempty"`
+	// Problem Title
+	Title         string `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListProblemResponseData) Reset() {
+	*x = ListProblemResponseData{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListProblemResponseData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListProblemResponseData) ProtoMessage() {}
+
+func (x *ListProblemResponseData) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListProblemResponseData.ProtoReflect.Descriptor instead.
+func (*ListProblemResponseData) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *ListProblemResponseData) GetProblemId() int32 {
+	if x != nil {
+		return x.ProblemId
+	}
+	return 0
+}
+
+func (x *ListProblemResponseData) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+type GetListProblemsResponseData struct {
+	state         protoimpl.MessageState     `protogen:"open.v1"`
+	Problems      []*ListProblemResponseData `protobuf:"bytes,1,rep,name=problems,proto3" json:"problems,omitempty"`
+	Total         int32                      `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Page          int32                      `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`
+	PageSize      int32                      `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetListProblemsResponseData) Reset() {
+	*x = GetListProblemsResponseData{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetListProblemsResponseData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetListProblemsResponseData) ProtoMessage() {}
+
+func (x *GetListProblemsResponseData) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetListProblemsResponseData.ProtoReflect.Descriptor instead.
+func (*GetListProblemsResponseData) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *GetListProblemsResponseData) GetProblems() []*ListProblemResponseData {
+	if x != nil {
+		return x.Problems
+	}
+	return nil
+}
+
+func (x *GetListProblemsResponseData) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *GetListProblemsResponseData) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *GetListProblemsResponseData) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+type GetContestRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Contest ID
+	ContestId int32 `protobuf:"varint,1,opt,name=contest_id,json=contestId,proto3" json:"contest_id,omitempty"`
+	// Keyword
+	Keyword       string `protobuf:"bytes,2,opt,name=keyword,proto3" json:"keyword,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetContestRequest) Reset() {
+	*x = GetContestRequest{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetContestRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetContestRequest) ProtoMessage() {}
+
+func (x *GetContestRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetContestRequest.ProtoReflect.Descriptor instead.
+func (*GetContestRequest) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *GetContestRequest) GetContestId() int32 {
+	if x != nil {
+		return x.ContestId
+	}
+	return 0
+}
+
+func (x *GetContestRequest) GetKeyword() string {
+	if x != nil {
+		return x.Keyword
+	}
+	return ""
+}
+
+type GetContestResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// code ...
+	Code int32 `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	// message ...
+	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	// data ...
+	Data          *Contest `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetContestResponse) Reset() {
+	*x = GetContestResponse{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetContestResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetContestResponse) ProtoMessage() {}
+
+func (x *GetContestResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetContestResponse.ProtoReflect.Descriptor instead.
+func (*GetContestResponse) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *GetContestResponse) GetCode() int32 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *GetContestResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *GetContestResponse) GetData() *Contest {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+type Contest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Contest ID
+	ContestId int32 `protobuf:"varint,1,opt,name=contest_id,json=contestId,proto3" json:"contest_id,omitempty"`
+	// Contest Name
+	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	// Contest Description
+	Description string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	// Start Time
+	StartTime int64 `protobuf:"varint,4,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+	// End Time
+	EndTime int64 `protobuf:"varint,5,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
+	// Problem IDs
+	ProblemIds    []int32 `protobuf:"varint,6,rep,packed,name=problem_ids,json=problemIds,proto3" json:"problem_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Contest) Reset() {
+	*x = Contest{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Contest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Contest) ProtoMessage() {}
+
+func (x *Contest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Contest.ProtoReflect.Descriptor instead.
+func (*Contest) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *Contest) GetContestId() int32 {
+	if x != nil {
+		return x.ContestId
+	}
+	return 0
+}
+
+func (x *Contest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Contest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *Contest) GetStartTime() int64 {
+	if x != nil {
+		return x.StartTime
+	}
+	return 0
+}
+
+func (x *Contest) GetEndTime() int64 {
+	if x != nil {
+		return x.EndTime
+	}
+	return 0
+}
+
+func (x *Contest) GetProblemIds() []int32 {
+	if x != nil {
+		return x.ProblemIds
+	}
+	return nil
+}
+
+type GetListContestsRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Page Number
+	Page int32 `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
+	// Page Size
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	// Keyword
+	Keyword       string `protobuf:"bytes,3,opt,name=keyword,proto3" json:"keyword,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetListContestsRequest) Reset() {
+	*x = GetListContestsRequest{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetListContestsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetListContestsRequest) ProtoMessage() {}
+
+func (x *GetListContestsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetListContestsRequest.ProtoReflect.Descriptor instead.
+func (*GetListContestsRequest) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *GetListContestsRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *GetListContestsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *GetListContestsRequest) GetKeyword() string {
+	if x != nil {
+		return x.Keyword
+	}
+	return ""
+}
+
+type GetListContestsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// code ...
+	Code int32 `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	// message ...
+	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	// data ...
+	Data          *GetListContestsResponseData `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetListContestsResponse) Reset() {
+	*x = GetListContestsResponse{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetListContestsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetListContestsResponse) ProtoMessage() {}
+
+func (x *GetListContestsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetListContestsResponse.ProtoReflect.Descriptor instead.
+func (*GetListContestsResponse) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *GetListContestsResponse) GetCode() int32 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *GetListContestsResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *GetListContestsResponse) GetData() *GetListContestsResponseData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+type ListContestResponseData struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Contest ID
+	ContestId int32 `protobuf:"varint,1,opt,name=contest_id,json=contestId,proto3" json:"contest_id,omitempty"`
+	// Contest Title
+	Title         string `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListContestResponseData) Reset() {
+	*x = ListContestResponseData{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListContestResponseData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListContestResponseData) ProtoMessage() {}
+
+func (x *ListContestResponseData) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListContestResponseData.ProtoReflect.Descriptor instead.
+func (*ListContestResponseData) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *ListContestResponseData) GetContestId() int32 {
+	if x != nil {
+		return x.ContestId
+	}
+	return 0
+}
+
+func (x *ListContestResponseData) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+type GetListContestsResponseData struct {
+	state         protoimpl.MessageState     `protogen:"open.v1"`
+	Contests      []*ListContestResponseData `protobuf:"bytes,1,rep,name=contests,proto3" json:"contests,omitempty"`
+	Total         int32                      `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Page          int32                      `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`
+	PageSize      int32                      `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetListContestsResponseData) Reset() {
+	*x = GetListContestsResponseData{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetListContestsResponseData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetListContestsResponseData) ProtoMessage() {}
+
+func (x *GetListContestsResponseData) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetListContestsResponseData.ProtoReflect.Descriptor instead.
+func (*GetListContestsResponseData) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *GetListContestsResponseData) GetContests() []*ListContestResponseData {
+	if x != nil {
+		return x.Contests
+	}
+	return nil
+}
+
+func (x *GetListContestsResponseData) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *GetListContestsResponseData) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *GetListContestsResponseData) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+type GetSubmissionRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Submission ID
+	SubmissionId  int32 `protobuf:"varint,1,opt,name=submission_id,json=submissionId,proto3" json:"submission_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSubmissionRequest) Reset() {
+	*x = GetSubmissionRequest{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSubmissionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSubmissionRequest) ProtoMessage() {}
+
+func (x *GetSubmissionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSubmissionRequest.ProtoReflect.Descriptor instead.
+func (*GetSubmissionRequest) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *GetSubmissionRequest) GetSubmissionId() int32 {
+	if x != nil {
+		return x.SubmissionId
+	}
+	return 0
+}
+
+type GetSubmissionResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// code ...
+	Code int32 `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	// message ...
+	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	// data ...
+	Data          *Submission `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSubmissionResponse) Reset() {
+	*x = GetSubmissionResponse{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSubmissionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSubmissionResponse) ProtoMessage() {}
+
+func (x *GetSubmissionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSubmissionResponse.ProtoReflect.Descriptor instead.
+func (*GetSubmissionResponse) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *GetSubmissionResponse) GetCode() int32 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *GetSubmissionResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *GetSubmissionResponse) GetData() *Submission {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+type Submission struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Submission ID
+	SubmissionId int32 `protobuf:"varint,1,opt,name=submission_id,json=submissionId,proto3" json:"submission_id,omitempty"`
+	// Problem ID
+	ProblemId int32 `protobuf:"varint,2,opt,name=problem_id,json=problemId,proto3" json:"problem_id,omitempty"`
+	// Language
+	Language string `protobuf:"bytes,3,opt,name=language,proto3" json:"language,omitempty"`
+	// Code
+	Code string `protobuf:"bytes,4,opt,name=code,proto3" json:"code,omitempty"`
+	// Input
+	Input string `protobuf:"bytes,5,opt,name=input,proto3" json:"input,omitempty"`
+	// Output
+	Output string `protobuf:"bytes,6,opt,name=output,proto3" json:"output,omitempty"`
+	// Test Case ID
+	TestCaseId    int32 `protobuf:"varint,7,opt,name=test_case_id,json=testCaseId,proto3" json:"test_case_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Submission) Reset() {
+	*x = Submission{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Submission) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Submission) ProtoMessage() {}
+
+func (x *Submission) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Submission.ProtoReflect.Descriptor instead.
+func (*Submission) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *Submission) GetSubmissionId() int32 {
+	if x != nil {
+		return x.SubmissionId
+	}
+	return 0
+}
+
+func (x *Submission) GetProblemId() int32 {
+	if x != nil {
+		return x.ProblemId
+	}
+	return 0
+}
+
+func (x *Submission) GetLanguage() string {
+	if x != nil {
+		return x.Language
+	}
+	return ""
+}
+
+func (x *Submission) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *Submission) GetInput() string {
+	if x != nil {
+		return x.Input
+	}
+	return ""
+}
+
+func (x *Submission) GetOutput() string {
+	if x != nil {
+		return x.Output
+	}
+	return ""
+}
+
+func (x *Submission) GetTestCaseId() int32 {
+	if x != nil {
+		return x.TestCaseId
+	}
+	return 0
+}
+
+type GetListSubmissionsRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Page Number
+	Page int32 `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
+	// Page Size
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	// Keyword
+	Keyword       string `protobuf:"bytes,3,opt,name=keyword,proto3" json:"keyword,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetListSubmissionsRequest) Reset() {
+	*x = GetListSubmissionsRequest{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetListSubmissionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetListSubmissionsRequest) ProtoMessage() {}
+
+func (x *GetListSubmissionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetListSubmissionsRequest.ProtoReflect.Descriptor instead.
+func (*GetListSubmissionsRequest) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *GetListSubmissionsRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *GetListSubmissionsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *GetListSubmissionsRequest) GetKeyword() string {
+	if x != nil {
+		return x.Keyword
+	}
+	return ""
+}
+
+type GetListSubmissionsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// code ...
+	Code int32 `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	// message ...
+	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	// data ...
+	Data          *GetListSubmissionsResponseData `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetListSubmissionsResponse) Reset() {
+	*x = GetListSubmissionsResponse{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetListSubmissionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetListSubmissionsResponse) ProtoMessage() {}
+
+func (x *GetListSubmissionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetListSubmissionsResponse.ProtoReflect.Descriptor instead.
+func (*GetListSubmissionsResponse) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *GetListSubmissionsResponse) GetCode() int32 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *GetListSubmissionsResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *GetListSubmissionsResponse) GetData() *GetListSubmissionsResponseData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+type ListSubmissionResponseData struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Submission ID
+	SubmissionId  int32 `protobuf:"varint,1,opt,name=submission_id,json=submissionId,proto3" json:"submission_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSubmissionResponseData) Reset() {
+	*x = ListSubmissionResponseData{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSubmissionResponseData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSubmissionResponseData) ProtoMessage() {}
+
+func (x *ListSubmissionResponseData) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSubmissionResponseData.ProtoReflect.Descriptor instead.
+func (*ListSubmissionResponseData) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *ListSubmissionResponseData) GetSubmissionId() int32 {
+	if x != nil {
+		return x.SubmissionId
+	}
+	return 0
+}
+
+type GetListSubmissionsResponseData struct {
+	state         protoimpl.MessageState        `protogen:"open.v1"`
+	Submissions   []*ListSubmissionResponseData `protobuf:"bytes,1,rep,name=submissions,proto3" json:"submissions,omitempty"`
+	Total         int32                         `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Page          int32                         `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`
+	PageSize      int32                         `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetListSubmissionsResponseData) Reset() {
+	*x = GetListSubmissionsResponseData{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetListSubmissionsResponseData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetListSubmissionsResponseData) ProtoMessage() {}
+
+func (x *GetListSubmissionsResponseData) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[29]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetListSubmissionsResponseData.ProtoReflect.Descriptor instead.
+func (*GetListSubmissionsResponseData) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *GetListSubmissionsResponseData) GetSubmissions() []*ListSubmissionResponseData {
+	if x != nil {
+		return x.Submissions
+	}
+	return nil
+}
+
+func (x *GetListSubmissionsResponseData) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *GetListSubmissionsResponseData) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *GetListSubmissionsResponseData) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+type GetResultRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Result ID
+	ResultId      int32 `protobuf:"varint,1,opt,name=result_id,json=resultId,proto3" json:"result_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetResultRequest) Reset() {
+	*x = GetResultRequest{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetResultRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetResultRequest) ProtoMessage() {}
+
+func (x *GetResultRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetResultRequest.ProtoReflect.Descriptor instead.
+func (*GetResultRequest) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *GetResultRequest) GetResultId() int32 {
+	if x != nil {
+		return x.ResultId
+	}
+	return 0
+}
+
+type GetResultResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// code ...
+	Code int32 `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	// message ...
+	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	// data ...
+	Data          *Result `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetResultResponse) Reset() {
+	*x = GetResultResponse{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[31]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetResultResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetResultResponse) ProtoMessage() {}
+
+func (x *GetResultResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[31]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetResultResponse.ProtoReflect.Descriptor instead.
+func (*GetResultResponse) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *GetResultResponse) GetCode() int32 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *GetResultResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *GetResultResponse) GetData() *Result {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+type Result struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Result ID
+	ResultId int32 `protobuf:"varint,1,opt,name=result_id,json=resultId,proto3" json:"result_id,omitempty"`
+	// Problem ID
+	ProblemId int32 `protobuf:"varint,2,opt,name=problem_id,json=problemId,proto3" json:"problem_id,omitempty"`
+	// Language
+	Language string `protobuf:"bytes,3,opt,name=language,proto3" json:"language,omitempty"`
+	// Code
+	Code string `protobuf:"bytes,4,opt,name=code,proto3" json:"code,omitempty"`
+	// Input
+	Input string `protobuf:"bytes,5,opt,name=input,proto3" json:"input,omitempty"`
+	// Output
+	Output string `protobuf:"bytes,6,opt,name=output,proto3" json:"output,omitempty"`
+	// Test Case ID
+	TestCaseId    int32 `protobuf:"varint,7,opt,name=test_case_id,json=testCaseId,proto3" json:"test_case_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Result) Reset() {
+	*x = Result{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Result) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Result) ProtoMessage() {}
+
+func (x *Result) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Result.ProtoReflect.Descriptor instead.
+func (*Result) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *Result) GetResultId() int32 {
+	if x != nil {
+		return x.ResultId
+	}
+	return 0
+}
+
+func (x *Result) GetProblemId() int32 {
+	if x != nil {
+		return x.ProblemId
+	}
+	return 0
+}
+
+func (x *Result) GetLanguage() string {
+	if x != nil {
+		return x.Language
+	}
+	return ""
+}
+
+func (x *Result) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *Result) GetInput() string {
+	if x != nil {
+		return x.Input
+	}
+	return ""
+}
+
+func (x *Result) GetOutput() string {
+	if x != nil {
+		return x.Output
+	}
+	return ""
+}
+
+func (x *Result) GetTestCaseId() int32 {
+	if x != nil {
+		return x.TestCaseId
+	}
+	return 0
+}
+
+type GetListResultsRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Page Number
+	Page int32 `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
+	// Page Size
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	// user_id
+	UserId        int32 `protobuf:"varint,3,opt,name=user_id,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetListResultsRequest) Reset() {
+	*x = GetListResultsRequest{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetListResultsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetListResultsRequest) ProtoMessage() {}
+
+func (x *GetListResultsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetListResultsRequest.ProtoReflect.Descriptor instead.
+func (*GetListResultsRequest) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *GetListResultsRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *GetListResultsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *GetListResultsRequest) GetUserId() int32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+type GetListResultsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// code ...
+	Code int32 `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	// message ...
+	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	// data ...
+	Data          *GetListResultsResponseData `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetListResultsResponse) Reset() {
+	*x = GetListResultsResponse{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[34]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetListResultsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetListResultsResponse) ProtoMessage() {}
+
+func (x *GetListResultsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[34]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetListResultsResponse.ProtoReflect.Descriptor instead.
+func (*GetListResultsResponse) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *GetListResultsResponse) GetCode() int32 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *GetListResultsResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *GetListResultsResponse) GetData() *GetListResultsResponseData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+type ListResultResponseData struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Result ID
+	ResultId      int32 `protobuf:"varint,1,opt,name=result_id,json=resultId,proto3" json:"result_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListResultResponseData) Reset() {
+	*x = ListResultResponseData{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[35]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListResultResponseData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListResultResponseData) ProtoMessage() {}
+
+func (x *ListResultResponseData) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[35]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListResultResponseData.ProtoReflect.Descriptor instead.
+func (*ListResultResponseData) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{35}
+}
+
+func (x *ListResultResponseData) GetResultId() int32 {
+	if x != nil {
+		return x.ResultId
+	}
+	return 0
+}
+
+type GetListResultsResponseData struct {
+	state         protoimpl.MessageState    `protogen:"open.v1"`
+	Results       []*ListResultResponseData `protobuf:"bytes,1,rep,name=results,proto3" json:"results,omitempty"`
+	Total         int32                     `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Page          int32                     `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`
+	PageSize      int32                     `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetListResultsResponseData) Reset() {
+	*x = GetListResultsResponseData{}
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[36]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetListResultsResponseData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetListResultsResponseData) ProtoMessage() {}
+
+func (x *GetListResultsResponseData) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_core_judger_server_v1_server_proto_msgTypes[36]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetListResultsResponseData.ProtoReflect.Descriptor instead.
+func (*GetListResultsResponseData) Descriptor() ([]byte, []int) {
+	return file_proto_core_judger_server_v1_server_proto_rawDescGZIP(), []int{36}
+}
+
+func (x *GetListResultsResponseData) GetResults() []*ListResultResponseData {
+	if x != nil {
+		return x.Results
+	}
+	return nil
+}
+
+func (x *GetListResultsResponseData) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *GetListResultsResponseData) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *GetListResultsResponseData) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
 	}
 	return 0
 }
@@ -635,12 +2392,12 @@ const file_proto_core_judger_server_v1_server_proto_rawDesc = "" +
 	"\n" +
 	"problem_id\x18\x01 \x01(\x05R\tproblemId\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x03 \x01(\tR\vdescription\"\x80\x01\n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\"\x86\x01\n" +
 	"\x15UpsertProblemResponse\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\x129\n" +
-	"\x04data\x18\x03 \x01(\v2%.judger_server.v1.ProblemResponseDataR\x04data\"4\n" +
-	"\x13ProblemResponseData\x12\x1d\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12?\n" +
+	"\x04data\x18\x03 \x01(\v2+.judger_server.v1.UpsertProblemResponseDataR\x04data\":\n" +
+	"\x19UpsertProblemResponseData\x12\x1d\n" +
 	"\n" +
 	"problem_id\x18\x01 \x01(\x05R\tproblemId\"\xc6\x01\n" +
 	"\x14UpsertContestRequest\x12\x1d\n" +
@@ -659,30 +2416,166 @@ const file_proto_core_judger_server_v1_server_proto_rawDesc = "" +
 	"\acontest\x18\x03 \x01(\v2%.judger_server.v1.ContestResponseDataR\acontest\"4\n" +
 	"\x13ContestResponseData\x12\x1d\n" +
 	"\n" +
-	"contest_id\x18\x01 \x01(\x05R\tcontestId\"\xae\x01\n" +
-	"\rSubmitRequest\x12\x1d\n" +
+	"contest_id\x18\x01 \x01(\x05R\tcontestId\"\xa0\x01\n" +
+	"\x17UpsertSubmissionRequest\x12\x1d\n" +
 	"\n" +
-	"problem_id\x18\x01 \x01(\x05R\tproblemId\x12\x1a\n" +
-	"\blanguage\x18\x02 \x01(\tR\blanguage\x12\x12\n" +
-	"\x04code\x18\x03 \x01(\tR\x04code\x12\x14\n" +
-	"\x05input\x18\x04 \x01(\tR\x05input\x12\x16\n" +
-	"\x06output\x18\x05 \x01(\tR\x06output\x12 \n" +
-	"\ftest_case_id\x18\x06 \x01(\x05R\n" +
-	"testCaseId\"|\n" +
-	"\x0eSubmitResponse\x12\x12\n" +
+	"problem_id\x18\x01 \x01(\x05R\tproblemId\x12\x1d\n" +
+	"\n" +
+	"contest_id\x18\x02 \x01(\x05R\tcontestId\x12\x17\n" +
+	"\auser_id\x18\x03 \x01(\x05R\x06userId\x12\x1a\n" +
+	"\blanguage\x18\x04 \x01(\tR\blanguage\x12\x12\n" +
+	"\x04code\x18\x05 \x01(\tR\x04code\"\x8c\x01\n" +
+	"\x18UpsertSubmissionResponse\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\x12<\n" +
-	"\x06submit\x18\x03 \x01(\v2$.judger_server.v1.SubmitResponseDataR\x06submit\"\x8f\x01\n" +
-	"\x12SubmitResponseData\x12\x1f\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12B\n" +
+	"\x04data\x18\x03 \x01(\v2..judger_server.v1.UpsertSubmissionResponseDataR\x04data\"\x99\x01\n" +
+	"\x1cUpsertSubmissionResponseData\x12\x1f\n" +
 	"\rsubmission_id\x18\x01 \x01(\x05R\bsubmitId\x12\x16\n" +
 	"\x06status\x18\x02 \x01(\tR\x06status\x12\x14\n" +
 	"\x05score\x18\x03 \x01(\x05R\x05score\x12\x12\n" +
 	"\x04time\x18\x04 \x01(\x05R\x04time\x12\x16\n" +
-	"\x06memory\x18\x05 \x01(\x05R\x06memory2\xfa\x02\n" +
+	"\x06memory\x18\x05 \x01(\x05R\x06memory\"^\n" +
+	"\aProblem\x12\x1d\n" +
+	"\n" +
+	"problem_id\x18\x01 \x01(\x05R\tproblemId\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\"2\n" +
+	"\x11GetProblemRequest\x12\x1d\n" +
+	"\n" +
+	"problem_id\x18\x01 \x01(\x05R\tproblemId\"w\n" +
+	"\x12GetProblemResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x123\n" +
+	"\aproblem\x18\x03 \x01(\v2\x19.judger_server.v1.ProblemR\aproblem\"c\n" +
+	"\x16GetListProblemsRequest\x12\x12\n" +
+	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x18\n" +
+	"\akeyword\x18\x03 \x01(\tR\akeyword\"\x8a\x01\n" +
+	"\x17GetListProblemsResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12A\n" +
+	"\x04data\x18\x03 \x01(\v2-.judger_server.v1.GetListProblemsResponseDataR\x04data\"N\n" +
+	"\x17ListProblemResponseData\x12\x1d\n" +
+	"\n" +
+	"problem_id\x18\x01 \x01(\x05R\tproblemId\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\"\xab\x01\n" +
+	"\x1bGetListProblemsResponseData\x12E\n" +
+	"\bproblems\x18\x01 \x03(\v2).judger_server.v1.ListProblemResponseDataR\bproblems\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\x12\x12\n" +
+	"\x04page\x18\x03 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x04 \x01(\x05R\bpageSize\"L\n" +
+	"\x11GetContestRequest\x12\x1d\n" +
+	"\n" +
+	"contest_id\x18\x01 \x01(\x05R\tcontestId\x12\x18\n" +
+	"\akeyword\x18\x02 \x01(\tR\akeyword\"q\n" +
+	"\x12GetContestResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12-\n" +
+	"\x04data\x18\x03 \x01(\v2\x19.judger_server.v1.ContestR\x04data\"\xb9\x01\n" +
+	"\aContest\x12\x1d\n" +
+	"\n" +
+	"contest_id\x18\x01 \x01(\x05R\tcontestId\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x1d\n" +
+	"\n" +
+	"start_time\x18\x04 \x01(\x03R\tstartTime\x12\x19\n" +
+	"\bend_time\x18\x05 \x01(\x03R\aendTime\x12\x1f\n" +
+	"\vproblem_ids\x18\x06 \x03(\x05R\n" +
+	"problemIds\"c\n" +
+	"\x16GetListContestsRequest\x12\x12\n" +
+	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x18\n" +
+	"\akeyword\x18\x03 \x01(\tR\akeyword\"\x8a\x01\n" +
+	"\x17GetListContestsResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12A\n" +
+	"\x04data\x18\x03 \x01(\v2-.judger_server.v1.GetListContestsResponseDataR\x04data\"N\n" +
+	"\x17ListContestResponseData\x12\x1d\n" +
+	"\n" +
+	"contest_id\x18\x01 \x01(\x05R\tcontestId\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\"\xab\x01\n" +
+	"\x1bGetListContestsResponseData\x12E\n" +
+	"\bcontests\x18\x01 \x03(\v2).judger_server.v1.ListContestResponseDataR\bcontests\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\x12\x12\n" +
+	"\x04page\x18\x03 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x04 \x01(\x05R\bpageSize\";\n" +
+	"\x14GetSubmissionRequest\x12#\n" +
+	"\rsubmission_id\x18\x01 \x01(\x05R\fsubmissionId\"w\n" +
+	"\x15GetSubmissionResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x120\n" +
+	"\x04data\x18\x03 \x01(\v2\x1c.judger_server.v1.SubmissionR\x04data\"\xd0\x01\n" +
+	"\n" +
+	"Submission\x12#\n" +
+	"\rsubmission_id\x18\x01 \x01(\x05R\fsubmissionId\x12\x1d\n" +
+	"\n" +
+	"problem_id\x18\x02 \x01(\x05R\tproblemId\x12\x1a\n" +
+	"\blanguage\x18\x03 \x01(\tR\blanguage\x12\x12\n" +
+	"\x04code\x18\x04 \x01(\tR\x04code\x12\x14\n" +
+	"\x05input\x18\x05 \x01(\tR\x05input\x12\x16\n" +
+	"\x06output\x18\x06 \x01(\tR\x06output\x12 \n" +
+	"\ftest_case_id\x18\a \x01(\x05R\n" +
+	"testCaseId\"f\n" +
+	"\x19GetListSubmissionsRequest\x12\x12\n" +
+	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x18\n" +
+	"\akeyword\x18\x03 \x01(\tR\akeyword\"\x90\x01\n" +
+	"\x1aGetListSubmissionsResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12D\n" +
+	"\x04data\x18\x03 \x01(\v20.judger_server.v1.GetListSubmissionsResponseDataR\x04data\"A\n" +
+	"\x1aListSubmissionResponseData\x12#\n" +
+	"\rsubmission_id\x18\x01 \x01(\x05R\fsubmissionId\"\xb7\x01\n" +
+	"\x1eGetListSubmissionsResponseData\x12N\n" +
+	"\vsubmissions\x18\x01 \x03(\v2,.judger_server.v1.ListSubmissionResponseDataR\vsubmissions\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\x12\x12\n" +
+	"\x04page\x18\x03 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x04 \x01(\x05R\bpageSize\"/\n" +
+	"\x10GetResultRequest\x12\x1b\n" +
+	"\tresult_id\x18\x01 \x01(\x05R\bresultId\"o\n" +
+	"\x11GetResultResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12,\n" +
+	"\x04data\x18\x03 \x01(\v2\x18.judger_server.v1.ResultR\x04data\"\xc4\x01\n" +
+	"\x06Result\x12\x1b\n" +
+	"\tresult_id\x18\x01 \x01(\x05R\bresultId\x12\x1d\n" +
+	"\n" +
+	"problem_id\x18\x02 \x01(\x05R\tproblemId\x12\x1a\n" +
+	"\blanguage\x18\x03 \x01(\tR\blanguage\x12\x12\n" +
+	"\x04code\x18\x04 \x01(\tR\x04code\x12\x14\n" +
+	"\x05input\x18\x05 \x01(\tR\x05input\x12\x16\n" +
+	"\x06output\x18\x06 \x01(\tR\x06output\x12 \n" +
+	"\ftest_case_id\x18\a \x01(\x05R\n" +
+	"testCaseId\"b\n" +
+	"\x15GetListResultsRequest\x12\x12\n" +
+	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x18\n" +
+	"\auser_id\x18\x03 \x01(\x05R\auser_id\"\x88\x01\n" +
+	"\x16GetListResultsResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12@\n" +
+	"\x04data\x18\x03 \x01(\v2,.judger_server.v1.GetListResultsResponseDataR\x04data\"5\n" +
+	"\x16ListResultResponseData\x12\x1b\n" +
+	"\tresult_id\x18\x01 \x01(\x05R\bresultId\"\xa7\x01\n" +
+	"\x1aGetListResultsResponseData\x12B\n" +
+	"\aresults\x18\x01 \x03(\v2(.judger_server.v1.ListResultResponseDataR\aresults\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\x12\x12\n" +
+	"\x04page\x18\x03 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x04 \x01(\x05R\bpageSize2\xb7\v\n" +
 	"\rJudgerService\x12}\n" +
-	"\rUpsertProblem\x12&.judger_server.v1.UpsertProblemRequest\x1a'.judger_server.v1.UpsertProblemResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/v1/problems\x12}\n" +
-	"\rUpsertContest\x12&.judger_server.v1.UpsertContestRequest\x1a'.judger_server.v1.UpsertContestResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/v1/contests\x12k\n" +
-	"\x06Submit\x12\x1f.judger_server.v1.SubmitRequest\x1a .judger_server.v1.SubmitResponse\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/v1/submissionsB\x19Z\x17proto/rpc/judger_serverb\x06proto3"
+	"\rUpsertProblem\x12&.judger_server.v1.UpsertProblemRequest\x1a'.judger_server.v1.UpsertProblemResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/v1/problems\x12~\n" +
+	"\n" +
+	"GetProblem\x12#.judger_server.v1.GetProblemRequest\x1a$.judger_server.v1.GetProblemResponse\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/api/v1/problems/{problem_id}\x12\x80\x01\n" +
+	"\x0fGetListProblems\x12(.judger_server.v1.GetListProblemsRequest\x1a).judger_server.v1.GetListProblemsResponse\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/api/v1/problems\x12}\n" +
+	"\rUpsertContest\x12&.judger_server.v1.UpsertContestRequest\x1a'.judger_server.v1.UpsertContestResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/v1/contests\x12~\n" +
+	"\n" +
+	"GetContest\x12#.judger_server.v1.GetContestRequest\x1a$.judger_server.v1.GetContestResponse\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/api/v1/contests/{contest_id}\x12\x80\x01\n" +
+	"\x0fGetListContests\x12(.judger_server.v1.GetListContestsRequest\x1a).judger_server.v1.GetListContestsResponse\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/api/v1/contests\x12\x89\x01\n" +
+	"\x10UpsertSubmission\x12).judger_server.v1.UpsertSubmissionRequest\x1a*.judger_server.v1.UpsertSubmissionResponse\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/v1/submissions\x12\x8d\x01\n" +
+	"\rGetSubmission\x12&.judger_server.v1.GetSubmissionRequest\x1a'.judger_server.v1.GetSubmissionResponse\"+\x82\xd3\xe4\x93\x02%\x12#/api/v1/submissions/{submission_id}\x12\x8c\x01\n" +
+	"\x12GetListSubmissions\x12+.judger_server.v1.GetListSubmissionsRequest\x1a,.judger_server.v1.GetListSubmissionsResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/api/v1/submissions\x12|\n" +
+	"\x0eGetListResults\x12'.judger_server.v1.GetListResultsRequest\x1a(.judger_server.v1.GetListResultsResponse\"\x17\x82\xd3\xe4\x93\x02\x11\x12\x0f/api/v1/results\x12y\n" +
+	"\tGetResult\x12\".judger_server.v1.GetResultRequest\x1a#.judger_server.v1.GetResultResponse\"#\x82\xd3\xe4\x93\x02\x1d\x12\x1b/api/v1/results/{result_id}B\x19Z\x17proto/rpc/judger_serverb\x06proto3"
 
 var (
 	file_proto_core_judger_server_v1_server_proto_rawDescOnce sync.Once
@@ -696,33 +2589,89 @@ func file_proto_core_judger_server_v1_server_proto_rawDescGZIP() []byte {
 	return file_proto_core_judger_server_v1_server_proto_rawDescData
 }
 
-var file_proto_core_judger_server_v1_server_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_proto_core_judger_server_v1_server_proto_msgTypes = make([]protoimpl.MessageInfo, 37)
 var file_proto_core_judger_server_v1_server_proto_goTypes = []any{
-	(*UpsertProblemRequest)(nil),  // 0: judger_server.v1.UpsertProblemRequest
-	(*UpsertProblemResponse)(nil), // 1: judger_server.v1.UpsertProblemResponse
-	(*ProblemResponseData)(nil),   // 2: judger_server.v1.ProblemResponseData
-	(*UpsertContestRequest)(nil),  // 3: judger_server.v1.UpsertContestRequest
-	(*UpsertContestResponse)(nil), // 4: judger_server.v1.UpsertContestResponse
-	(*ContestResponseData)(nil),   // 5: judger_server.v1.ContestResponseData
-	(*SubmitRequest)(nil),         // 6: judger_server.v1.SubmitRequest
-	(*SubmitResponse)(nil),        // 7: judger_server.v1.SubmitResponse
-	(*SubmitResponseData)(nil),    // 8: judger_server.v1.SubmitResponseData
+	(*UpsertProblemRequest)(nil),           // 0: judger_server.v1.UpsertProblemRequest
+	(*UpsertProblemResponse)(nil),          // 1: judger_server.v1.UpsertProblemResponse
+	(*UpsertProblemResponseData)(nil),      // 2: judger_server.v1.UpsertProblemResponseData
+	(*UpsertContestRequest)(nil),           // 3: judger_server.v1.UpsertContestRequest
+	(*UpsertContestResponse)(nil),          // 4: judger_server.v1.UpsertContestResponse
+	(*ContestResponseData)(nil),            // 5: judger_server.v1.ContestResponseData
+	(*UpsertSubmissionRequest)(nil),        // 6: judger_server.v1.UpsertSubmissionRequest
+	(*UpsertSubmissionResponse)(nil),       // 7: judger_server.v1.UpsertSubmissionResponse
+	(*UpsertSubmissionResponseData)(nil),   // 8: judger_server.v1.UpsertSubmissionResponseData
+	(*Problem)(nil),                        // 9: judger_server.v1.Problem
+	(*GetProblemRequest)(nil),              // 10: judger_server.v1.GetProblemRequest
+	(*GetProblemResponse)(nil),             // 11: judger_server.v1.GetProblemResponse
+	(*GetListProblemsRequest)(nil),         // 12: judger_server.v1.GetListProblemsRequest
+	(*GetListProblemsResponse)(nil),        // 13: judger_server.v1.GetListProblemsResponse
+	(*ListProblemResponseData)(nil),        // 14: judger_server.v1.ListProblemResponseData
+	(*GetListProblemsResponseData)(nil),    // 15: judger_server.v1.GetListProblemsResponseData
+	(*GetContestRequest)(nil),              // 16: judger_server.v1.GetContestRequest
+	(*GetContestResponse)(nil),             // 17: judger_server.v1.GetContestResponse
+	(*Contest)(nil),                        // 18: judger_server.v1.Contest
+	(*GetListContestsRequest)(nil),         // 19: judger_server.v1.GetListContestsRequest
+	(*GetListContestsResponse)(nil),        // 20: judger_server.v1.GetListContestsResponse
+	(*ListContestResponseData)(nil),        // 21: judger_server.v1.ListContestResponseData
+	(*GetListContestsResponseData)(nil),    // 22: judger_server.v1.GetListContestsResponseData
+	(*GetSubmissionRequest)(nil),           // 23: judger_server.v1.GetSubmissionRequest
+	(*GetSubmissionResponse)(nil),          // 24: judger_server.v1.GetSubmissionResponse
+	(*Submission)(nil),                     // 25: judger_server.v1.Submission
+	(*GetListSubmissionsRequest)(nil),      // 26: judger_server.v1.GetListSubmissionsRequest
+	(*GetListSubmissionsResponse)(nil),     // 27: judger_server.v1.GetListSubmissionsResponse
+	(*ListSubmissionResponseData)(nil),     // 28: judger_server.v1.ListSubmissionResponseData
+	(*GetListSubmissionsResponseData)(nil), // 29: judger_server.v1.GetListSubmissionsResponseData
+	(*GetResultRequest)(nil),               // 30: judger_server.v1.GetResultRequest
+	(*GetResultResponse)(nil),              // 31: judger_server.v1.GetResultResponse
+	(*Result)(nil),                         // 32: judger_server.v1.Result
+	(*GetListResultsRequest)(nil),          // 33: judger_server.v1.GetListResultsRequest
+	(*GetListResultsResponse)(nil),         // 34: judger_server.v1.GetListResultsResponse
+	(*ListResultResponseData)(nil),         // 35: judger_server.v1.ListResultResponseData
+	(*GetListResultsResponseData)(nil),     // 36: judger_server.v1.GetListResultsResponseData
 }
 var file_proto_core_judger_server_v1_server_proto_depIdxs = []int32{
-	2, // 0: judger_server.v1.UpsertProblemResponse.data:type_name -> judger_server.v1.ProblemResponseData
-	5, // 1: judger_server.v1.UpsertContestResponse.contest:type_name -> judger_server.v1.ContestResponseData
-	8, // 2: judger_server.v1.SubmitResponse.submit:type_name -> judger_server.v1.SubmitResponseData
-	0, // 3: judger_server.v1.JudgerService.UpsertProblem:input_type -> judger_server.v1.UpsertProblemRequest
-	3, // 4: judger_server.v1.JudgerService.UpsertContest:input_type -> judger_server.v1.UpsertContestRequest
-	6, // 5: judger_server.v1.JudgerService.Submit:input_type -> judger_server.v1.SubmitRequest
-	1, // 6: judger_server.v1.JudgerService.UpsertProblem:output_type -> judger_server.v1.UpsertProblemResponse
-	4, // 7: judger_server.v1.JudgerService.UpsertContest:output_type -> judger_server.v1.UpsertContestResponse
-	7, // 8: judger_server.v1.JudgerService.Submit:output_type -> judger_server.v1.SubmitResponse
-	6, // [6:9] is the sub-list for method output_type
-	3, // [3:6] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	2,  // 0: judger_server.v1.UpsertProblemResponse.data:type_name -> judger_server.v1.UpsertProblemResponseData
+	5,  // 1: judger_server.v1.UpsertContestResponse.contest:type_name -> judger_server.v1.ContestResponseData
+	8,  // 2: judger_server.v1.UpsertSubmissionResponse.data:type_name -> judger_server.v1.UpsertSubmissionResponseData
+	9,  // 3: judger_server.v1.GetProblemResponse.problem:type_name -> judger_server.v1.Problem
+	15, // 4: judger_server.v1.GetListProblemsResponse.data:type_name -> judger_server.v1.GetListProblemsResponseData
+	14, // 5: judger_server.v1.GetListProblemsResponseData.problems:type_name -> judger_server.v1.ListProblemResponseData
+	18, // 6: judger_server.v1.GetContestResponse.data:type_name -> judger_server.v1.Contest
+	22, // 7: judger_server.v1.GetListContestsResponse.data:type_name -> judger_server.v1.GetListContestsResponseData
+	21, // 8: judger_server.v1.GetListContestsResponseData.contests:type_name -> judger_server.v1.ListContestResponseData
+	25, // 9: judger_server.v1.GetSubmissionResponse.data:type_name -> judger_server.v1.Submission
+	29, // 10: judger_server.v1.GetListSubmissionsResponse.data:type_name -> judger_server.v1.GetListSubmissionsResponseData
+	28, // 11: judger_server.v1.GetListSubmissionsResponseData.submissions:type_name -> judger_server.v1.ListSubmissionResponseData
+	32, // 12: judger_server.v1.GetResultResponse.data:type_name -> judger_server.v1.Result
+	36, // 13: judger_server.v1.GetListResultsResponse.data:type_name -> judger_server.v1.GetListResultsResponseData
+	35, // 14: judger_server.v1.GetListResultsResponseData.results:type_name -> judger_server.v1.ListResultResponseData
+	0,  // 15: judger_server.v1.JudgerService.UpsertProblem:input_type -> judger_server.v1.UpsertProblemRequest
+	10, // 16: judger_server.v1.JudgerService.GetProblem:input_type -> judger_server.v1.GetProblemRequest
+	12, // 17: judger_server.v1.JudgerService.GetListProblems:input_type -> judger_server.v1.GetListProblemsRequest
+	3,  // 18: judger_server.v1.JudgerService.UpsertContest:input_type -> judger_server.v1.UpsertContestRequest
+	16, // 19: judger_server.v1.JudgerService.GetContest:input_type -> judger_server.v1.GetContestRequest
+	19, // 20: judger_server.v1.JudgerService.GetListContests:input_type -> judger_server.v1.GetListContestsRequest
+	6,  // 21: judger_server.v1.JudgerService.UpsertSubmission:input_type -> judger_server.v1.UpsertSubmissionRequest
+	23, // 22: judger_server.v1.JudgerService.GetSubmission:input_type -> judger_server.v1.GetSubmissionRequest
+	26, // 23: judger_server.v1.JudgerService.GetListSubmissions:input_type -> judger_server.v1.GetListSubmissionsRequest
+	33, // 24: judger_server.v1.JudgerService.GetListResults:input_type -> judger_server.v1.GetListResultsRequest
+	30, // 25: judger_server.v1.JudgerService.GetResult:input_type -> judger_server.v1.GetResultRequest
+	1,  // 26: judger_server.v1.JudgerService.UpsertProblem:output_type -> judger_server.v1.UpsertProblemResponse
+	11, // 27: judger_server.v1.JudgerService.GetProblem:output_type -> judger_server.v1.GetProblemResponse
+	13, // 28: judger_server.v1.JudgerService.GetListProblems:output_type -> judger_server.v1.GetListProblemsResponse
+	4,  // 29: judger_server.v1.JudgerService.UpsertContest:output_type -> judger_server.v1.UpsertContestResponse
+	17, // 30: judger_server.v1.JudgerService.GetContest:output_type -> judger_server.v1.GetContestResponse
+	20, // 31: judger_server.v1.JudgerService.GetListContests:output_type -> judger_server.v1.GetListContestsResponse
+	7,  // 32: judger_server.v1.JudgerService.UpsertSubmission:output_type -> judger_server.v1.UpsertSubmissionResponse
+	24, // 33: judger_server.v1.JudgerService.GetSubmission:output_type -> judger_server.v1.GetSubmissionResponse
+	27, // 34: judger_server.v1.JudgerService.GetListSubmissions:output_type -> judger_server.v1.GetListSubmissionsResponse
+	34, // 35: judger_server.v1.JudgerService.GetListResults:output_type -> judger_server.v1.GetListResultsResponse
+	31, // 36: judger_server.v1.JudgerService.GetResult:output_type -> judger_server.v1.GetResultResponse
+	26, // [26:37] is the sub-list for method output_type
+	15, // [15:26] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_proto_core_judger_server_v1_server_proto_init() }
@@ -736,7 +2685,7 @@ func file_proto_core_judger_server_v1_server_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_core_judger_server_v1_server_proto_rawDesc), len(file_proto_core_judger_server_v1_server_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   37,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

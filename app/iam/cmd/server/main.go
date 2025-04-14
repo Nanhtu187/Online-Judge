@@ -12,11 +12,11 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/Nanhtu187/Online-Judge/app/common/errors"
 	"github.com/Nanhtu187/Online-Judge/app/common/grpclib"
 	log "github.com/Nanhtu187/Online-Judge/app/common/logger"
 	"github.com/Nanhtu187/Online-Judge/app/common/otellib"
 	"github.com/Nanhtu187/Online-Judge/app/iam/config"
-	"github.com/Nanhtu187/Online-Judge/app/iam/pkg/errors"
 	iam2 "github.com/Nanhtu187/Online-Judge/app/iam/service/iam"
 	"github.com/Nanhtu187/Online-Judge/proto/rpc/iam"
 	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
