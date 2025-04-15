@@ -4,9 +4,9 @@ import "github.com/Nanhtu187/Online-Judge/proto/rpc/judger_server"
 
 func validateUpsertProblemRequest(request *judger_server.UpsertProblemRequest) (UpsertProblemRequest, error) {
 	return UpsertProblemRequest{
-		id:          request.ProblemId,
-		title:       request.Name,
-		description: request.Description,
+		ProblemId:   request.ProblemId,
+		Title:       request.Name,
+		Description: request.Description,
 	}, nil
 }
 
@@ -18,10 +18,33 @@ func validateUpsertSubmissionRequest(req *judger_server.UpsertSubmissionRequest)
 		return UpsertSubmissionRequest{}, ErrMissingUserId
 	}
 	return UpsertSubmissionRequest{
-		problemId: req.ProblemId,
-		contestId: req.ContestId,
-		userId:    req.UserId,
-		language:  req.Language,
-		code:      req.Code,
+		ProblemId: req.ProblemId,
+		ContestId: req.ContestId,
+		UserId:    req.UserId,
+		Language:  req.Language,
+		Code:      req.Code,
 	}, nil
+}
+
+func validateGetProblemRequest(req *judger_server.GetProblemRequest) (GetProblemRequest, error) {
+	if req.ProblemId == 0 {
+		return GetProblemRequest{}, ErrMissingProblemId
+	}
+	return GetProblemRequest{
+		ProblemId: req.ProblemId,
+	}, nil
+}
+
+func validateGetProblemsRequest(req *judger_server.GetListProblemsRequest) (GetListProblemRequest, error) {
+	request := GetListProblemRequest{}
+	if req.Keyword != "" {
+		request.Keywords = req.Keyword
+	}
+	if req.Page != 0 {
+		request.Offset = req.Page
+	}
+	if req.PageSize != 0 {
+		request.Limit = req.PageSize
+	}
+	return request, nil
 }

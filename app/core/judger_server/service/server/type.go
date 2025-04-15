@@ -1,15 +1,38 @@
 package server
 
 type UpsertProblemRequest struct {
-	id          int32  `json:"problem_id"`
-	title       string `json:"title"`
-	description string `json:"description"`
+	ProblemId   int32  `json:"problem_id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
 }
 
 type UpsertSubmissionRequest struct {
-	problemId int32  `json:"problem_id"`
-	contestId int32  `json:"contest_id"`
-	userId    int32  `json:"user_id"`
-	language  string `json:"language_id"`
-	code      string `json:"code"`
+	ProblemId int32  `json:"problem_id"`
+	ContestId int32  `json:"contest_id"`
+	UserId    int32  `json:"user_id"`
+	Language  string `json:"language_id"`
+	Code      string `json:"code"`
+}
+
+type GetProblemRequest struct {
+	ProblemId int32 `json:"problem_id"`
+}
+
+type ProblemDetail struct {
+	ProblemId   int32  `json:"problem_id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+}
+
+type GetListProblemRequest struct {
+	ContestId int32  `json:"contest_id"`
+	CreatedBy int32  `json:"created_by"`
+	Keywords  string `json:"keywords"`
+	Limit     int32  `json:"limit"`
+	Offset    int32  `json:"offset"`
+}
+
+type ProblemPreview struct {
+	ProblemId int32  `json:"problem_id"`
+	Title     string `json:"title"`
 }

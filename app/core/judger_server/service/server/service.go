@@ -10,6 +10,8 @@ import (
 
 type IService interface {
 	UpsertProblem(ctx context.Context, request UpsertProblemRequest) (int, error)
+	GetProblem(ctx context.Context, request GetProblemRequest) (ProblemDetail, error)
+	GetListProblem(ctx context.Context, request GetListProblemRequest) ([]ProblemPreview, error)
 	UpsertSubmissions(ctx context.Context, request UpsertSubmissionRequest) (int, error)
 }
 
@@ -19,34 +21,42 @@ type service struct {
 }
 
 func (s *service) UpsertProblem(ctx context.Context, request UpsertProblemRequest) (int, error) {
-	if request.id == 0 {
+	if request.ProblemId == 0 {
 		s.db.Create(&model.Problem{
-			Title:       request.title,
-			Description: request.description,
+			Title:       request.Title,
+			Description: request.Description,
 		})
 	} else {
 		var problem model.Problem
-		if err := s.db.First(&problem, request.id).Error; err != nil {
+		if err := s.db.First(&problem, request.ProblemId).Error; err != nil {
 			return 0, err
 		}
-		if request.title != "" {
-			problem.Title = request.title
+		if request.Title != "" {
+			problem.Title = request.Title
 		}
-		if request.description != "" {
-			problem.Description = request.description
+		if request.Description != "" {
+			problem.Description = request.Description
 		}
 		s.db.Save(&problem)
 	}
 	return 0, nil
 }
 
+func (s *service) GetProblem(ctx context.Context, request GetProblemRequest) (ProblemDetail, error) {
+	return ProblemDetail{}, nil
+}
+
+func (s *service) GetListProblem(ctx context.Context, request GetListProblemRequest) ([]ProblemPreview, error) {
+	return nil, nil
+}
+
 func (s *service) UpsertSubmissions(ctx context.Context, request UpsertSubmissionRequest) (int, error) {
 	submission := model.Submission{
-		ProblemId: request.problemId,
-		ContestId: request.contestId,
-		UserId:    request.userId,
-		Language:  request.language,
-		Code:      request.code,
+		ProblemId: request.ProblemId,
+		ContestId: request.ContestId,
+		UserId:    request.UserId,
+		Language:  request.Language,
+		Code:      request.Code,
 	}
 	err := s.db.Create(&submission).Error
 	return int(submission.ID), err
