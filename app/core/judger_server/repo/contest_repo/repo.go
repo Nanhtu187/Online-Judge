@@ -77,7 +77,7 @@ func (c *contestRepo) GetListContestPreview(ctx context.Context, request GetList
 		query = query.Where("title LIKE ?", "%"+request.Keywords+"%")
 	}
 
-	query = query.Offset(request.Offset).Limit(request.Limit).Take(&contests)
+	query = query.Offset(request.Offset).Limit(request.Limit).Find(&contests)
 	if err := query.Error; err != nil {
 		return nil, err
 	}
