@@ -98,7 +98,7 @@ func (s *submissionRepo) GetListSubmissionPreview(ctx context.Context, request G
 		query = query.Where("code LIKE ?", "%"+request.Keywords+"%")
 	}
 
-	query = query.Offset(request.Offset).Limit(request.Limit).Take(&submissions)
+	query = query.Offset(request.Offset).Limit(request.Limit).Find(&submissions)
 	if err := query.Error; err != nil {
 		return nil, err
 	}
