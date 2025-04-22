@@ -6,9 +6,9 @@ import (
 
 type Submission struct {
 	gorm.Model
-	ProblemId int32  `json:"problem_id" gorm:"index"`
-	ContestId int32  `json:"contest_id" gorm:"index"`
-	UserId    int32  `json:"user_id" gorm:"index"`
-	Language  string `json:"language_id"`
-	Code      string `json:"code"`
+	ProblemID uint   `json:"problem_id" gorm:"not null"`
+	ContestID uint   `json:"contest_id" gorm:"not null"`
+	UserID    uint   `json:"user_id" gorm:"not null"`
+	Language  string `json:"language" gorm:"type:varchar(50);not null"`
+	Code      string `json:"code" gorm:"type:text;not null"`
 }
