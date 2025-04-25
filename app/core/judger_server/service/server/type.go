@@ -36,3 +36,12 @@ type ProblemPreview struct {
 	ProblemId int32  `json:"problem_id"`
 	Title     string `json:"title"`
 }
+
+type UpsertContestRequest struct {
+	ContestId   int32   `json:"contest_id"`
+	Name        string  `json:"name"`
+	Description string  `json:"description"`
+	StartTime   int64   `json:"start_time"`
+	EndTime     int64   `json:"end_time"`
+	ProblemIds  []int32 `json:"problem_ids"`
+}

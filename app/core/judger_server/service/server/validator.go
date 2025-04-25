@@ -48,3 +48,20 @@ func validateGetProblemsRequest(req *judger_server.GetListProblemsRequest) (GetL
 	}
 	return request, nil
 }
+
+func validateUpsertContestRequest(req *judger_server.UpsertContestRequest) (UpsertContestRequest, error) {
+	if req.ContestId == 0 {
+		return UpsertContestRequest{}, ErrMissingContestId
+	}
+	if req.Name == "" {
+		return UpsertContestRequest{}, ErrMissingContestName
+	}
+	return UpsertContestRequest{
+		ContestId: req.ContestId,
+		Name:      req.Name,
+		Description: req.Description,
+		StartTime:   req.StartTime,
+		EndTime:     req.EndTime,
+		
+	}, nil
+}
