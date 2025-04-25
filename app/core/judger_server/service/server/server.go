@@ -43,24 +43,24 @@ func (s *Server) GetProblem(ctx context.Context, request *judger_server.GetProbl
 	return &judger_server.GetProblemResponse{
 		Code:    200,
 		Message: "success",
-		Data:    problem,
+		Data:    toRPCProblem(problem),
 	}, nil
 }
 
-func (s *Server) GetProblems(ctx context.Context, request *judger_server.GetProblemsRequest) (*judger_server.GetProblemsResponse, error) {
+func (s *Server) GetProblems(ctx context.Context, request *judger_server.GetListProblemsRequest) (*judger_server.GetListProblemsResponse, error) {
 	req, err := validateGetProblemsRequest(request)
 	if err != nil {
 		return nil, err
 	}
-	problems, err := s.service.GetProblems(ctx, req)
+	problems, err := s.service.GetListProblem(ctx, req)
 	if err != nil {
 		return nil, err
 	}
-	return &judger_server.GetProblemsResponse{
+	return &judger_server.GetListProblemsResponse{
 		Code:    200,
 		Message: "success",
-		Data: &judger_server.GetProblemsResponseData{
-			Problems: problems,
+		Data: &judger_server.GetListProblemsResponseData{
+			Problems: toRPCProblems(problems),
 		},
 	}, nil
 }
@@ -201,6 +201,25 @@ func (s *Server) GetResult(ctx context.Context, request *judger_server.GetResult
 		Message: "success",
 		Data:    result,
 	}, nil
+}
+
+func toRPCProblem(problem ProblemDetail) *judger_server.Problem {
+	return &judger_server.Problem{
+		ProblemId:   int32(problem.ProblemId),
+		Name:        problem.Title,
+		Description: problem.Description,
+	}
+}
+
+func toRPCProblems(problems []ProblemPreview) []*judger_server.ListProblemResponseData {
+	rpcProblems := make([]*judger_server.ListProblemResponseData, len(problems))
+	for i, problem := range problems {
+		rpcProblems[i] = &judger_server.ListProblemResponseData{
+			ProblemId: int32(problem.ProblemId),
+			Title:     problem.Title,
+		}
+	}
+	return rpcProblems
 }
 
 func NewServer(db *gorm.DB, rdb *redis.Client) *Server {

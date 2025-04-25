@@ -291,7 +291,7 @@ type UpsertContestResponse struct {
 	// message ...
 	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 	// data ...
-	Contest       *ContestResponseData `protobuf:"bytes,3,opt,name=contest,proto3" json:"contest,omitempty"`
+	Data          *ContestResponseData `protobuf:"bytes,3,opt,name=data,json=contest,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -340,9 +340,9 @@ func (x *UpsertContestResponse) GetMessage() string {
 	return ""
 }
 
-func (x *UpsertContestResponse) GetContest() *ContestResponseData {
+func (x *UpsertContestResponse) GetData() *ContestResponseData {
 	if x != nil {
-		return x.Contest
+		return x.Data
 	}
 	return nil
 }
@@ -732,7 +732,7 @@ type GetProblemResponse struct {
 	// message ...
 	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 	// data ...
-	Problem       *Problem `protobuf:"bytes,3,opt,name=problem,proto3" json:"problem,omitempty"`
+	Data          *Problem `protobuf:"bytes,3,opt,name=data,json=problem,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -781,9 +781,9 @@ func (x *GetProblemResponse) GetMessage() string {
 	return ""
 }
 
-func (x *GetProblemResponse) GetProblem() *Problem {
+func (x *GetProblemResponse) GetData() *Problem {
 	if x != nil {
-		return x.Problem
+		return x.Data
 	}
 	return nil
 }
@@ -2409,11 +2409,11 @@ const file_proto_core_judger_server_v1_server_proto_rawDesc = "" +
 	"start_time\x18\x04 \x01(\x03R\tstartTime\x12\x19\n" +
 	"\bend_time\x18\x05 \x01(\x03R\aendTime\x12\x1f\n" +
 	"\vproblem_ids\x18\x06 \x03(\x05R\n" +
-	"problemIds\"\x86\x01\n" +
+	"problemIds\"\x83\x01\n" +
 	"\x15UpsertContestResponse\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\x12?\n" +
-	"\acontest\x18\x03 \x01(\v2%.judger_server.v1.ContestResponseDataR\acontest\"4\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12<\n" +
+	"\x04data\x18\x03 \x01(\v2%.judger_server.v1.ContestResponseDataR\acontest\"4\n" +
 	"\x13ContestResponseData\x12\x1d\n" +
 	"\n" +
 	"contest_id\x18\x01 \x01(\x05R\tcontestId\"\xa0\x01\n" +
@@ -2442,11 +2442,11 @@ const file_proto_core_judger_server_v1_server_proto_rawDesc = "" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\"2\n" +
 	"\x11GetProblemRequest\x12\x1d\n" +
 	"\n" +
-	"problem_id\x18\x01 \x01(\x05R\tproblemId\"w\n" +
+	"problem_id\x18\x01 \x01(\x05R\tproblemId\"t\n" +
 	"\x12GetProblemResponse\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\x123\n" +
-	"\aproblem\x18\x03 \x01(\v2\x19.judger_server.v1.ProblemR\aproblem\"c\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x120\n" +
+	"\x04data\x18\x03 \x01(\v2\x19.judger_server.v1.ProblemR\aproblem\"c\n" +
 	"\x16GetListProblemsRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x18\n" +
@@ -2631,9 +2631,9 @@ var file_proto_core_judger_server_v1_server_proto_goTypes = []any{
 }
 var file_proto_core_judger_server_v1_server_proto_depIdxs = []int32{
 	2,  // 0: judger_server.v1.UpsertProblemResponse.data:type_name -> judger_server.v1.UpsertProblemResponseData
-	5,  // 1: judger_server.v1.UpsertContestResponse.contest:type_name -> judger_server.v1.ContestResponseData
+	5,  // 1: judger_server.v1.UpsertContestResponse.data:type_name -> judger_server.v1.ContestResponseData
 	8,  // 2: judger_server.v1.UpsertSubmissionResponse.data:type_name -> judger_server.v1.UpsertSubmissionResponseData
-	9,  // 3: judger_server.v1.GetProblemResponse.problem:type_name -> judger_server.v1.Problem
+	9,  // 3: judger_server.v1.GetProblemResponse.data:type_name -> judger_server.v1.Problem
 	15, // 4: judger_server.v1.GetListProblemsResponse.data:type_name -> judger_server.v1.GetListProblemsResponseData
 	14, // 5: judger_server.v1.GetListProblemsResponseData.problems:type_name -> judger_server.v1.ListProblemResponseData
 	18, // 6: judger_server.v1.GetContestResponse.data:type_name -> judger_server.v1.Contest

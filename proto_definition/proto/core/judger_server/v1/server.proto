@@ -142,7 +142,7 @@ message UpsertContestResponse {
     // message ...
     string message = 2 [json_name="message"];
     // data ...
-    ContestResponseData contest = 3 [json_name="contest"];
+    ContestResponseData data = 3 [json_name="contest"];
 }
 
 message ContestResponseData {
@@ -216,7 +216,7 @@ message GetProblemResponse {
     // message ...
     string message = 2 [json_name="message"];
     // data ...
-    Problem problem = 3 [json_name="problem"];
+    Problem data = 3 [json_name="problem"];
 }
 
 message GetListProblemsRequest {

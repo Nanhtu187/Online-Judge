@@ -521,11 +521,11 @@ func (m *UpsertContestResponse) validate(all bool) error {
 	// no validation rules for Message
 
 	if all {
-		switch v := interface{}(m.GetContest()).(type) {
+		switch v := interface{}(m.GetData()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
 				errors = append(errors, UpsertContestResponseValidationError{
-					field:  "Contest",
+					field:  "Data",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
@@ -533,16 +533,16 @@ func (m *UpsertContestResponse) validate(all bool) error {
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
 				errors = append(errors, UpsertContestResponseValidationError{
-					field:  "Contest",
+					field:  "Data",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetContest()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return UpsertContestResponseValidationError{
-				field:  "Contest",
+				field:  "Data",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
@@ -1328,11 +1328,11 @@ func (m *GetProblemResponse) validate(all bool) error {
 	// no validation rules for Message
 
 	if all {
-		switch v := interface{}(m.GetProblem()).(type) {
+		switch v := interface{}(m.GetData()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
 				errors = append(errors, GetProblemResponseValidationError{
-					field:  "Problem",
+					field:  "Data",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
@@ -1340,16 +1340,16 @@ func (m *GetProblemResponse) validate(all bool) error {
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
 				errors = append(errors, GetProblemResponseValidationError{
-					field:  "Problem",
+					field:  "Data",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetProblem()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return GetProblemResponseValidationError{
-				field:  "Problem",
+				field:  "Data",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
