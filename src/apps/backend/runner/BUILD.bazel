@@ -1,0 +1,20 @@
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_tarball")
+load("@rules_pkg//:pkg.bzl", "pkg_tar")
+
+pkg_tar(
+    name = "runner_tar",
+    srcs = ["//src/apps/backend/runner/cmd"],
+)
+
+oci_image(
+    name = "image",
+    base = "@distroless_static",
+    entrypoint = ["/runner"],
+    tars = [":runner_tar"],
+)
+
+oci_tarball(
+    name = "tarball",
+    image = ":image",
+    repo_tags = ["online-judge/runner:latest"],
+)

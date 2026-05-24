@@ -1,0 +1,12 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "database",
+    srcs = ["provider.go"],
+    importpath = "github.com/Nanhtu187/online-judge/src/packages/database",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@io_gorm_gorm//:gorm",
+        "@org_uber_go_zap//:zap",
+    ],
+)

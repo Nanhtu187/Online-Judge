@@ -1,0 +1,1 @@
+ALTER TABLE `submissions` ADD COLUMN `is_test_run` tinyint(1) NOT NULL DEFAULT 0;

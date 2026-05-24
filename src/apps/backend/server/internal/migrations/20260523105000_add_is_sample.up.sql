@@ -1,0 +1,1 @@
+ALTER TABLE `test_cases` ADD COLUMN `is_sample` tinyint(1) NOT NULL DEFAULT 0;

@@ -1,0 +1,18 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "iam",
+    srcs = [
+        "iam.pb.go",
+        "iam_grpc.pb.go",
+    ],
+    importpath = "github.com/Nanhtu187/online-judge/src/packages/proto/gen/go/iam",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//src/packages/proto/gen/go/common",
+        "@org_golang_google_genproto_googleapis_api//annotations",
+        "@org_golang_google_grpc//:grpc",
+        "@org_golang_google_protobuf//reflect/protoreflect",
+        "@org_golang_google_protobuf//runtime/protoimpl",
+    ],
+)

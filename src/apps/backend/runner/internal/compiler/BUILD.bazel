@@ -1,0 +1,12 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "compiler",
+    srcs = ["compiler.go"],
+    importpath = "github.com/Nanhtu187/online-judge/src/apps/backend/runner/internal/compiler",
+    visibility = ["//src/apps/backend/runner:__subpackages__"],
+    deps = [
+        "//src/apps/backend/runner/internal/docker",
+        "@com_github_docker_docker//api/types/container",
+    ],
+)

@@ -1,0 +1,15 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "cmd",
+    srcs = ["migrate.go"],
+    importpath = "github.com/Nanhtu187/online-judge/src/packages/cmd",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_golang_migrate_migrate_v4//:migrate",
+        "@com_github_golang_migrate_migrate_v4//database/mysql",
+        "@com_github_golang_migrate_migrate_v4//source/file",
+        "@com_github_spf13_cobra//:cobra",
+        "@org_uber_go_zap//:zap",
+    ],
+)

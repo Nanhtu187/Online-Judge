@@ -1,0 +1,17 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "repository",
+    srcs = [
+        "problem_repository.go",
+        "submission_repository.go",
+        "submission_result_repository.go",
+    ],
+    importpath = "github.com/Nanhtu187/online-judge/src/apps/backend/server/internal/repository",
+    visibility = ["//src/apps/backend/server:__subpackages__"],
+    deps = [
+        "//src/apps/backend/server/internal/models",
+        "//src/packages/database",
+        "@org_uber_go_zap//:zap",
+    ],
+)

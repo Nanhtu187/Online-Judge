@@ -1,0 +1,31 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "cmd",
+    srcs = [
+        "result_consumer.go",
+        "start.go",
+    ],
+    importpath = "github.com/Nanhtu187/online-judge/src/apps/backend/server/internal/cmd",
+    visibility = ["//src/apps/backend/server:__subpackages__"],
+    deps = [
+        "//src/apps/backend/server/config",
+        "//src/apps/backend/server/internal/handler",
+        "//src/apps/backend/server/internal/models",
+        "//src/apps/backend/server/internal/repository",
+        "//src/apps/backend/server/internal/service",
+        "//src/packages/database",
+        "//src/packages/kafka",
+        "//src/packages/logger",
+        "//src/packages/proto/gen/go/common",
+        "//src/packages/proto/gen/go/server",
+        "@com_github_grpc_ecosystem_grpc_gateway_v2//runtime",
+        "@com_github_segmentio_kafka_go//:kafka-go",
+        "@com_github_spf13_cobra//:cobra",
+        "@io_gorm_driver_mysql//:mysql",
+        "@io_gorm_gorm//:gorm",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//credentials/insecure",
+        "@org_uber_go_zap//:zap",
+    ],
+)

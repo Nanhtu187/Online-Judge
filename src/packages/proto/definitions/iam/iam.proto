@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package iam.v1;
+
+import "definitions/common/common.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/Nanhtu187/online-judge/src/packages/proto/gen/go/iam;iam";
+
+service IamService {
+  // Authentication/Authorization methods will be added here
+}

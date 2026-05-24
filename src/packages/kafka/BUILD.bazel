@@ -1,0 +1,8 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "kafka",
+    srcs = ["events.go"],
+    importpath = "github.com/Nanhtu187/online-judge/src/packages/kafka",
+    visibility = ["//visibility:public"],
+)

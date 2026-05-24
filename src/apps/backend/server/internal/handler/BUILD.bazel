@@ -1,0 +1,12 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "handler",
+    srcs = ["online_judge_handler.go"],
+    importpath = "github.com/Nanhtu187/online-judge/src/apps/backend/server/internal/handler",
+    visibility = ["//src/apps/backend/server:__subpackages__"],
+    deps = [
+        "//src/apps/backend/server/internal/service",
+        "//src/packages/proto/gen/go/server",
+    ],
+)

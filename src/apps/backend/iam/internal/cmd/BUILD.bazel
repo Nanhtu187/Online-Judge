@@ -1,0 +1,16 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "cmd",
+    srcs = ["start.go"],
+    importpath = "github.com/Nanhtu187/online-judge/src/apps/backend/iam/internal/cmd",
+    visibility = ["//src/apps/backend/iam:__subpackages__"],
+    deps = [
+        "//src/apps/backend/iam/config",
+        "//src/packages/proto/gen/go/common",
+        "@com_github_grpc_ecosystem_grpc_gateway_v2//runtime",
+        "@com_github_spf13_cobra//:cobra",
+        "@org_golang_google_grpc//:grpc",
+        "@org_golang_google_grpc//credentials/insecure",
+    ],
+)

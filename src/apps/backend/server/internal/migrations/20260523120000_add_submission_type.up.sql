@@ -1,0 +1,1 @@
+ALTER TABLE `submissions` ADD COLUMN `submission_type` varchar(20) NOT NULL DEFAULT 'OFFICIAL';

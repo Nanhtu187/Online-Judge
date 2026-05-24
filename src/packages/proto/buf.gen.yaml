@@ -1,0 +1,26 @@
+version: v1
+managed:
+  enabled: true
+  override:
+    go_package:
+      definitions/common/common.proto: github.com/Nanhtu187/online-judge/src/packages/proto/gen/go/common
+      definitions/iam/iam.proto: github.com/Nanhtu187/online-judge/src/packages/proto/gen/go/iam
+      definitions/server/server.proto: github.com/Nanhtu187/online-judge/src/packages/proto/gen/go/server
+      definitions/problem/problem.proto: github.com/Nanhtu187/online-judge/src/packages/proto/gen/go/problem
+plugins:
+  - name: go
+    out: gen/go
+    opt: module=github.com/Nanhtu187/online-judge/src/packages/proto/gen/go
+  - name: go-grpc
+    out: gen/go
+    opt: module=github.com/Nanhtu187/online-judge/src/packages/proto/gen/go
+  - name: grpc-gateway
+    out: gen/go
+    opt: 
+      - module=github.com/Nanhtu187/online-judge/src/packages/proto/gen/go
+      - generate_unbound_methods=true
+  - name: openapiv2
+    out: gen/swagger
+    opt:
+      - allow_merge=true
+      - merge_file_name=online_judge

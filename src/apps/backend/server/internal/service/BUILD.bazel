@@ -1,0 +1,19 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "service",
+    srcs = [
+        "problem_service.go",
+        "submission_service.go",
+    ],
+    importpath = "github.com/Nanhtu187/online-judge/src/apps/backend/server/internal/service",
+    visibility = ["//src/apps/backend/server:__subpackages__"],
+    deps = [
+        "//src/apps/backend/server/internal/models",
+        "//src/apps/backend/server/internal/repository",
+        "//src/packages/database",
+        "//src/packages/kafka",
+        "//src/packages/proto/gen/go/server",
+        "@com_github_segmentio_kafka_go//:kafka-go",
+    ],
+)

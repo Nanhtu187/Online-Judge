@@ -1,0 +1,20 @@
+load("@gazelle//:def.bzl", "gazelle")
+
+# gazelle:prefix github.com/Nanhtu187/online-judge
+# gazelle:exclude src/packages/proto/definitions
+# gazelle:resolve proto google/api/annotations.proto @googleapis//google/api:annotations_proto
+# gazelle:resolve proto go google/api/annotations.proto @org_golang_google_genproto_googleapis_api//annotations:annotations
+# gazelle:resolve proto google/api/http.proto @googleapis//google/api:http_proto
+# gazelle:resolve proto go google/api/http.proto @org_golang_google_genproto_googleapis_api//annotations:annotations
+# gazelle:go_grpc_compilers @rules_go//proto:go_grpc
+gazelle(name = "gazelle")
+
+gazelle(
+    name = "gazelle-update-repos",
+    args = [
+        "-from_file=go.mod",
+        "-to_macro=deps.bzl%go_dependencies",
+        "-prune",
+    ],
+    command = "update-repos",
+)

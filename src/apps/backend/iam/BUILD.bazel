@@ -1,0 +1,20 @@
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_tarball")
+load("@rules_pkg//:pkg.bzl", "pkg_tar")
+
+pkg_tar(
+    name = "iam_tar",
+    srcs = ["//src/apps/backend/iam/cmd"],
+)
+
+oci_image(
+    name = "image",
+    base = "@distroless_static",
+    entrypoint = ["/iam"],
+    tars = [":iam_tar"],
+)
+
+oci_tarball(
+    name = "tarball",
+    image = ":image",
+    repo_tags = ["online-judge/iam:latest"],
+)

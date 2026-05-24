@@ -1,0 +1,14 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "config",
+    srcs = [
+        "config.go",
+        "database.go",
+        "kafka.go",
+        "server.go",
+    ],
+    importpath = "github.com/Nanhtu187/online-judge/src/packages/config",
+    visibility = ["//visibility:public"],
+    deps = ["@com_github_spf13_viper//:viper"],
+)

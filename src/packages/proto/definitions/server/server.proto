@@ -1,0 +1,223 @@
+syntax = "proto3";
+
+package server.v1;
+
+import "definitions/common/common.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/Nanhtu187/online-judge/src/packages/proto/gen/go/server;server";
+
+service OnlineJudgeService {
+  rpc GetProblem(GetProblemRequest) returns (GetProblemResponse) {
+    option (google.api.http) = {
+      get: "/v1/problems/{id}"
+    };
+  }
+
+  rpc ListProblems(ListProblemsRequest) returns (ListProblemsResponse) {
+    option (google.api.http) = {
+      get: "/v1/problems"
+    };
+  }
+
+  rpc UpsertProblem(UpsertProblemRequest) returns (UpsertProblemResponse) {
+    option (google.api.http) = {
+      post: "/v1/problems"
+      body: "*"
+    };
+  }
+
+  rpc ListTestCases(ListTestCasesRequest) returns (ListTestCasesResponse) {
+    option (google.api.http) = {
+      get: "/v1/problems/{problem_id}/test-cases"
+    };
+  }
+
+  rpc UpsertTestCases(UpsertTestCasesRequest) returns (UpsertTestCasesResponse) {
+    option (google.api.http) = {
+      post: "/v1/problems/{problem_id}/test-cases"
+      body: "*"
+    };
+  }
+
+  rpc SubmitCode(SubmitCodeRequest) returns (SubmitCodeResponse) {
+    option (google.api.http) = {
+      post: "/v1/submissions"
+      body: "*"
+    };
+  }
+
+  rpc ListSubmissions(ListSubmissionsRequest) returns (ListSubmissionsResponse) {
+    option (google.api.http) = {
+      get: "/v1/submissions"
+    };
+  }
+
+  rpc ListSubmissionResults(ListSubmissionResultsRequest) returns (ListSubmissionResultsResponse) {
+    option (google.api.http) = {
+      get: "/v1/submissions/{submission_id}/results"
+    };
+  }
+
+  rpc GetSubmissionResultDetail(GetSubmissionResultRequest) returns (GetSubmissionResultDetailResponse) {
+    option (google.api.http) = {
+      get: "/v1/submissions/{submission_id}/results/detail"
+    };
+  }
+}
+
+message GetProblemRequest {
+  string id = 1;
+}
+
+message GetProblemResponse {
+  Problem problem = 1;
+}
+
+message ListProblemsRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+}
+
+message ListProblemsResponse {
+  repeated ProblemSummary problems = 1;
+}
+
+message ListTestCasesRequest {
+  string problem_id = 1;
+}
+
+message ListTestCasesResponse {
+  repeated TestCase test_cases = 1;
+}
+
+message Problem {
+  string id = 1;
+  string title = 2;
+  string content = 3;
+  string input_format = 4;
+  string output_format = 5;
+  repeated TestCase test_cases = 6;
+  int32 time_limit = 7;
+  int32 memory_limit = 8;
+}
+
+message ProblemSummary {
+  string id = 1;
+  string title = 2;
+}
+
+enum SubmissionStatus {
+  SUBMISSION_STATUS_UNSPECIFIED = 0;
+  SUBMISSION_STATUS_PENDING = 1;
+  SUBMISSION_STATUS_RUNNING = 2;
+  SUBMISSION_STATUS_ACCEPTED = 3;
+  SUBMISSION_STATUS_FAILED = 4;
+  SUBMISSION_STATUS_WRONG_ANSWER = 5;
+  SUBMISSION_STATUS_RUNTIME_ERROR = 6;
+  SUBMISSION_STATUS_LIMIT_EXCEEDED = 7;
+  SUBMISSION_STATUS_COMPILE_ERROR = 8;
+}
+
+message TestCase {
+  string id = 1;
+  string input = 2;
+  string expected_output = 3;
+  bool is_sample = 4;
+}
+
+message UpsertProblemRequest {
+  string id = 1;
+  string title = 2;
+  string content = 3;
+  string input_format = 4;
+  string output_format = 5;
+  int32 time_limit = 6;
+  int32 memory_limit = 7;
+}
+
+message UpsertProblemResponse {
+  string id = 1;
+}
+
+message UpsertTestCasesRequest {
+  string problem_id = 1;
+  repeated TestCase test_cases = 2;
+}
+
+message UpsertTestCasesResponse {
+  bool success = 1;
+}
+
+enum SubmissionType {
+  SUBMISSION_TYPE_UNSPECIFIED = 0;
+  SUBMISSION_TYPE_TEST = 1;
+  SUBMISSION_TYPE_OFFICIAL = 2;
+}
+
+message SubmitCodeRequest {
+  string problem_id = 1;
+  string code_content = 2;
+  string language = 3;
+  SubmissionType submission_type = 4;
+}
+
+message SubmitCodeResponse {
+  string submission_id = 1;
+}
+
+message ListSubmissionsRequest {
+  string problem_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message ListSubmissionsResponse {
+  repeated Submission submissions = 1;
+}
+
+message GetSubmissionDetailRequest {
+  string id = 1;
+}
+
+message GetSubmissionDetailResponse {
+  Submission submission = 1;
+}
+
+message Submission {
+  string id = 1;
+  string problem_id = 2;
+  string code_content = 3;
+  SubmissionStatus status = 4;
+  string language = 5;
+  SubmissionType submission_type = 6;
+}
+
+message ListSubmissionResultsRequest {
+  string submission_id = 1;
+}
+
+message ListSubmissionResultsResponse {
+  repeated SubmissionResultSummary results = 1;
+}
+
+message GetSubmissionResultRequest {
+  string submission_id = 1;
+}
+
+message GetSubmissionResultDetailResponse {
+  repeated TestCaseResult test_case_results = 1;
+  SubmissionStatus status = 2;
+}
+
+message SubmissionResultSummary {
+  string id = 1;
+  string submission_id = 2;
+  SubmissionStatus status = 3;
+}
+
+message TestCaseResult {
+  string test_case_id = 1;
+  SubmissionStatus status = 2;
+  string actual_output = 3;
+}
