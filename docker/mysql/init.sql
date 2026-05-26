@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS `iam`;
+GRANT ALL PRIVILEGES ON `iam`.* TO 'root'@'%';

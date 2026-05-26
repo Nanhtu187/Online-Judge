@@ -18,7 +18,7 @@ func main() {
 
 	command.AddCommand(servercmd.StartServerCommand())
 	command.AddCommand(servercmd.StartResultConsumerCommand())
-	command.AddCommand(commoncmd.MigrateCommand(cfg.Database.MigrationSource, cfg.Database.MigrationDSN()))
+	command.AddCommand(commoncmd.MigrateCommand(cfg.Database.MigrationSource, cfg.Database.MigrationDSN("")))
 
 	if err := command.Execute(); err != nil {
 		log.Fatalf("error executing command: %v", err)

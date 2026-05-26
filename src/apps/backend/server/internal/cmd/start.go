@@ -16,12 +16,14 @@ import (
 
 	"github.com/Nanhtu187/online-judge/src/apps/backend/server/config"
 	"github.com/Nanhtu187/online-judge/src/packages/database"
+	"github.com/Nanhtu187/online-judge/src/packages/iam"
 	"github.com/Nanhtu187/online-judge/src/packages/logger"
 	"github.com/Nanhtu187/online-judge/src/apps/backend/server/internal/handler"
 	"github.com/Nanhtu187/online-judge/src/apps/backend/server/internal/repository"
 	"github.com/Nanhtu187/online-judge/src/apps/backend/server/internal/service"
 	common "github.com/Nanhtu187/online-judge/src/packages/proto/gen/go/common"
 	pb "github.com/Nanhtu187/online-judge/src/packages/proto/gen/go/server"
+	iampb "github.com/Nanhtu187/online-judge/src/packages/proto/gen/go/iam"
 	"go.uber.org/zap"
 	"os"
 )
@@ -41,24 +43,44 @@ func startServer(cmd *cobra.Command, args []string) {
 		l.Fatal("failed to connect to database", zap.Error(err))
 	}
 	dbProvider := database.NewProvider(db)
+// Wire dependencies
+problemRepo := repository.NewProblemRepository(dbProvider.(*database.Provider), l)
+problemSvc := service.NewProblemService(problemRepo, dbProvider)
 
-	// Wire dependencies
-	problemRepo := repository.NewProblemRepository(dbProvider.(*database.Provider), l)
-	problemSvc := service.NewProblemService(problemRepo, dbProvider)
+submissionRepo := repository.NewSubmissionRepository(dbProvider.(*database.Provider), l)
+resultRepo := repository.NewSubmissionResultRepository(dbProvider.(*database.Provider), l)
+submissionSvc := service.NewSubmissionService(submissionRepo, resultRepo, dbProvider, cfg.Kafka.Brokers)
 
-	submissionRepo := repository.NewSubmissionRepository(dbProvider.(*database.Provider), l)
-	resultRepo := repository.NewSubmissionResultRepository(dbProvider.(*database.Provider), l)
-	submissionSvc := service.NewSubmissionService(submissionRepo, resultRepo, dbProvider, cfg.Kafka.Brokers)
+// Init IAM client
+iamConn, err := grpc.Dial(cfg.IAMEndpoint, grpc.WithTransportCredentials(insecure.NewCredentials()))
+if err != nil {
+	l.Fatal("failed to connect to iam service", zap.Error(err))
+}
+defer iamConn.Close()
+iamClient := iampb.NewIamServiceClient(iamConn)
+authMid := iam.NewAuthMiddleware(iamClient, cfg.InternalKey)
+// Define permission map
+perms := map[string]string{
+	"/server.v1.OnlineJudgeService/UpsertProblem":   "PROBLEM_CREATE",
+	"/server.v1.OnlineJudgeService/UpsertTestCases": "TEST_CASE_MANAGE",
+	"/server.v1.OnlineJudgeService/SubmitCode":      "SUBMISSION_SUBMIT",
+}
 
-	onlineJudgeHandler := handler.NewOnlineJudgeHandler(problemSvc, submissionSvc)
+onlineJudgeHandler := handler.NewOnlineJudgeHandler(problemSvc, submissionSvc, authMid)
 
-	go func() {
-		lis, err := net.Listen("tcp", cfg.Server.GrpcAddr())
-		if err != nil {
-			l.Fatal("failed to listen", zap.Error(err))
-		}
-		s := grpc.NewServer()
-		pb.RegisterOnlineJudgeServiceServer(s, onlineJudgeHandler)
+go func() {
+	lis, err := net.Listen("tcp", cfg.Server.GrpcAddr())
+	if err != nil {
+		l.Fatal("failed to listen grpc", zap.Error(err))
+	}
+
+	s := grpc.NewServer(
+		grpc.ChainUnaryInterceptor(
+			authMid.UnaryInterceptor,
+			authMid.AuthorizeInterceptor(perms),
+		),
+	)
+	pb.RegisterOnlineJudgeServiceServer(s, onlineJudgeHandler)
 		l.Info("Server gRPC server listening", zap.String("addr", lis.Addr().String()))
 		if err := s.Serve(lis); err != nil {
 			l.Fatal("failed to serve gRPC", zap.Error(err))

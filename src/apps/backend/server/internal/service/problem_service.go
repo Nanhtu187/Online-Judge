@@ -35,9 +35,15 @@ func (s *problemService) ListProblems(ctx context.Context, req *pb.ListProblemsR
 
 	var pbProblems []*pb.ProblemSummary
 	for _, p := range problems {
+		var tags []string
+		for _, t := range p.Tags {
+			tags = append(tags, t.Name)
+		}
 		pbProblems = append(pbProblems, &pb.ProblemSummary{
-			Id:    p.ID,
-			Title: p.Title,
+			Id:         p.ID,
+			Title:      p.Title,
+			Difficulty: pb.Difficulty(pb.Difficulty_value["DIFFICULTY_"+p.Difficulty]),
+			Tags:       tags,
 		})
 	}
 
@@ -74,6 +80,13 @@ func NewProblemService(repo repository.ProblemRepository, provider database.IPro
 }
 
 func (s *problemService) UpsertProblem(ctx context.Context, req *pb.UpsertProblemRequest) (*pb.UpsertProblemResponse, error) {
+	difficulty := pb.Difficulty_name[int32(req.Difficulty)]
+	if len(difficulty) > len("DIFFICULTY_") {
+		difficulty = difficulty[len("DIFFICULTY_"):]
+	} else {
+		difficulty = "EASY"
+	}
+
 	problem := &models.Problem{
 		ID:           req.Id,
 		Title:        req.Title,
@@ -82,13 +95,34 @@ func (s *problemService) UpsertProblem(ctx context.Context, req *pb.UpsertProble
 		OutputFormat: req.OutputFormat,
 		TimeLimit:    req.TimeLimit,
 		MemoryLimit:  req.MemoryLimit,
+		Difficulty:   difficulty,
 	}
 
 	err := s.provider.Transact(ctx, func(ctx context.Context) error {
 		if problem.ID != "" {
-			return s.repo.UpdateProblem(ctx, problem)
+			if err := s.repo.UpdateProblem(ctx, problem); err != nil {
+				return err
+			}
+		} else {
+			if err := s.repo.CreateProblem(ctx, problem); err != nil {
+				return err
+			}
 		}
-		return s.repo.CreateProblem(ctx, problem)
+
+		// Sync Tags
+		var tags []*models.Tag
+		for _, tagName := range req.Tags {
+			tag, err := s.repo.GetTagByName(ctx, tagName)
+			if err != nil {
+				// Create new tag if not exists
+				tag = &models.Tag{Name: tagName}
+				if err := s.repo.CreateTag(ctx, tag); err != nil {
+					return err
+				}
+			}
+			tags = append(tags, tag)
+		}
+		return s.repo.ReplaceTags(ctx, problem.ID, tags)
 	})
 	if err != nil {
 		return nil, err
@@ -145,6 +179,11 @@ func (s *problemService) GetProblem(ctx context.Context, req *pb.GetProblemReque
 		})
 	}
 
+	var tags []string
+	for _, t := range problem.Tags {
+		tags = append(tags, t.Name)
+	}
+
 	return &pb.GetProblemResponse{
 		Problem: &pb.Problem{
 			Id:           problem.ID,
@@ -155,6 +194,8 @@ func (s *problemService) GetProblem(ctx context.Context, req *pb.GetProblemReque
 			TestCases:    pbTestCases,
 			TimeLimit:    problem.TimeLimit,
 			MemoryLimit:  problem.MemoryLimit,
+			Difficulty:   pb.Difficulty(pb.Difficulty_value["DIFFICULTY_"+problem.Difficulty]),
+			Tags:         tags,
 		},
 	}, nil
 }

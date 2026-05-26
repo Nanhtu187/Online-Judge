@@ -90,6 +90,58 @@ func (SubmissionStatus) EnumDescriptor() ([]byte, []int) {
 	return file_definitions_server_server_proto_rawDescGZIP(), []int{0}
 }
 
+type Difficulty int32
+
+const (
+	Difficulty_DIFFICULTY_UNSPECIFIED Difficulty = 0
+	Difficulty_DIFFICULTY_EASY        Difficulty = 1
+	Difficulty_DIFFICULTY_MEDIUM      Difficulty = 2
+	Difficulty_DIFFICULTY_HARD        Difficulty = 3
+)
+
+// Enum value maps for Difficulty.
+var (
+	Difficulty_name = map[int32]string{
+		0: "DIFFICULTY_UNSPECIFIED",
+		1: "DIFFICULTY_EASY",
+		2: "DIFFICULTY_MEDIUM",
+		3: "DIFFICULTY_HARD",
+	}
+	Difficulty_value = map[string]int32{
+		"DIFFICULTY_UNSPECIFIED": 0,
+		"DIFFICULTY_EASY":        1,
+		"DIFFICULTY_MEDIUM":      2,
+		"DIFFICULTY_HARD":        3,
+	}
+)
+
+func (x Difficulty) Enum() *Difficulty {
+	p := new(Difficulty)
+	*p = x
+	return p
+}
+
+func (x Difficulty) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Difficulty) Descriptor() protoreflect.EnumDescriptor {
+	return file_definitions_server_server_proto_enumTypes[1].Descriptor()
+}
+
+func (Difficulty) Type() protoreflect.EnumType {
+	return &file_definitions_server_server_proto_enumTypes[1]
+}
+
+func (x Difficulty) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Difficulty.Descriptor instead.
+func (Difficulty) EnumDescriptor() ([]byte, []int) {
+	return file_definitions_server_server_proto_rawDescGZIP(), []int{1}
+}
+
 type SubmissionType int32
 
 const (
@@ -123,11 +175,11 @@ func (x SubmissionType) String() string {
 }
 
 func (SubmissionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_definitions_server_server_proto_enumTypes[1].Descriptor()
+	return file_definitions_server_server_proto_enumTypes[2].Descriptor()
 }
 
 func (SubmissionType) Type() protoreflect.EnumType {
-	return &file_definitions_server_server_proto_enumTypes[1]
+	return &file_definitions_server_server_proto_enumTypes[2]
 }
 
 func (x SubmissionType) Number() protoreflect.EnumNumber {
@@ -136,7 +188,7 @@ func (x SubmissionType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SubmissionType.Descriptor instead.
 func (SubmissionType) EnumDescriptor() ([]byte, []int) {
-	return file_definitions_server_server_proto_rawDescGZIP(), []int{1}
+	return file_definitions_server_server_proto_rawDescGZIP(), []int{2}
 }
 
 type GetProblemRequest struct {
@@ -421,6 +473,8 @@ type Problem struct {
 	TestCases     []*TestCase            `protobuf:"bytes,6,rep,name=test_cases,json=testCases,proto3" json:"test_cases,omitempty"`
 	TimeLimit     int32                  `protobuf:"varint,7,opt,name=time_limit,json=timeLimit,proto3" json:"time_limit,omitempty"`
 	MemoryLimit   int32                  `protobuf:"varint,8,opt,name=memory_limit,json=memoryLimit,proto3" json:"memory_limit,omitempty"`
+	Difficulty    Difficulty             `protobuf:"varint,9,opt,name=difficulty,proto3,enum=server.v1.Difficulty" json:"difficulty,omitempty"`
+	Tags          []string               `protobuf:"bytes,10,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -511,10 +565,26 @@ func (x *Problem) GetMemoryLimit() int32 {
 	return 0
 }
 
+func (x *Problem) GetDifficulty() Difficulty {
+	if x != nil {
+		return x.Difficulty
+	}
+	return Difficulty_DIFFICULTY_UNSPECIFIED
+}
+
+func (x *Problem) GetTags() []string {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
+}
+
 type ProblemSummary struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Difficulty    Difficulty             `protobuf:"varint,3,opt,name=difficulty,proto3,enum=server.v1.Difficulty" json:"difficulty,omitempty"`
+	Tags          []string               `protobuf:"bytes,4,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -561,6 +631,20 @@ func (x *ProblemSummary) GetTitle() string {
 		return x.Title
 	}
 	return ""
+}
+
+func (x *ProblemSummary) GetDifficulty() Difficulty {
+	if x != nil {
+		return x.Difficulty
+	}
+	return Difficulty_DIFFICULTY_UNSPECIFIED
+}
+
+func (x *ProblemSummary) GetTags() []string {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
 }
 
 type TestCase struct {
@@ -640,6 +724,8 @@ type UpsertProblemRequest struct {
 	OutputFormat  string                 `protobuf:"bytes,5,opt,name=output_format,json=outputFormat,proto3" json:"output_format,omitempty"`
 	TimeLimit     int32                  `protobuf:"varint,6,opt,name=time_limit,json=timeLimit,proto3" json:"time_limit,omitempty"`
 	MemoryLimit   int32                  `protobuf:"varint,7,opt,name=memory_limit,json=memoryLimit,proto3" json:"memory_limit,omitempty"`
+	Difficulty    Difficulty             `protobuf:"varint,8,opt,name=difficulty,proto3,enum=server.v1.Difficulty" json:"difficulty,omitempty"`
+	Tags          []string               `protobuf:"bytes,9,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -721,6 +807,20 @@ func (x *UpsertProblemRequest) GetMemoryLimit() int32 {
 		return x.MemoryLimit
 	}
 	return 0
+}
+
+func (x *UpsertProblemRequest) GetDifficulty() Difficulty {
+	if x != nil {
+		return x.Difficulty
+	}
+	return Difficulty_DIFFICULTY_UNSPECIFIED
+}
+
+func (x *UpsertProblemRequest) GetTags() []string {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
 }
 
 type UpsertProblemResponse struct {
@@ -980,6 +1080,7 @@ type ListSubmissionsRequest struct {
 	ProblemId     string                 `protobuf:"bytes,1,opt,name=problem_id,json=problemId,proto3" json:"problem_id,omitempty"`
 	Page          int32                  `protobuf:"varint,2,opt,name=page,proto3" json:"page,omitempty"`
 	PageSize      int32                  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	UserId        string                 `protobuf:"bytes,4,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1033,6 +1134,13 @@ func (x *ListSubmissionsRequest) GetPageSize() int32 {
 		return x.PageSize
 	}
 	return 0
+}
+
+func (x *ListSubmissionsRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
 }
 
 type ListSubmissionsResponse struct {
@@ -1175,6 +1283,9 @@ type Submission struct {
 	Status         SubmissionStatus       `protobuf:"varint,4,opt,name=status,proto3,enum=server.v1.SubmissionStatus" json:"status,omitempty"`
 	Language       string                 `protobuf:"bytes,5,opt,name=language,proto3" json:"language,omitempty"`
 	SubmissionType SubmissionType         `protobuf:"varint,6,opt,name=submission_type,json=submissionType,proto3,enum=server.v1.SubmissionType" json:"submission_type,omitempty"`
+	UserId         string                 `protobuf:"bytes,7,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	ProblemTitle   string                 `protobuf:"bytes,8,opt,name=problem_title,json=problemTitle,proto3" json:"problem_title,omitempty"`
+	CreatedAt      string                 `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1249,6 +1360,27 @@ func (x *Submission) GetSubmissionType() SubmissionType {
 		return x.SubmissionType
 	}
 	return SubmissionType_SUBMISSION_TYPE_UNSPECIFIED
+}
+
+func (x *Submission) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *Submission) GetProblemTitle() string {
+	if x != nil {
+		return x.ProblemTitle
+	}
+	return ""
+}
+
+func (x *Submission) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
 }
 
 type ListSubmissionResultsRequest struct {
@@ -1574,7 +1706,7 @@ const file_definitions_server_server_proto_rawDesc = "" +
 	"problem_id\x18\x01 \x01(\tR\tproblemId\"K\n" +
 	"\x15ListTestCasesResponse\x122\n" +
 	"\n" +
-	"test_cases\x18\x01 \x03(\v2\x13.server.v1.TestCaseR\ttestCases\"\x87\x02\n" +
+	"test_cases\x18\x01 \x03(\v2\x13.server.v1.TestCaseR\ttestCases\"\xd2\x02\n" +
 	"\aProblem\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12\x18\n" +
@@ -1585,15 +1717,24 @@ const file_definitions_server_server_proto_rawDesc = "" +
 	"test_cases\x18\x06 \x03(\v2\x13.server.v1.TestCaseR\ttestCases\x12\x1d\n" +
 	"\n" +
 	"time_limit\x18\a \x01(\x05R\ttimeLimit\x12!\n" +
-	"\fmemory_limit\x18\b \x01(\x05R\vmemoryLimit\"6\n" +
+	"\fmemory_limit\x18\b \x01(\x05R\vmemoryLimit\x125\n" +
+	"\n" +
+	"difficulty\x18\t \x01(\x0e2\x15.server.v1.DifficultyR\n" +
+	"difficulty\x12\x12\n" +
+	"\x04tags\x18\n" +
+	" \x03(\tR\x04tags\"\x81\x01\n" +
 	"\x0eProblemSummary\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
-	"\x05title\x18\x02 \x01(\tR\x05title\"v\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x125\n" +
+	"\n" +
+	"difficulty\x18\x03 \x01(\x0e2\x15.server.v1.DifficultyR\n" +
+	"difficulty\x12\x12\n" +
+	"\x04tags\x18\x04 \x03(\tR\x04tags\"v\n" +
 	"\bTestCase\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05input\x18\x02 \x01(\tR\x05input\x12'\n" +
 	"\x0fexpected_output\x18\x03 \x01(\tR\x0eexpectedOutput\x12\x1b\n" +
-	"\tis_sample\x18\x04 \x01(\bR\bisSample\"\xe0\x01\n" +
+	"\tis_sample\x18\x04 \x01(\bR\bisSample\"\xab\x02\n" +
 	"\x14UpsertProblemRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12\x18\n" +
@@ -1602,7 +1743,11 @@ const file_definitions_server_server_proto_rawDesc = "" +
 	"\routput_format\x18\x05 \x01(\tR\foutputFormat\x12\x1d\n" +
 	"\n" +
 	"time_limit\x18\x06 \x01(\x05R\ttimeLimit\x12!\n" +
-	"\fmemory_limit\x18\a \x01(\x05R\vmemoryLimit\"'\n" +
+	"\fmemory_limit\x18\a \x01(\x05R\vmemoryLimit\x125\n" +
+	"\n" +
+	"difficulty\x18\b \x01(\x0e2\x15.server.v1.DifficultyR\n" +
+	"difficulty\x12\x12\n" +
+	"\x04tags\x18\t \x03(\tR\x04tags\"'\n" +
 	"\x15UpsertProblemResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"k\n" +
 	"\x16UpsertTestCasesRequest\x12\x1d\n" +
@@ -1619,12 +1764,13 @@ const file_definitions_server_server_proto_rawDesc = "" +
 	"\blanguage\x18\x03 \x01(\tR\blanguage\x12B\n" +
 	"\x0fsubmission_type\x18\x04 \x01(\x0e2\x19.server.v1.SubmissionTypeR\x0esubmissionType\"9\n" +
 	"\x12SubmitCodeResponse\x12#\n" +
-	"\rsubmission_id\x18\x01 \x01(\tR\fsubmissionId\"h\n" +
+	"\rsubmission_id\x18\x01 \x01(\tR\fsubmissionId\"\x81\x01\n" +
 	"\x16ListSubmissionsRequest\x12\x1d\n" +
 	"\n" +
 	"problem_id\x18\x01 \x01(\tR\tproblemId\x12\x12\n" +
 	"\x04page\x18\x02 \x01(\x05R\x04page\x12\x1b\n" +
-	"\tpage_size\x18\x03 \x01(\x05R\bpageSize\"R\n" +
+	"\tpage_size\x18\x03 \x01(\x05R\bpageSize\x12\x17\n" +
+	"\auser_id\x18\x04 \x01(\tR\x06userId\"R\n" +
 	"\x17ListSubmissionsResponse\x127\n" +
 	"\vsubmissions\x18\x01 \x03(\v2\x15.server.v1.SubmissionR\vsubmissions\",\n" +
 	"\x1aGetSubmissionDetailRequest\x12\x0e\n" +
@@ -1632,7 +1778,7 @@ const file_definitions_server_server_proto_rawDesc = "" +
 	"\x1bGetSubmissionDetailResponse\x125\n" +
 	"\n" +
 	"submission\x18\x01 \x01(\v2\x15.server.v1.SubmissionR\n" +
-	"submission\"\xf3\x01\n" +
+	"submission\"\xd0\x02\n" +
 	"\n" +
 	"Submission\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
@@ -1641,7 +1787,11 @@ const file_definitions_server_server_proto_rawDesc = "" +
 	"\fcode_content\x18\x03 \x01(\tR\vcodeContent\x123\n" +
 	"\x06status\x18\x04 \x01(\x0e2\x1b.server.v1.SubmissionStatusR\x06status\x12\x1a\n" +
 	"\blanguage\x18\x05 \x01(\tR\blanguage\x12B\n" +
-	"\x0fsubmission_type\x18\x06 \x01(\x0e2\x19.server.v1.SubmissionTypeR\x0esubmissionType\"C\n" +
+	"\x0fsubmission_type\x18\x06 \x01(\x0e2\x19.server.v1.SubmissionTypeR\x0esubmissionType\x12\x17\n" +
+	"\auser_id\x18\a \x01(\tR\x06userId\x12#\n" +
+	"\rproblem_title\x18\b \x01(\tR\fproblemTitle\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\t \x01(\tR\tcreatedAt\"C\n" +
 	"\x1cListSubmissionResultsRequest\x12#\n" +
 	"\rsubmission_id\x18\x01 \x01(\tR\fsubmissionId\"]\n" +
 	"\x1dListSubmissionResultsResponse\x12<\n" +
@@ -1670,6 +1820,12 @@ const file_definitions_server_server_proto_rawDesc = "" +
 	"\x1fSUBMISSION_STATUS_RUNTIME_ERROR\x10\x06\x12$\n" +
 	" SUBMISSION_STATUS_LIMIT_EXCEEDED\x10\a\x12#\n" +
 	"\x1fSUBMISSION_STATUS_COMPILE_ERROR\x10\b*i\n" +
+	"\n" +
+	"Difficulty\x12\x1a\n" +
+	"\x16DIFFICULTY_UNSPECIFIED\x10\x00\x12\x13\n" +
+	"\x0fDIFFICULTY_EASY\x10\x01\x12\x15\n" +
+	"\x11DIFFICULTY_MEDIUM\x10\x02\x12\x13\n" +
+	"\x0fDIFFICULTY_HARD\x10\x03*i\n" +
 	"\x0eSubmissionType\x12\x1f\n" +
 	"\x1bSUBMISSION_TYPE_UNSPECIFIED\x10\x00\x12\x18\n" +
 	"\x14SUBMISSION_TYPE_TEST\x10\x01\x12\x1c\n" +
@@ -1701,77 +1857,81 @@ func file_definitions_server_server_proto_rawDescGZIP() []byte {
 	return file_definitions_server_server_proto_rawDescData
 }
 
-var file_definitions_server_server_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_definitions_server_server_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
 var file_definitions_server_server_proto_msgTypes = make([]protoimpl.MessageInfo, 26)
 var file_definitions_server_server_proto_goTypes = []any{
 	(SubmissionStatus)(0),                     // 0: server.v1.SubmissionStatus
-	(SubmissionType)(0),                       // 1: server.v1.SubmissionType
-	(*GetProblemRequest)(nil),                 // 2: server.v1.GetProblemRequest
-	(*GetProblemResponse)(nil),                // 3: server.v1.GetProblemResponse
-	(*ListProblemsRequest)(nil),               // 4: server.v1.ListProblemsRequest
-	(*ListProblemsResponse)(nil),              // 5: server.v1.ListProblemsResponse
-	(*ListTestCasesRequest)(nil),              // 6: server.v1.ListTestCasesRequest
-	(*ListTestCasesResponse)(nil),             // 7: server.v1.ListTestCasesResponse
-	(*Problem)(nil),                           // 8: server.v1.Problem
-	(*ProblemSummary)(nil),                    // 9: server.v1.ProblemSummary
-	(*TestCase)(nil),                          // 10: server.v1.TestCase
-	(*UpsertProblemRequest)(nil),              // 11: server.v1.UpsertProblemRequest
-	(*UpsertProblemResponse)(nil),             // 12: server.v1.UpsertProblemResponse
-	(*UpsertTestCasesRequest)(nil),            // 13: server.v1.UpsertTestCasesRequest
-	(*UpsertTestCasesResponse)(nil),           // 14: server.v1.UpsertTestCasesResponse
-	(*SubmitCodeRequest)(nil),                 // 15: server.v1.SubmitCodeRequest
-	(*SubmitCodeResponse)(nil),                // 16: server.v1.SubmitCodeResponse
-	(*ListSubmissionsRequest)(nil),            // 17: server.v1.ListSubmissionsRequest
-	(*ListSubmissionsResponse)(nil),           // 18: server.v1.ListSubmissionsResponse
-	(*GetSubmissionDetailRequest)(nil),        // 19: server.v1.GetSubmissionDetailRequest
-	(*GetSubmissionDetailResponse)(nil),       // 20: server.v1.GetSubmissionDetailResponse
-	(*Submission)(nil),                        // 21: server.v1.Submission
-	(*ListSubmissionResultsRequest)(nil),      // 22: server.v1.ListSubmissionResultsRequest
-	(*ListSubmissionResultsResponse)(nil),     // 23: server.v1.ListSubmissionResultsResponse
-	(*GetSubmissionResultRequest)(nil),        // 24: server.v1.GetSubmissionResultRequest
-	(*GetSubmissionResultDetailResponse)(nil), // 25: server.v1.GetSubmissionResultDetailResponse
-	(*SubmissionResultSummary)(nil),           // 26: server.v1.SubmissionResultSummary
-	(*TestCaseResult)(nil),                    // 27: server.v1.TestCaseResult
+	(Difficulty)(0),                           // 1: server.v1.Difficulty
+	(SubmissionType)(0),                       // 2: server.v1.SubmissionType
+	(*GetProblemRequest)(nil),                 // 3: server.v1.GetProblemRequest
+	(*GetProblemResponse)(nil),                // 4: server.v1.GetProblemResponse
+	(*ListProblemsRequest)(nil),               // 5: server.v1.ListProblemsRequest
+	(*ListProblemsResponse)(nil),              // 6: server.v1.ListProblemsResponse
+	(*ListTestCasesRequest)(nil),              // 7: server.v1.ListTestCasesRequest
+	(*ListTestCasesResponse)(nil),             // 8: server.v1.ListTestCasesResponse
+	(*Problem)(nil),                           // 9: server.v1.Problem
+	(*ProblemSummary)(nil),                    // 10: server.v1.ProblemSummary
+	(*TestCase)(nil),                          // 11: server.v1.TestCase
+	(*UpsertProblemRequest)(nil),              // 12: server.v1.UpsertProblemRequest
+	(*UpsertProblemResponse)(nil),             // 13: server.v1.UpsertProblemResponse
+	(*UpsertTestCasesRequest)(nil),            // 14: server.v1.UpsertTestCasesRequest
+	(*UpsertTestCasesResponse)(nil),           // 15: server.v1.UpsertTestCasesResponse
+	(*SubmitCodeRequest)(nil),                 // 16: server.v1.SubmitCodeRequest
+	(*SubmitCodeResponse)(nil),                // 17: server.v1.SubmitCodeResponse
+	(*ListSubmissionsRequest)(nil),            // 18: server.v1.ListSubmissionsRequest
+	(*ListSubmissionsResponse)(nil),           // 19: server.v1.ListSubmissionsResponse
+	(*GetSubmissionDetailRequest)(nil),        // 20: server.v1.GetSubmissionDetailRequest
+	(*GetSubmissionDetailResponse)(nil),       // 21: server.v1.GetSubmissionDetailResponse
+	(*Submission)(nil),                        // 22: server.v1.Submission
+	(*ListSubmissionResultsRequest)(nil),      // 23: server.v1.ListSubmissionResultsRequest
+	(*ListSubmissionResultsResponse)(nil),     // 24: server.v1.ListSubmissionResultsResponse
+	(*GetSubmissionResultRequest)(nil),        // 25: server.v1.GetSubmissionResultRequest
+	(*GetSubmissionResultDetailResponse)(nil), // 26: server.v1.GetSubmissionResultDetailResponse
+	(*SubmissionResultSummary)(nil),           // 27: server.v1.SubmissionResultSummary
+	(*TestCaseResult)(nil),                    // 28: server.v1.TestCaseResult
 }
 var file_definitions_server_server_proto_depIdxs = []int32{
-	8,  // 0: server.v1.GetProblemResponse.problem:type_name -> server.v1.Problem
-	9,  // 1: server.v1.ListProblemsResponse.problems:type_name -> server.v1.ProblemSummary
-	10, // 2: server.v1.ListTestCasesResponse.test_cases:type_name -> server.v1.TestCase
-	10, // 3: server.v1.Problem.test_cases:type_name -> server.v1.TestCase
-	10, // 4: server.v1.UpsertTestCasesRequest.test_cases:type_name -> server.v1.TestCase
-	1,  // 5: server.v1.SubmitCodeRequest.submission_type:type_name -> server.v1.SubmissionType
-	21, // 6: server.v1.ListSubmissionsResponse.submissions:type_name -> server.v1.Submission
-	21, // 7: server.v1.GetSubmissionDetailResponse.submission:type_name -> server.v1.Submission
-	0,  // 8: server.v1.Submission.status:type_name -> server.v1.SubmissionStatus
-	1,  // 9: server.v1.Submission.submission_type:type_name -> server.v1.SubmissionType
-	26, // 10: server.v1.ListSubmissionResultsResponse.results:type_name -> server.v1.SubmissionResultSummary
-	27, // 11: server.v1.GetSubmissionResultDetailResponse.test_case_results:type_name -> server.v1.TestCaseResult
-	0,  // 12: server.v1.GetSubmissionResultDetailResponse.status:type_name -> server.v1.SubmissionStatus
-	0,  // 13: server.v1.SubmissionResultSummary.status:type_name -> server.v1.SubmissionStatus
-	0,  // 14: server.v1.TestCaseResult.status:type_name -> server.v1.SubmissionStatus
-	2,  // 15: server.v1.OnlineJudgeService.GetProblem:input_type -> server.v1.GetProblemRequest
-	4,  // 16: server.v1.OnlineJudgeService.ListProblems:input_type -> server.v1.ListProblemsRequest
-	11, // 17: server.v1.OnlineJudgeService.UpsertProblem:input_type -> server.v1.UpsertProblemRequest
-	6,  // 18: server.v1.OnlineJudgeService.ListTestCases:input_type -> server.v1.ListTestCasesRequest
-	13, // 19: server.v1.OnlineJudgeService.UpsertTestCases:input_type -> server.v1.UpsertTestCasesRequest
-	15, // 20: server.v1.OnlineJudgeService.SubmitCode:input_type -> server.v1.SubmitCodeRequest
-	17, // 21: server.v1.OnlineJudgeService.ListSubmissions:input_type -> server.v1.ListSubmissionsRequest
-	22, // 22: server.v1.OnlineJudgeService.ListSubmissionResults:input_type -> server.v1.ListSubmissionResultsRequest
-	24, // 23: server.v1.OnlineJudgeService.GetSubmissionResultDetail:input_type -> server.v1.GetSubmissionResultRequest
-	3,  // 24: server.v1.OnlineJudgeService.GetProblem:output_type -> server.v1.GetProblemResponse
-	5,  // 25: server.v1.OnlineJudgeService.ListProblems:output_type -> server.v1.ListProblemsResponse
-	12, // 26: server.v1.OnlineJudgeService.UpsertProblem:output_type -> server.v1.UpsertProblemResponse
-	7,  // 27: server.v1.OnlineJudgeService.ListTestCases:output_type -> server.v1.ListTestCasesResponse
-	14, // 28: server.v1.OnlineJudgeService.UpsertTestCases:output_type -> server.v1.UpsertTestCasesResponse
-	16, // 29: server.v1.OnlineJudgeService.SubmitCode:output_type -> server.v1.SubmitCodeResponse
-	18, // 30: server.v1.OnlineJudgeService.ListSubmissions:output_type -> server.v1.ListSubmissionsResponse
-	23, // 31: server.v1.OnlineJudgeService.ListSubmissionResults:output_type -> server.v1.ListSubmissionResultsResponse
-	25, // 32: server.v1.OnlineJudgeService.GetSubmissionResultDetail:output_type -> server.v1.GetSubmissionResultDetailResponse
-	24, // [24:33] is the sub-list for method output_type
-	15, // [15:24] is the sub-list for method input_type
-	15, // [15:15] is the sub-list for extension type_name
-	15, // [15:15] is the sub-list for extension extendee
-	0,  // [0:15] is the sub-list for field type_name
+	9,  // 0: server.v1.GetProblemResponse.problem:type_name -> server.v1.Problem
+	10, // 1: server.v1.ListProblemsResponse.problems:type_name -> server.v1.ProblemSummary
+	11, // 2: server.v1.ListTestCasesResponse.test_cases:type_name -> server.v1.TestCase
+	11, // 3: server.v1.Problem.test_cases:type_name -> server.v1.TestCase
+	1,  // 4: server.v1.Problem.difficulty:type_name -> server.v1.Difficulty
+	1,  // 5: server.v1.ProblemSummary.difficulty:type_name -> server.v1.Difficulty
+	1,  // 6: server.v1.UpsertProblemRequest.difficulty:type_name -> server.v1.Difficulty
+	11, // 7: server.v1.UpsertTestCasesRequest.test_cases:type_name -> server.v1.TestCase
+	2,  // 8: server.v1.SubmitCodeRequest.submission_type:type_name -> server.v1.SubmissionType
+	22, // 9: server.v1.ListSubmissionsResponse.submissions:type_name -> server.v1.Submission
+	22, // 10: server.v1.GetSubmissionDetailResponse.submission:type_name -> server.v1.Submission
+	0,  // 11: server.v1.Submission.status:type_name -> server.v1.SubmissionStatus
+	2,  // 12: server.v1.Submission.submission_type:type_name -> server.v1.SubmissionType
+	27, // 13: server.v1.ListSubmissionResultsResponse.results:type_name -> server.v1.SubmissionResultSummary
+	28, // 14: server.v1.GetSubmissionResultDetailResponse.test_case_results:type_name -> server.v1.TestCaseResult
+	0,  // 15: server.v1.GetSubmissionResultDetailResponse.status:type_name -> server.v1.SubmissionStatus
+	0,  // 16: server.v1.SubmissionResultSummary.status:type_name -> server.v1.SubmissionStatus
+	0,  // 17: server.v1.TestCaseResult.status:type_name -> server.v1.SubmissionStatus
+	3,  // 18: server.v1.OnlineJudgeService.GetProblem:input_type -> server.v1.GetProblemRequest
+	5,  // 19: server.v1.OnlineJudgeService.ListProblems:input_type -> server.v1.ListProblemsRequest
+	12, // 20: server.v1.OnlineJudgeService.UpsertProblem:input_type -> server.v1.UpsertProblemRequest
+	7,  // 21: server.v1.OnlineJudgeService.ListTestCases:input_type -> server.v1.ListTestCasesRequest
+	14, // 22: server.v1.OnlineJudgeService.UpsertTestCases:input_type -> server.v1.UpsertTestCasesRequest
+	16, // 23: server.v1.OnlineJudgeService.SubmitCode:input_type -> server.v1.SubmitCodeRequest
+	18, // 24: server.v1.OnlineJudgeService.ListSubmissions:input_type -> server.v1.ListSubmissionsRequest
+	23, // 25: server.v1.OnlineJudgeService.ListSubmissionResults:input_type -> server.v1.ListSubmissionResultsRequest
+	25, // 26: server.v1.OnlineJudgeService.GetSubmissionResultDetail:input_type -> server.v1.GetSubmissionResultRequest
+	4,  // 27: server.v1.OnlineJudgeService.GetProblem:output_type -> server.v1.GetProblemResponse
+	6,  // 28: server.v1.OnlineJudgeService.ListProblems:output_type -> server.v1.ListProblemsResponse
+	13, // 29: server.v1.OnlineJudgeService.UpsertProblem:output_type -> server.v1.UpsertProblemResponse
+	8,  // 30: server.v1.OnlineJudgeService.ListTestCases:output_type -> server.v1.ListTestCasesResponse
+	15, // 31: server.v1.OnlineJudgeService.UpsertTestCases:output_type -> server.v1.UpsertTestCasesResponse
+	17, // 32: server.v1.OnlineJudgeService.SubmitCode:output_type -> server.v1.SubmitCodeResponse
+	19, // 33: server.v1.OnlineJudgeService.ListSubmissions:output_type -> server.v1.ListSubmissionsResponse
+	24, // 34: server.v1.OnlineJudgeService.ListSubmissionResults:output_type -> server.v1.ListSubmissionResultsResponse
+	26, // 35: server.v1.OnlineJudgeService.GetSubmissionResultDetail:output_type -> server.v1.GetSubmissionResultDetailResponse
+	27, // [27:36] is the sub-list for method output_type
+	18, // [18:27] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_definitions_server_server_proto_init() }
@@ -1784,7 +1944,7 @@ func file_definitions_server_server_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_definitions_server_server_proto_rawDesc), len(file_definitions_server_server_proto_rawDesc)),
-			NumEnums:      2,
+			NumEnums:      3,
 			NumMessages:   26,
 			NumExtensions: 0,
 			NumServices:   1,

@@ -10,7 +10,7 @@ import (
 )
 
 type ResultConsumerService interface {
-	ProcessResultEvent(ctx context.Context, event *kfk.ResultEvent) error
+	ProcessResultEvents(ctx context.Context, events []*kfk.ResultEvent) error
 }
 
 type resultConsumerService struct {
@@ -31,26 +31,50 @@ func NewResultConsumerService(
 	}
 }
 
-func (s *resultConsumerService) ProcessResultEvent(ctx context.Context, event *kfk.ResultEvent) error {
-	status := models.SubmissionStatus(event.Status)
+func (s *resultConsumerService) ProcessResultEvents(ctx context.Context, events []*kfk.ResultEvent) error {
+	if len(events) == 0 {
+		return nil
+	}
 
 	return s.provider.Transact(ctx, func(ctx context.Context) error {
-		if event.TestCaseID != "" {
-			result := &models.TestCaseResult{
-				SubmissionID: event.SubmissionID,
-				TestCaseID:   event.TestCaseID,
-				Status:       status,
-				ActualOutput: event.Output,
-			}
-			if err := s.resultRepo.Create(ctx, result); err != nil {
-				return err
-			}
+		var tcBatch []*models.TestCaseResult
+		submissionStatuses := make(map[string]models.SubmissionStatus)
 
-			// If it's a test case result, keep the submission as RUNNING
-			return s.submissionRepo.UpdateStatus(ctx, event.SubmissionID, models.StatusRunning)
+		for _, event := range events {
+			status := models.SubmissionStatus(event.Status)
+
+			if event.TestCaseID != "" {
+				tcBatch = append(tcBatch, &models.TestCaseResult{
+					SubmissionID: event.SubmissionID,
+					TestCaseID:   event.TestCaseID,
+					Status:       status,
+					ActualOutput: event.Output,
+				})
+
+				// If we haven't seen a final status yet, mark as RUNNING
+				if _, ok := submissionStatuses[event.SubmissionID]; !ok {
+					submissionStatuses[event.SubmissionID] = models.StatusRunning
+				}
+			} else {
+				// This is a final summary event, it overwrites any RUNNING status
+				submissionStatuses[event.SubmissionID] = status
+			}
 		}
 
-		// If TestCaseID is empty, it's a summary event (final result or compile error)
-		return s.submissionRepo.UpdateStatus(ctx, event.SubmissionID, status)
+		// 1. Bulk Insert Test Case Results
+		if len(tcBatch) > 0 {
+			if err := s.resultRepo.CreateBatch(ctx, tcBatch); err != nil {
+				return err
+			}
+		}
+
+		// 2. Bulk Update Submission Statuses
+		for subID, status := range submissionStatuses {
+			if err := s.submissionRepo.UpdateStatus(ctx, subID, status); err != nil {
+				return err
+			}
+		}
+
+		return nil
 	})
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/Nanhtu187/online-judge/src/apps/backend/server/internal/models"
 	"github.com/Nanhtu187/online-judge/src/apps/backend/server/internal/repository"
 	"github.com/Nanhtu187/online-judge/src/packages/database"
+	"github.com/Nanhtu187/online-judge/src/packages/iam"
 	"github.com/Nanhtu187/online-judge/src/packages/kafka"
 	pb "github.com/Nanhtu187/online-judge/src/packages/proto/gen/go/server"
 	kfk "github.com/segmentio/kafka-go"
@@ -36,12 +37,14 @@ func NewSubmissionService(repo repository.SubmissionRepository, resultRepo repos
 }
 
 func (s *submissionService) SubmitCode(ctx context.Context, req *pb.SubmitCodeRequest) (*pb.SubmitCodeResponse, error) {
+	userID := iam.GetUserID(ctx)
 	submission := &models.Submission{
 		ProblemID:      req.ProblemId,
 		CodeContent:    req.CodeContent,
 		Status:         models.StatusPending,
 		Language:       req.Language,
 		SubmissionType: models.SubmissionType(pb.SubmissionType_name[int32(req.SubmissionType)][len("SUBMISSION_TYPE_"):]),
+		UserID:         userID,
 	}
 
 	err := s.provider.Transact(ctx, func(ctx context.Context) error {
@@ -82,7 +85,7 @@ func (s *submissionService) ListSubmissions(ctx context.Context, req *pb.ListSub
 		pageSize = 10
 	}
 
-	submissions, err := s.repo.List(ctx, req.ProblemId, page, pageSize)
+	submissions, err := s.repo.List(ctx, req.ProblemId, req.UserId, page, pageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -96,6 +99,9 @@ func (s *submissionService) ListSubmissions(ctx context.Context, req *pb.ListSub
 			Status:         pb.SubmissionStatus(pb.SubmissionStatus_value["SUBMISSION_STATUS_"+string(sub.Status)]),
 			Language:       sub.Language,
 			SubmissionType: pb.SubmissionType(pb.SubmissionType_value["SUBMISSION_TYPE_"+string(sub.SubmissionType)]),
+			UserId:         sub.UserID,
+			ProblemTitle:   sub.ProblemTitle,
+			CreatedAt:      sub.CreatedAt.Format("2006-01-02 15:04:05"),
 		})
 	}
 

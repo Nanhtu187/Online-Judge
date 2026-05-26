@@ -8,14 +8,57 @@ import type {
   UpsertProblemResponse,
   UpsertTestCasesRequest,
   UpsertTestCasesResponse,
-  SubmissionType
+  SubmissionType,
+  LoginRequest,
+  LoginResponse,
+  RegisterRequest,
+  RegisterResponse,
+  User,
+  Submission
 } from '../types';
 
 const API_BASE_URL = 'http://localhost:8081';
+const IAM_BASE_URL = 'http://localhost:8080';
 
 const client = axios.create({
   baseURL: API_BASE_URL,
 });
+
+// Auth interceptor
+client.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+const iamClient = axios.create({
+  baseURL: IAM_BASE_URL,
+});
+
+iamClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+export const login = async (data: LoginRequest): Promise<string> => {
+  const response = await iamClient.post<LoginResponse>('/v1/iam/login', data);
+  return response.data.token;
+};
+
+export const register = async (data: RegisterRequest): Promise<string> => {
+  const response = await iamClient.post<RegisterResponse>('/v1/iam/register', data);
+  return response.data.user_id;
+};
+
+export const getUserInfo = async (): Promise<User> => {
+  const response = await iamClient.get<{ user: User }>('/v1/iam/user');
+  return response.data.user;
+};
 
 export const listProblems = async (page = 1, pageSize = 20): Promise<ProblemSummary[]> => {
   const response = await client.get('/v1/problems', {
@@ -46,6 +89,13 @@ export const upsertTestCases = async (problemId: string, testCases: TestCase[]):
   };
   const response = await client.post<UpsertTestCasesResponse>(`/v1/problems/${problemId}/test-cases`, request);
   return response.data.success;
+};
+
+export const listSubmissions = async (params: { problem_id?: string, user_id?: string, page?: number, page_size?: number }): Promise<Submission[]> => {
+  const response = await client.get('/v1/submissions', {
+    params,
+  });
+  return response.data.submissions || [];
 };
 
 export const submitCode = async (problemId: string, codeContent: string, language: string, type: SubmissionType): Promise<string> => {

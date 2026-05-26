@@ -4,6 +4,8 @@ import (
 	"context"
 	"log"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/Nanhtu187/online-judge/src/apps/backend/server/config"
 	"github.com/Nanhtu187/online-judge/src/apps/backend/server/internal/handler"
@@ -46,8 +48,11 @@ func startResultConsumer(cmd *cobra.Command, args []string) {
 	})
 	defer reader.Close()
 
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer cancel()
+
 	consumerHandler := handler.NewResultConsumerHandler(consumerSvc, reader, l)
-	consumerHandler.Start(context.Background())
+	consumerHandler.Start(ctx)
 }
 
 func StartResultConsumerCommand() *cobra.Command {

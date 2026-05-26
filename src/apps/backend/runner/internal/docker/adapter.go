@@ -57,6 +57,7 @@ func (a *dockerAdapter) RunTask(ctx context.Context, req TaskRequest) (*TaskResp
 	resp, err := a.cli.ContainerCreate(ctx, &container.Config{
 		Image:        req.Image,
 		Cmd:          req.Cmd,
+		WorkingDir:   "/",
 		OpenStdin:    true,
 		StdinOnce:    true,
 		AttachStdin:  true,

@@ -7,7 +7,10 @@
 package iam
 
 import (
+	context "context"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -15,10 +18,30 @@ import (
 // Requires gRPC-Go v1.64.0 or later.
 const _ = grpc.SupportPackageIsVersion9
 
+const (
+	IamService_Register_FullMethodName        = "/iam.v1.IamService/Register"
+	IamService_Login_FullMethodName           = "/iam.v1.IamService/Login"
+	IamService_GetUserInfo_FullMethodName     = "/iam.v1.IamService/GetUserInfo"
+	IamService_VerifyToken_FullMethodName     = "/iam.v1.IamService/VerifyToken"
+	IamService_CheckPermission_FullMethodName = "/iam.v1.IamService/CheckPermission"
+	IamService_CreateGroup_FullMethodName     = "/iam.v1.IamService/CreateGroup"
+	IamService_AddGroupMember_FullMethodName  = "/iam.v1.IamService/AddGroupMember"
+)
+
 // IamServiceClient is the client API for IamService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type IamServiceClient interface {
+	// Auth
+	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
+	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	GetUserInfo(ctx context.Context, in *GetUserInfoRequest, opts ...grpc.CallOption) (*GetUserInfoResponse, error)
+	VerifyToken(ctx context.Context, in *VerifyTokenRequest, opts ...grpc.CallOption) (*VerifyTokenResponse, error)
+	// Permission Check
+	CheckPermission(ctx context.Context, in *CheckPermissionRequest, opts ...grpc.CallOption) (*CheckPermissionResponse, error)
+	// Group Management
+	CreateGroup(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*CreateGroupResponse, error)
+	AddGroupMember(ctx context.Context, in *AddGroupMemberRequest, opts ...grpc.CallOption) (*AddGroupMemberResponse, error)
 }
 
 type iamServiceClient struct {
@@ -29,10 +52,90 @@ func NewIamServiceClient(cc grpc.ClientConnInterface) IamServiceClient {
 	return &iamServiceClient{cc}
 }
 
+func (c *iamServiceClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RegisterResponse)
+	err := c.cc.Invoke(ctx, IamService_Register_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iamServiceClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LoginResponse)
+	err := c.cc.Invoke(ctx, IamService_Login_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iamServiceClient) GetUserInfo(ctx context.Context, in *GetUserInfoRequest, opts ...grpc.CallOption) (*GetUserInfoResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetUserInfoResponse)
+	err := c.cc.Invoke(ctx, IamService_GetUserInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iamServiceClient) VerifyToken(ctx context.Context, in *VerifyTokenRequest, opts ...grpc.CallOption) (*VerifyTokenResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(VerifyTokenResponse)
+	err := c.cc.Invoke(ctx, IamService_VerifyToken_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iamServiceClient) CheckPermission(ctx context.Context, in *CheckPermissionRequest, opts ...grpc.CallOption) (*CheckPermissionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CheckPermissionResponse)
+	err := c.cc.Invoke(ctx, IamService_CheckPermission_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iamServiceClient) CreateGroup(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*CreateGroupResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateGroupResponse)
+	err := c.cc.Invoke(ctx, IamService_CreateGroup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iamServiceClient) AddGroupMember(ctx context.Context, in *AddGroupMemberRequest, opts ...grpc.CallOption) (*AddGroupMemberResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddGroupMemberResponse)
+	err := c.cc.Invoke(ctx, IamService_AddGroupMember_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // IamServiceServer is the server API for IamService service.
 // All implementations must embed UnimplementedIamServiceServer
 // for forward compatibility.
 type IamServiceServer interface {
+	// Auth
+	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
+	Login(context.Context, *LoginRequest) (*LoginResponse, error)
+	GetUserInfo(context.Context, *GetUserInfoRequest) (*GetUserInfoResponse, error)
+	VerifyToken(context.Context, *VerifyTokenRequest) (*VerifyTokenResponse, error)
+	// Permission Check
+	CheckPermission(context.Context, *CheckPermissionRequest) (*CheckPermissionResponse, error)
+	// Group Management
+	CreateGroup(context.Context, *CreateGroupRequest) (*CreateGroupResponse, error)
+	AddGroupMember(context.Context, *AddGroupMemberRequest) (*AddGroupMemberResponse, error)
 	mustEmbedUnimplementedIamServiceServer()
 }
 
@@ -43,6 +146,27 @@ type IamServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedIamServiceServer struct{}
 
+func (UnimplementedIamServiceServer) Register(context.Context, *RegisterRequest) (*RegisterResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Register not implemented")
+}
+func (UnimplementedIamServiceServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedIamServiceServer) GetUserInfo(context.Context, *GetUserInfoRequest) (*GetUserInfoResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetUserInfo not implemented")
+}
+func (UnimplementedIamServiceServer) VerifyToken(context.Context, *VerifyTokenRequest) (*VerifyTokenResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method VerifyToken not implemented")
+}
+func (UnimplementedIamServiceServer) CheckPermission(context.Context, *CheckPermissionRequest) (*CheckPermissionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CheckPermission not implemented")
+}
+func (UnimplementedIamServiceServer) CreateGroup(context.Context, *CreateGroupRequest) (*CreateGroupResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateGroup not implemented")
+}
+func (UnimplementedIamServiceServer) AddGroupMember(context.Context, *AddGroupMemberRequest) (*AddGroupMemberResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AddGroupMember not implemented")
+}
 func (UnimplementedIamServiceServer) mustEmbedUnimplementedIamServiceServer() {}
 func (UnimplementedIamServiceServer) testEmbeddedByValue()                    {}
 
@@ -64,13 +188,168 @@ func RegisterIamServiceServer(s grpc.ServiceRegistrar, srv IamServiceServer) {
 	s.RegisterService(&IamService_ServiceDesc, srv)
 }
 
+func _IamService_Register_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IamServiceServer).Register(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IamService_Register_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IamServiceServer).Register(ctx, req.(*RegisterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IamService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IamServiceServer).Login(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IamService_Login_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IamServiceServer).Login(ctx, req.(*LoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IamService_GetUserInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IamServiceServer).GetUserInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IamService_GetUserInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IamServiceServer).GetUserInfo(ctx, req.(*GetUserInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IamService_VerifyToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VerifyTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IamServiceServer).VerifyToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IamService_VerifyToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IamServiceServer).VerifyToken(ctx, req.(*VerifyTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IamService_CheckPermission_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckPermissionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IamServiceServer).CheckPermission(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IamService_CheckPermission_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IamServiceServer).CheckPermission(ctx, req.(*CheckPermissionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IamService_CreateGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IamServiceServer).CreateGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IamService_CreateGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IamServiceServer).CreateGroup(ctx, req.(*CreateGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IamService_AddGroupMember_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddGroupMemberRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IamServiceServer).AddGroupMember(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IamService_AddGroupMember_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IamServiceServer).AddGroupMember(ctx, req.(*AddGroupMemberRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // IamService_ServiceDesc is the grpc.ServiceDesc for IamService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var IamService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "iam.v1.IamService",
 	HandlerType: (*IamServiceServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams:     []grpc.StreamDesc{},
-	Metadata:    "definitions/iam/iam.proto",
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Register",
+			Handler:    _IamService_Register_Handler,
+		},
+		{
+			MethodName: "Login",
+			Handler:    _IamService_Login_Handler,
+		},
+		{
+			MethodName: "GetUserInfo",
+			Handler:    _IamService_GetUserInfo_Handler,
+		},
+		{
+			MethodName: "VerifyToken",
+			Handler:    _IamService_VerifyToken_Handler,
+		},
+		{
+			MethodName: "CheckPermission",
+			Handler:    _IamService_CheckPermission_Handler,
+		},
+		{
+			MethodName: "CreateGroup",
+			Handler:    _IamService_CreateGroup_Handler,
+		},
+		{
+			MethodName: "AddGroupMember",
+			Handler:    _IamService_AddGroupMember_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "definitions/iam/iam.proto",
 }

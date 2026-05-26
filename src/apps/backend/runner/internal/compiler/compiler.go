@@ -32,13 +32,13 @@ var langConfigs = map[string]config{
 	"go": {
 		image:      "golang:1.24-alpine",
 		fileName:   "main.go",
-		cmd:        []string{"go", "build", "-o", "output", "main.go"},
+		cmd:        []string{"sh", "-c", "export GO111MODULE=off && go build -o output ./main.go"},
 		outputName: "output",
 	},
 	"cpp": {
 		image:      "gcc:latest",
 		fileName:   "main.cpp",
-		cmd:        []string{"g++", "-static", "-o", "output", "main.cpp"},
+		cmd:        []string{"g++", "-static", "-o", "output", "./main.cpp"},
 		outputName: "output",
 	},
 }

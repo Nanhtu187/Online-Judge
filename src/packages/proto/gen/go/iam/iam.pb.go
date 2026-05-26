@@ -12,6 +12,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
+	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -22,23 +23,908 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type Scope int32
+
+const (
+	Scope_SCOPE_GLOBAL Scope = 0
+	Scope_SCOPE_GROUP  Scope = 1
+)
+
+// Enum value maps for Scope.
+var (
+	Scope_name = map[int32]string{
+		0: "SCOPE_GLOBAL",
+		1: "SCOPE_GROUP",
+	}
+	Scope_value = map[string]int32{
+		"SCOPE_GLOBAL": 0,
+		"SCOPE_GROUP":  1,
+	}
+)
+
+func (x Scope) Enum() *Scope {
+	p := new(Scope)
+	*p = x
+	return p
+}
+
+func (x Scope) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Scope) Descriptor() protoreflect.EnumDescriptor {
+	return file_definitions_iam_iam_proto_enumTypes[0].Descriptor()
+}
+
+func (Scope) Type() protoreflect.EnumType {
+	return &file_definitions_iam_iam_proto_enumTypes[0]
+}
+
+func (x Scope) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Scope.Descriptor instead.
+func (Scope) EnumDescriptor() ([]byte, []int) {
+	return file_definitions_iam_iam_proto_rawDescGZIP(), []int{0}
+}
+
+type User struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Permissions   []string               `protobuf:"bytes,4,rep,name=permissions,proto3" json:"permissions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *User) Reset() {
+	*x = User{}
+	mi := &file_definitions_iam_iam_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *User) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*User) ProtoMessage() {}
+
+func (x *User) ProtoReflect() protoreflect.Message {
+	mi := &file_definitions_iam_iam_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use User.ProtoReflect.Descriptor instead.
+func (*User) Descriptor() ([]byte, []int) {
+	return file_definitions_iam_iam_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *User) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *User) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *User) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *User) GetPermissions() []string {
+	if x != nil {
+		return x.Permissions
+	}
+	return nil
+}
+
+type RegisterRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RegisterRequest) Reset() {
+	*x = RegisterRequest{}
+	mi := &file_definitions_iam_iam_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RegisterRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RegisterRequest) ProtoMessage() {}
+
+func (x *RegisterRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_definitions_iam_iam_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RegisterRequest.ProtoReflect.Descriptor instead.
+func (*RegisterRequest) Descriptor() ([]byte, []int) {
+	return file_definitions_iam_iam_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *RegisterRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *RegisterRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+func (x *RegisterRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type RegisterResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RegisterResponse) Reset() {
+	*x = RegisterResponse{}
+	mi := &file_definitions_iam_iam_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RegisterResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RegisterResponse) ProtoMessage() {}
+
+func (x *RegisterResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_definitions_iam_iam_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RegisterResponse.ProtoReflect.Descriptor instead.
+func (*RegisterResponse) Descriptor() ([]byte, []int) {
+	return file_definitions_iam_iam_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *RegisterResponse) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+type LoginRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LoginRequest) Reset() {
+	*x = LoginRequest{}
+	mi := &file_definitions_iam_iam_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LoginRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoginRequest) ProtoMessage() {}
+
+func (x *LoginRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_definitions_iam_iam_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoginRequest.ProtoReflect.Descriptor instead.
+func (*LoginRequest) Descriptor() ([]byte, []int) {
+	return file_definitions_iam_iam_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *LoginRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *LoginRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+type LoginResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LoginResponse) Reset() {
+	*x = LoginResponse{}
+	mi := &file_definitions_iam_iam_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LoginResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoginResponse) ProtoMessage() {}
+
+func (x *LoginResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_definitions_iam_iam_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoginResponse.ProtoReflect.Descriptor instead.
+func (*LoginResponse) Descriptor() ([]byte, []int) {
+	return file_definitions_iam_iam_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *LoginResponse) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+type GetUserInfoRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserInfoRequest) Reset() {
+	*x = GetUserInfoRequest{}
+	mi := &file_definitions_iam_iam_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserInfoRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserInfoRequest) ProtoMessage() {}
+
+func (x *GetUserInfoRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_definitions_iam_iam_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserInfoRequest.ProtoReflect.Descriptor instead.
+func (*GetUserInfoRequest) Descriptor() ([]byte, []int) {
+	return file_definitions_iam_iam_proto_rawDescGZIP(), []int{5}
+}
+
+type GetUserInfoResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	User          *User                  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserInfoResponse) Reset() {
+	*x = GetUserInfoResponse{}
+	mi := &file_definitions_iam_iam_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserInfoResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserInfoResponse) ProtoMessage() {}
+
+func (x *GetUserInfoResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_definitions_iam_iam_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserInfoResponse.ProtoReflect.Descriptor instead.
+func (*GetUserInfoResponse) Descriptor() ([]byte, []int) {
+	return file_definitions_iam_iam_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *GetUserInfoResponse) GetUser() *User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+type VerifyTokenRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VerifyTokenRequest) Reset() {
+	*x = VerifyTokenRequest{}
+	mi := &file_definitions_iam_iam_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VerifyTokenRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VerifyTokenRequest) ProtoMessage() {}
+
+func (x *VerifyTokenRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_definitions_iam_iam_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VerifyTokenRequest.ProtoReflect.Descriptor instead.
+func (*VerifyTokenRequest) Descriptor() ([]byte, []int) {
+	return file_definitions_iam_iam_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *VerifyTokenRequest) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+type VerifyTokenResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VerifyTokenResponse) Reset() {
+	*x = VerifyTokenResponse{}
+	mi := &file_definitions_iam_iam_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VerifyTokenResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VerifyTokenResponse) ProtoMessage() {}
+
+func (x *VerifyTokenResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_definitions_iam_iam_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VerifyTokenResponse.ProtoReflect.Descriptor instead.
+func (*VerifyTokenResponse) Descriptor() ([]byte, []int) {
+	return file_definitions_iam_iam_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *VerifyTokenResponse) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+type CheckPermissionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Permission    string                 `protobuf:"bytes,2,opt,name=permission,proto3" json:"permission,omitempty"`
+	Scope         Scope                  `protobuf:"varint,3,opt,name=scope,proto3,enum=iam.v1.Scope" json:"scope,omitempty"`
+	ScopeId       string                 `protobuf:"bytes,4,opt,name=scope_id,json=scopeId,proto3" json:"scope_id,omitempty"` // empty if GLOBAL
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CheckPermissionRequest) Reset() {
+	*x = CheckPermissionRequest{}
+	mi := &file_definitions_iam_iam_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CheckPermissionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CheckPermissionRequest) ProtoMessage() {}
+
+func (x *CheckPermissionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_definitions_iam_iam_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CheckPermissionRequest.ProtoReflect.Descriptor instead.
+func (*CheckPermissionRequest) Descriptor() ([]byte, []int) {
+	return file_definitions_iam_iam_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *CheckPermissionRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *CheckPermissionRequest) GetPermission() string {
+	if x != nil {
+		return x.Permission
+	}
+	return ""
+}
+
+func (x *CheckPermissionRequest) GetScope() Scope {
+	if x != nil {
+		return x.Scope
+	}
+	return Scope_SCOPE_GLOBAL
+}
+
+func (x *CheckPermissionRequest) GetScopeId() string {
+	if x != nil {
+		return x.ScopeId
+	}
+	return ""
+}
+
+type CheckPermissionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Allowed       bool                   `protobuf:"varint,1,opt,name=allowed,proto3" json:"allowed,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CheckPermissionResponse) Reset() {
+	*x = CheckPermissionResponse{}
+	mi := &file_definitions_iam_iam_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CheckPermissionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CheckPermissionResponse) ProtoMessage() {}
+
+func (x *CheckPermissionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_definitions_iam_iam_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CheckPermissionResponse.ProtoReflect.Descriptor instead.
+func (*CheckPermissionResponse) Descriptor() ([]byte, []int) {
+	return file_definitions_iam_iam_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *CheckPermissionResponse) GetAllowed() bool {
+	if x != nil {
+		return x.Allowed
+	}
+	return false
+}
+
+type CreateGroupRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateGroupRequest) Reset() {
+	*x = CreateGroupRequest{}
+	mi := &file_definitions_iam_iam_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateGroupRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateGroupRequest) ProtoMessage() {}
+
+func (x *CreateGroupRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_definitions_iam_iam_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateGroupRequest.ProtoReflect.Descriptor instead.
+func (*CreateGroupRequest) Descriptor() ([]byte, []int) {
+	return file_definitions_iam_iam_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *CreateGroupRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type CreateGroupResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	GroupId       string                 `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateGroupResponse) Reset() {
+	*x = CreateGroupResponse{}
+	mi := &file_definitions_iam_iam_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateGroupResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateGroupResponse) ProtoMessage() {}
+
+func (x *CreateGroupResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_definitions_iam_iam_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateGroupResponse.ProtoReflect.Descriptor instead.
+func (*CreateGroupResponse) Descriptor() ([]byte, []int) {
+	return file_definitions_iam_iam_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *CreateGroupResponse) GetGroupId() string {
+	if x != nil {
+		return x.GroupId
+	}
+	return ""
+}
+
+type AddGroupMemberRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	GroupId       string                 `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	RoleName      string                 `protobuf:"bytes,3,opt,name=role_name,json=roleName,proto3" json:"role_name,omitempty"` // e.g. "ADMIN", "MEMBER"
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AddGroupMemberRequest) Reset() {
+	*x = AddGroupMemberRequest{}
+	mi := &file_definitions_iam_iam_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AddGroupMemberRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddGroupMemberRequest) ProtoMessage() {}
+
+func (x *AddGroupMemberRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_definitions_iam_iam_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddGroupMemberRequest.ProtoReflect.Descriptor instead.
+func (*AddGroupMemberRequest) Descriptor() ([]byte, []int) {
+	return file_definitions_iam_iam_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *AddGroupMemberRequest) GetGroupId() string {
+	if x != nil {
+		return x.GroupId
+	}
+	return ""
+}
+
+func (x *AddGroupMemberRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *AddGroupMemberRequest) GetRoleName() string {
+	if x != nil {
+		return x.RoleName
+	}
+	return ""
+}
+
+type AddGroupMemberResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AddGroupMemberResponse) Reset() {
+	*x = AddGroupMemberResponse{}
+	mi := &file_definitions_iam_iam_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AddGroupMemberResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddGroupMemberResponse) ProtoMessage() {}
+
+func (x *AddGroupMemberResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_definitions_iam_iam_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddGroupMemberResponse.ProtoReflect.Descriptor instead.
+func (*AddGroupMemberResponse) Descriptor() ([]byte, []int) {
+	return file_definitions_iam_iam_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *AddGroupMemberResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
 var File_definitions_iam_iam_proto protoreflect.FileDescriptor
 
 const file_definitions_iam_iam_proto_rawDesc = "" +
 	"\n" +
-	"\x19definitions/iam/iam.proto\x12\x06iam.v1\x1a\x1fdefinitions/common/common.proto\x1a\x1cgoogle/api/annotations.proto2\f\n" +
+	"\x19definitions/iam/iam.proto\x12\x06iam.v1\x1a\x1fdefinitions/common/common.proto\x1a\x1cgoogle/api/annotations.proto\"b\n" +
+	"\x04User\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
+	"\x05email\x18\x02 \x01(\tR\x05email\x12\x12\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\x12 \n" +
+	"\vpermissions\x18\x04 \x03(\tR\vpermissions\"W\n" +
+	"\x0fRegisterRequest\x12\x14\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x12\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\"+\n" +
+	"\x10RegisterResponse\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\"@\n" +
+	"\fLoginRequest\x12\x14\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"%\n" +
+	"\rLoginResponse\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\"\x14\n" +
+	"\x12GetUserInfoRequest\"7\n" +
+	"\x13GetUserInfoResponse\x12 \n" +
+	"\x04user\x18\x01 \x01(\v2\f.iam.v1.UserR\x04user\"*\n" +
+	"\x12VerifyTokenRequest\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\".\n" +
+	"\x13VerifyTokenResponse\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\"\x91\x01\n" +
+	"\x16CheckPermissionRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x1e\n" +
 	"\n" +
-	"IamServiceB\x90\x01\n" +
+	"permission\x18\x02 \x01(\tR\n" +
+	"permission\x12#\n" +
+	"\x05scope\x18\x03 \x01(\x0e2\r.iam.v1.ScopeR\x05scope\x12\x19\n" +
+	"\bscope_id\x18\x04 \x01(\tR\ascopeId\"3\n" +
+	"\x17CheckPermissionResponse\x12\x18\n" +
+	"\aallowed\x18\x01 \x01(\bR\aallowed\"(\n" +
+	"\x12CreateGroupRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"0\n" +
+	"\x13CreateGroupResponse\x12\x19\n" +
+	"\bgroup_id\x18\x01 \x01(\tR\agroupId\"h\n" +
+	"\x15AddGroupMemberRequest\x12\x19\n" +
+	"\bgroup_id\x18\x01 \x01(\tR\agroupId\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x1b\n" +
+	"\trole_name\x18\x03 \x01(\tR\broleName\"2\n" +
+	"\x16AddGroupMemberResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess**\n" +
+	"\x05Scope\x12\x10\n" +
+	"\fSCOPE_GLOBAL\x10\x00\x12\x0f\n" +
+	"\vSCOPE_GROUP\x10\x012\x98\x05\n" +
+	"\n" +
+	"IamService\x12Z\n" +
+	"\bRegister\x12\x17.iam.v1.RegisterRequest\x1a\x18.iam.v1.RegisterResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/iam/register\x12N\n" +
+	"\x05Login\x12\x14.iam.v1.LoginRequest\x1a\x15.iam.v1.LoginResponse\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/iam/login\x12\\\n" +
+	"\vGetUserInfo\x12\x1a.iam.v1.GetUserInfoRequest\x1a\x1b.iam.v1.GetUserInfoResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/v1/iam/user\x12H\n" +
+	"\vVerifyToken\x12\x1a.iam.v1.VerifyTokenRequest\x1a\x1b.iam.v1.VerifyTokenResponse\"\x00\x12T\n" +
+	"\x0fCheckPermission\x12\x1e.iam.v1.CheckPermissionRequest\x1a\x1f.iam.v1.CheckPermissionResponse\"\x00\x12a\n" +
+	"\vCreateGroup\x12\x1a.iam.v1.CreateGroupRequest\x1a\x1b.iam.v1.CreateGroupResponse\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/v1/iam/groups\x12}\n" +
+	"\x0eAddGroupMember\x12\x1d.iam.v1.AddGroupMemberRequest\x1a\x1e.iam.v1.AddGroupMemberResponse\",\x82\xd3\xe4\x93\x02&:\x01*\"!/v1/iam/groups/{group_id}/membersB\x90\x01\n" +
 	"\n" +
 	"com.iam.v1B\bIamProtoP\x01Z?github.com/Nanhtu187/online-judge/src/packages/proto/gen/go/iam\xa2\x02\x03IXX\xaa\x02\x06Iam.V1\xca\x02\x06Iam\\V1\xe2\x02\x12Iam\\V1\\GPBMetadata\xea\x02\aIam::V1b\x06proto3"
 
-var file_definitions_iam_iam_proto_goTypes = []any{}
+var (
+	file_definitions_iam_iam_proto_rawDescOnce sync.Once
+	file_definitions_iam_iam_proto_rawDescData []byte
+)
+
+func file_definitions_iam_iam_proto_rawDescGZIP() []byte {
+	file_definitions_iam_iam_proto_rawDescOnce.Do(func() {
+		file_definitions_iam_iam_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_definitions_iam_iam_proto_rawDesc), len(file_definitions_iam_iam_proto_rawDesc)))
+	})
+	return file_definitions_iam_iam_proto_rawDescData
+}
+
+var file_definitions_iam_iam_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_definitions_iam_iam_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_definitions_iam_iam_proto_goTypes = []any{
+	(Scope)(0),                      // 0: iam.v1.Scope
+	(*User)(nil),                    // 1: iam.v1.User
+	(*RegisterRequest)(nil),         // 2: iam.v1.RegisterRequest
+	(*RegisterResponse)(nil),        // 3: iam.v1.RegisterResponse
+	(*LoginRequest)(nil),            // 4: iam.v1.LoginRequest
+	(*LoginResponse)(nil),           // 5: iam.v1.LoginResponse
+	(*GetUserInfoRequest)(nil),      // 6: iam.v1.GetUserInfoRequest
+	(*GetUserInfoResponse)(nil),     // 7: iam.v1.GetUserInfoResponse
+	(*VerifyTokenRequest)(nil),      // 8: iam.v1.VerifyTokenRequest
+	(*VerifyTokenResponse)(nil),     // 9: iam.v1.VerifyTokenResponse
+	(*CheckPermissionRequest)(nil),  // 10: iam.v1.CheckPermissionRequest
+	(*CheckPermissionResponse)(nil), // 11: iam.v1.CheckPermissionResponse
+	(*CreateGroupRequest)(nil),      // 12: iam.v1.CreateGroupRequest
+	(*CreateGroupResponse)(nil),     // 13: iam.v1.CreateGroupResponse
+	(*AddGroupMemberRequest)(nil),   // 14: iam.v1.AddGroupMemberRequest
+	(*AddGroupMemberResponse)(nil),  // 15: iam.v1.AddGroupMemberResponse
+}
 var file_definitions_iam_iam_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1,  // 0: iam.v1.GetUserInfoResponse.user:type_name -> iam.v1.User
+	0,  // 1: iam.v1.CheckPermissionRequest.scope:type_name -> iam.v1.Scope
+	2,  // 2: iam.v1.IamService.Register:input_type -> iam.v1.RegisterRequest
+	4,  // 3: iam.v1.IamService.Login:input_type -> iam.v1.LoginRequest
+	6,  // 4: iam.v1.IamService.GetUserInfo:input_type -> iam.v1.GetUserInfoRequest
+	8,  // 5: iam.v1.IamService.VerifyToken:input_type -> iam.v1.VerifyTokenRequest
+	10, // 6: iam.v1.IamService.CheckPermission:input_type -> iam.v1.CheckPermissionRequest
+	12, // 7: iam.v1.IamService.CreateGroup:input_type -> iam.v1.CreateGroupRequest
+	14, // 8: iam.v1.IamService.AddGroupMember:input_type -> iam.v1.AddGroupMemberRequest
+	3,  // 9: iam.v1.IamService.Register:output_type -> iam.v1.RegisterResponse
+	5,  // 10: iam.v1.IamService.Login:output_type -> iam.v1.LoginResponse
+	7,  // 11: iam.v1.IamService.GetUserInfo:output_type -> iam.v1.GetUserInfoResponse
+	9,  // 12: iam.v1.IamService.VerifyToken:output_type -> iam.v1.VerifyTokenResponse
+	11, // 13: iam.v1.IamService.CheckPermission:output_type -> iam.v1.CheckPermissionResponse
+	13, // 14: iam.v1.IamService.CreateGroup:output_type -> iam.v1.CreateGroupResponse
+	15, // 15: iam.v1.IamService.AddGroupMember:output_type -> iam.v1.AddGroupMemberResponse
+	9,  // [9:16] is the sub-list for method output_type
+	2,  // [2:9] is the sub-list for method input_type
+	2,  // [2:2] is the sub-list for extension type_name
+	2,  // [2:2] is the sub-list for extension extendee
+	0,  // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_definitions_iam_iam_proto_init() }
@@ -51,13 +937,15 @@ func file_definitions_iam_iam_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_definitions_iam_iam_proto_rawDesc), len(file_definitions_iam_iam_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   0,
+			NumEnums:      1,
+			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_definitions_iam_iam_proto_goTypes,
 		DependencyIndexes: file_definitions_iam_iam_proto_depIdxs,
+		EnumInfos:         file_definitions_iam_iam_proto_enumTypes,
+		MessageInfos:      file_definitions_iam_iam_proto_msgTypes,
 	}.Build()
 	File_definitions_iam_iam_proto = out.File
 	file_definitions_iam_iam_proto_goTypes = nil

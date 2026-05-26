@@ -28,7 +28,10 @@ func (c DatabaseConfig) DSN() string {
 		c.User, c.Password, c.Host, c.Port, c.Name)
 }
 
-func (c DatabaseConfig) MigrationDSN() string {
-	return fmt.Sprintf("%s://%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		c.Driver, c.User, c.Password, c.Host, c.Port, c.Name)
+func (c DatabaseConfig) MigrationDSN(tableName string) string {
+	if tableName == "" {
+		tableName = "schema_migrations"
+	}
+	return fmt.Sprintf("%s://%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local&x-migrations-table=%s",
+		c.Driver, c.User, c.Password, c.Host, c.Port, c.Name, tableName)
 }

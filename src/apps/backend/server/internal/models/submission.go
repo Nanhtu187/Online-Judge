@@ -34,6 +34,8 @@ type Submission struct {
 	Status         SubmissionStatus `gorm:"type:varchar(20);not null" json:"status"`
 	Language       string           `gorm:"type:varchar(20);not null" json:"language"`
 	SubmissionType SubmissionType   `gorm:"type:varchar(20);not null;default:'OFFICIAL'" json:"submission_type"`
+	UserID         string           `gorm:"type:char(36);not null;index" json:"user_id"`
+	ProblemTitle   string           `gorm:"->"`
 	CreatedAt      time.Time        `json:"created_at"`
 	UpdatedAt      time.Time        `json:"updated_at"`
 	DeletedAt      gorm.DeletedAt   `gorm:"index" json:"-"`

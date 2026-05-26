@@ -16,6 +16,10 @@ type ProblemRepository interface {
 	UpdateProblem(ctx context.Context, problem *models.Problem) error
 	DeleteTestCases(ctx context.Context, problemID string) error
 	CreateTestCase(ctx context.Context, testCase *models.TestCase) error
+
+	GetTagByName(ctx context.Context, name string) (*models.Tag, error)
+	CreateTag(ctx context.Context, tag *models.Tag) error
+	ReplaceTags(ctx context.Context, problemID string, tags []*models.Tag) error
 }
 
 type problemRepository struct {
@@ -45,7 +49,7 @@ func (r *problemRepository) GetByID(ctx context.Context, id string) (*models.Pro
 	if err != nil {
 		return nil, err
 	}
-	err = db.First(&problem, "id = ?", id).Error
+	err = db.Preload("Tags").First(&problem, "id = ?", id).Error
 	if err != nil {
 		r.logger.Error("failed to get problem by id", zap.String("id", id), zap.Error(err))
 	}
@@ -58,7 +62,7 @@ func (r *problemRepository) ListProblems(ctx context.Context, page, pageSize int
 	if err != nil {
 		return nil, err
 	}
-	err = db.Offset((page - 1) * pageSize).Limit(pageSize).Find(&problems).Error
+	err = db.Preload("Tags").Offset((page - 1) * pageSize).Limit(pageSize).Find(&problems).Error
 	if err != nil {
 		r.logger.Error("failed to list problems", zap.Error(err))
 	}
@@ -114,4 +118,32 @@ func (r *problemRepository) DeleteTestCases(ctx context.Context, problemID strin
 		return err
 	}
 	return db.Where("problem_id = ?", problemID).Delete(&models.TestCase{}).Error
+}
+
+func (r *problemRepository) GetTagByName(ctx context.Context, name string) (*models.Tag, error) {
+	var tag models.Tag
+	db, err := database.GetReadonly(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := db.Where("name = ?", name).First(&tag).Error; err != nil {
+		return nil, err
+	}
+	return &tag, nil
+}
+
+func (r *problemRepository) CreateTag(ctx context.Context, tag *models.Tag) error {
+	db, err := database.GetTx(ctx)
+	if err != nil {
+		return err
+	}
+	return db.Create(tag).Error
+}
+
+func (r *problemRepository) ReplaceTags(ctx context.Context, problemID string, tags []*models.Tag) error {
+	db, err := database.GetTx(ctx)
+	if err != nil {
+		return err
+	}
+	return db.Model(&models.Problem{ID: problemID}).Association("Tags").Replace(tags)
 }

@@ -17,7 +17,7 @@ func main() {
 	}
 
 	command.AddCommand(cmd.StartServerCommand())
-	command.AddCommand(commoncmd.MigrateCommand(cfg.Database.MigrationSource, cfg.Database.MigrationDSN()))
+	command.AddCommand(commoncmd.MigrateCommand(cfg.Database.MigrationSource, cfg.Database.MigrationDSN("iam_schema_migrations")))
 
 	if err := command.Execute(); err != nil {
 		log.Fatalf("failed to execute command: %v", err)

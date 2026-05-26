@@ -20,9 +20,46 @@ export const SubmissionType = {
 
 export type SubmissionType = typeof SubmissionType[keyof typeof SubmissionType];
 
+export const Difficulty = {
+  UNSPECIFIED: 'DIFFICULTY_UNSPECIFIED',
+  EASY: 'DIFFICULTY_EASY',
+  MEDIUM: 'DIFFICULTY_MEDIUM',
+  HARD: 'DIFFICULTY_HARD',
+} as const;
+
+export type Difficulty = typeof Difficulty[keyof typeof Difficulty];
+
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  permissions: string[];
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  token: string;
+}
+
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  name: string;
+}
+
+export interface RegisterResponse {
+  user_id: string;
+}
+
 export interface ProblemSummary {
   id: string;
   title: string;
+  difficulty: Difficulty;
+  tags: string[];
 }
 
 export interface ListProblemsResponse {
@@ -38,6 +75,8 @@ export interface Problem {
   test_cases?: TestCase[];
   time_limit: number;
   memory_limit: number;
+  difficulty: Difficulty;
+  tags: string[];
 }
 
 export interface TestCaseResult {
@@ -61,6 +100,8 @@ export interface UpsertProblemRequest {
   output_format: string;
   time_limit: number;
   memory_limit: number;
+  difficulty: Difficulty;
+  tags: string[];
 }
 
 export interface UpsertProblemResponse {
@@ -79,4 +120,16 @@ export interface UpsertTestCasesResponse {
 export interface SubmissionResultDetailResponse {
   test_case_results: TestCaseResult[];
   status: SubmissionStatus;
+}
+
+export interface Submission {
+  id: string;
+  problem_id: string;
+  code_content: string;
+  status: SubmissionStatus;
+  language: string;
+  submission_type: string;
+  user_id: string;
+  problem_title?: string;
+  created_at?: string;
 }

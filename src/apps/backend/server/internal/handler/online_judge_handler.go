@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/Nanhtu187/online-judge/src/apps/backend/server/internal/service"
+	"github.com/Nanhtu187/online-judge/src/packages/iam"
 	pb "github.com/Nanhtu187/online-judge/src/packages/proto/gen/go/server"
 )
 
@@ -11,12 +12,14 @@ type OnlineJudgeHandler struct {
 	pb.UnimplementedOnlineJudgeServiceServer
 	problemSvc    service.ProblemService
 	submissionSvc service.SubmissionService
+	authMid       *iam.AuthMiddleware
 }
 
-func NewOnlineJudgeHandler(problemSvc service.ProblemService, submissionSvc service.SubmissionService) *OnlineJudgeHandler {
+func NewOnlineJudgeHandler(problemSvc service.ProblemService, submissionSvc service.SubmissionService, authMid *iam.AuthMiddleware) *OnlineJudgeHandler {
 	return &OnlineJudgeHandler{
 		problemSvc:    problemSvc,
 		submissionSvc: submissionSvc,
+		authMid:       authMid,
 	}
 }
 

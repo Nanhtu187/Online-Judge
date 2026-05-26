@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import Split from 'react-split';
+import Navbar from '../components/Navbar';
 import ProblemDescription from '../components/ProblemDescription';
 import CodeEditor from '../components/CodeEditor';
 import ConsolePanel from '../components/ConsolePanel';
-import { getProblem, submitCode, getSubmissionResultDetail } from '../api/api';
-import type { Problem, TestCaseResult } from '../types';
+import { getProblem, submitCode, getSubmissionResultDetail, listSubmissions } from '../api/api';
+import type { Problem, TestCaseResult, Submission } from '../types';
 import { SubmissionStatus, SubmissionType } from '../types';
+import { useAuth } from '../AuthContext';
 
 const DEFAULT_CODE: Record<string, string> = {
   go: `package main\n\nimport "fmt"\n\nfunc main() {\n\tfmt.Println("Hello, World!")\n}`,
@@ -15,19 +17,33 @@ const DEFAULT_CODE: Record<string, string> = {
 
 const ProblemPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const { user } = useAuth();
   const [problem, setProblem] = useState<Problem | null>(null);
   const [code, setCode] = useState(DEFAULT_CODE['go']);
   const [language, setLanguage] = useState('go');
   const [results, setResults] = useState<TestCaseResult[] | null>(null);
+  const [pastSubmissions, setPastSubmissions] = useState<Submission[] | null>(null);
   const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isConsoleOpen, setIsConsoleOpen] = useState(true);
 
+  const fetchPastSubmissions = useCallback(async () => {
+    if (id && user) {
+      try {
+        const data = await listSubmissions({ problem_id: id, user_id: user.id });
+        setPastSubmissions(data);
+      } catch (err) {
+        console.error('Failed to fetch past submissions:', err);
+      }
+    }
+  }, [id, user]);
+
   useEffect(() => {
     if (id) {
       getProblem(id).then(setProblem).catch(console.error);
+      fetchPastSubmissions();
     }
-  }, [id]);
+  }, [id, fetchPastSubmissions]);
 
   const handleLanguageChange = (lang: string) => {
     setLanguage(lang);
@@ -52,6 +68,7 @@ const ProblemPage: React.FC = () => {
         
         if (isTerminal) {
           setIsSubmitting(false);
+          fetchPastSubmissions();
           return;
         }
 
@@ -83,10 +100,7 @@ const ProblemPage: React.FC = () => {
 
   return (
     <div className="flex flex-col h-screen bg-[#1a1a1a]">
-      {/* Header */}
-      <div className="flex items-center px-4 h-12 bg-[#252526] border-b border-gray-700 shrink-0">
-        <div className="text-white font-bold text-lg">Online Judge</div>
-      </div>
+      <Navbar />
 
       <div className="flex-1 overflow-hidden">
         <Split 
@@ -115,6 +129,7 @@ const ProblemPage: React.FC = () => {
             <ConsolePanel 
               results={results}
               testCases={problem?.test_cases || null}
+              pastSubmissions={pastSubmissions}
               submissionStatus={submissionStatus}
               isSubmitting={isSubmitting}
               onRun={() => handleSubmit(SubmissionType.TEST)}

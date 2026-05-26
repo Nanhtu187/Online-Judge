@@ -10,7 +10,7 @@ import (
 
 type SubmissionRepository interface {
 	Create(ctx context.Context, submission *models.Submission) error
-	List(ctx context.Context, problemID string, page, pageSize int) ([]*models.Submission, error)
+	List(ctx context.Context, problemID string, userID string, page, pageSize int) ([]*models.Submission, error)
 	GetByID(ctx context.Context, id string) (*models.Submission, error)
 	UpdateStatus(ctx context.Context, id string, status models.SubmissionStatus) error
 }
@@ -36,20 +36,30 @@ func (r *submissionRepository) Create(ctx context.Context, s *models.Submission)
 	return err
 }
 
-func (r *submissionRepository) List(ctx context.Context, problemID string, page, pageSize int) ([]*models.Submission, error) {
+func (r *submissionRepository) List(ctx context.Context, problemID string, userID string, page, pageSize int) ([]*models.Submission, error) {
 	var submissions []*models.Submission
 	db, err := database.GetReadonly(ctx)
 	if err != nil {
 		return nil, err
 	}
-	query := db.Model(&models.Submission{})
+	query := db.Table("submissions").
+		Select("submissions.*, problems.title as problem_title").
+		Joins("JOIN problems ON submissions.problem_id = problems.id").
+		Where("submissions.submission_type = ?", models.TypeOfficial)
+
 	if problemID != "" {
-		query = query.Where("problem_id = ?", problemID)
+		query = query.Where("submissions.problem_id = ?", problemID)
+	}
+	if userID != "" {
+		query = query.Where("submissions.user_id = ?", userID)
 	}
 	
-	err = query.Offset((page - 1) * pageSize).Limit(pageSize).Find(&submissions).Error
+	err = query.Order("submissions.created_at DESC").
+		Offset((page - 1) * pageSize).
+		Limit(pageSize).
+		Find(&submissions).Error
 	if err != nil {
-		r.logger.Error("failed to list submissions", zap.String("problem_id", problemID), zap.Error(err))
+		r.logger.Error("failed to list submissions", zap.String("problem_id", problemID), zap.String("user_id", userID), zap.Error(err))
 	}
 	return submissions, err
 }

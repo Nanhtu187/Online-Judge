@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Plus, Trash2, Save, ArrowLeft } from 'lucide-react';
+import Navbar from '../components/Navbar';
 import { getProblem, listTestCases, upsertProblem, upsertTestCases } from '../api/api';
 import type { TestCase } from '../types';
+import { Difficulty } from '../types';
 
 const UpsertProblemPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -15,6 +17,8 @@ const UpsertProblemPage = () => {
   const [outputFormat, setOutputFormat] = useState('');
   const [timeLimit, setTimeLimit] = useState(1000);
   const [memoryLimit, setMemoryLimit] = useState(256);
+  const [difficulty, setDifficulty] = useState<Difficulty>(Difficulty.EASY);
+  const [tags, setTags] = useState<string>('');
   const [testCases, setTestCases] = useState<TestCase[]>([]);
   
   const [loading, setLoading] = useState(isEditing);
@@ -34,6 +38,8 @@ const UpsertProblemPage = () => {
           setOutputFormat(problemData.output_format);
           setTimeLimit(problemData.time_limit);
           setMemoryLimit(problemData.memory_limit);
+          setDifficulty(problemData.difficulty);
+          setTags(problemData.tags?.join(', ') || '');
           setTestCases(testCasesData);
         })
         .catch(err => {
@@ -47,7 +53,7 @@ const UpsertProblemPage = () => {
   }, [id, isEditing]);
 
   const handleAddTestCase = () => {
-    setTestCases([...testCases, { input: '', expected_output: '' }]);
+    setTestCases([...testCases, { input: '', expected_output: '', is_sample: false }]);
   };
 
   const handleRemoveTestCase = (index: number) => {
@@ -56,7 +62,7 @@ const UpsertProblemPage = () => {
     setTestCases(newTestCases);
   };
 
-  const handleTestCaseChange = (index: number, field: keyof TestCase, value: string) => {
+  const handleTestCaseChange = (index: number, field: keyof TestCase, value: any) => {
     const newTestCases = [...testCases];
     newTestCases[index] = { ...newTestCases[index], [field]: value };
     setTestCases(newTestCases);
@@ -76,7 +82,9 @@ const UpsertProblemPage = () => {
         input_format: inputFormat,
         output_format: outputFormat,
         time_limit: timeLimit,
-        memory_limit: memoryLimit
+        memory_limit: memoryLimit,
+        difficulty,
+        tags: tags.split(',').map(t => t.trim()).filter(t => t !== '')
       });
 
       // 2. Upsert Test Cases
@@ -102,17 +110,17 @@ const UpsertProblemPage = () => {
 
   return (
     <div className="min-h-screen bg-[#1a1a1a] text-gray-200">
-      {/* Header */}
-      <div className="flex items-center px-8 h-14 bg-[#252526] border-b border-gray-700">
-        <Link to="/" className="text-gray-400 hover:text-white mr-4 flex items-center">
-          <ArrowLeft size={18} className="mr-1" /> Back
-        </Link>
-        <div className="text-white font-bold text-lg">
-          {isEditing ? 'Edit Problem' : 'Create New Problem'}
-        </div>
-      </div>
+      <Navbar />
 
       <div className="max-w-4xl mx-auto py-8 px-6">
+        <div className="flex items-center mb-6">
+          <Link to="/" className="text-gray-400 hover:text-white mr-4 flex items-center">
+            <ArrowLeft size={18} className="mr-1" /> Back
+          </Link>
+          <div className="text-white font-bold text-lg">
+            {isEditing ? 'Edit Problem' : 'Create New Problem'}
+          </div>
+        </div>
         {error && (
           <div className="bg-red-500/10 border border-red-500/50 text-red-500 px-4 py-3 rounded mb-6">
             {error}
@@ -193,6 +201,31 @@ const UpsertProblemPage = () => {
                 />
               </div>
             </div>
+
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">Difficulty</label>
+                <select
+                  value={difficulty}
+                  onChange={(e) => setDifficulty(e.target.value as Difficulty)}
+                  className="w-full bg-[#2d2d2d] border border-gray-700 rounded px-4 py-2 text-white focus:outline-none focus:border-orange-500"
+                >
+                  <option value={Difficulty.EASY}>Easy</option>
+                  <option value={Difficulty.MEDIUM}>Medium</option>
+                  <option value={Difficulty.HARD}>Hard</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">Tags (comma separated)</label>
+                <input
+                  type="text"
+                  value={tags}
+                  onChange={(e) => setTags(e.target.value)}
+                  className="w-full bg-[#2d2d2d] border border-gray-700 rounded px-4 py-2 text-white focus:outline-none focus:border-orange-500"
+                  placeholder="e.g., Array, Math, Dynamic Programming"
+                />
+              </div>
+            </div>
           </div>
 
           {/* Test Cases Section */}
@@ -231,7 +264,7 @@ const UpsertProblemPage = () => {
                         type="checkbox"
                         id={`is-sample-${idx}`}
                         checked={tc.is_sample}
-                        onChange={(e) => handleTestCaseChange(idx, 'is_sample', e.target.checked as any)}
+                        onChange={(e) => handleTestCaseChange(idx, 'is_sample', e.target.checked)}
                         className="w-4 h-4 rounded border-gray-700 bg-[#1e1e1e] text-orange-600 focus:ring-orange-500"
                       />
                       <label htmlFor={`is-sample-${idx}`} className="text-sm text-gray-400 cursor-pointer">

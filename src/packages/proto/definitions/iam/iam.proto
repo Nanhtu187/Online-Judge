@@ -8,5 +8,115 @@ import "google/api/annotations.proto";
 option go_package = "github.com/Nanhtu187/online-judge/src/packages/proto/gen/go/iam;iam";
 
 service IamService {
-  // Authentication/Authorization methods will be added here
+  // Auth
+  rpc Register(RegisterRequest) returns (RegisterResponse) {
+    option (google.api.http) = {
+      post: "/v1/iam/register"
+      body: "*"
+    };
+  }
+  rpc Login(LoginRequest) returns (LoginResponse) {
+    option (google.api.http) = {
+      post: "/v1/iam/login"
+      body: "*"
+    };
+  }
+  rpc GetUserInfo(GetUserInfoRequest) returns (GetUserInfoResponse) {
+    option (google.api.http) = {
+      get: "/v1/iam/user"
+    };
+  }
+
+  rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenResponse) {}
+
+  // Permission Check
+  rpc CheckPermission(CheckPermissionRequest) returns (CheckPermissionResponse) {}
+
+  // Group Management
+  rpc CreateGroup(CreateGroupRequest) returns (CreateGroupResponse) {
+    option (google.api.http) = {
+      post: "/v1/iam/groups"
+      body: "*"
+    };
+  }
+  rpc AddGroupMember(AddGroupMemberRequest) returns (AddGroupMemberResponse) {
+    option (google.api.http) = {
+      post: "/v1/iam/groups/{group_id}/members"
+      body: "*"
+    };
+  }
+}
+
+message User {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  repeated string permissions = 4;
+}
+
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+  string name = 3;
+}
+
+message RegisterResponse {
+  string user_id = 1;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string token = 1;
+}
+
+message GetUserInfoRequest {}
+
+message GetUserInfoResponse {
+  User user = 1;
+}
+
+message VerifyTokenRequest {
+  string token = 1;
+}
+
+message VerifyTokenResponse {
+  string user_id = 1;
+}
+
+enum Scope {
+  SCOPE_GLOBAL = 0;
+  SCOPE_GROUP = 1;
+}
+
+message CheckPermissionRequest {
+  string user_id = 1;
+  string permission = 2;
+  Scope scope = 3;
+  string scope_id = 4; // empty if GLOBAL
+}
+
+message CheckPermissionResponse {
+  bool allowed = 1;
+}
+
+message CreateGroupRequest {
+  string name = 1;
+}
+
+message CreateGroupResponse {
+  string group_id = 1;
+}
+
+message AddGroupMemberRequest {
+  string group_id = 1;
+  string user_id = 2;
+  string role_name = 3; // e.g. "ADMIN", "MEMBER"
+}
+
+message AddGroupMemberResponse {
+  bool success = 1;
 }

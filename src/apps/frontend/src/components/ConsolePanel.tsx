@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Send, ChevronUp, ChevronDown, Beaker, Terminal } from 'lucide-react';
-import type { TestCaseResult, TestCase } from '../types';
+import { Play, Send, ChevronUp, ChevronDown, Beaker, Terminal, History, Clock } from 'lucide-react';
+import { useAuth } from '../AuthContext';
+import type { TestCaseResult, TestCase, Submission } from '../types';
 import { SubmissionStatus } from '../types';
 
 interface Props {
   results: TestCaseResult[] | null;
   testCases: TestCase[] | null;
+  pastSubmissions: Submission[] | null;
   submissionStatus: SubmissionStatus | null;
   isSubmitting: boolean;
   onRun: () => void;
@@ -30,8 +32,9 @@ const getStatusColor = (status: SubmissionStatus | null) => {
   }
 };
 
-const ConsolePanel: React.FC<Props> = ({ results, testCases, submissionStatus, isSubmitting, onRun, onSubmit, isOpen, setIsOpen }) => {
-  const [activeTab, setActiveTab] = useState<'testcase' | 'result'>('testcase');
+const ConsolePanel: React.FC<Props> = ({ results, testCases, pastSubmissions, submissionStatus, isSubmitting, onRun, onSubmit, isOpen, setIsOpen }) => {
+  const { hasPermission, isAuthenticated } = useAuth();
+  const [activeTab, setActiveTab] = useState<'testcase' | 'result' | 'history'>('testcase');
 
   // Switch to result tab automatically when submission starts
   useEffect(() => {
@@ -73,27 +76,42 @@ const ConsolePanel: React.FC<Props> = ({ results, testCases, submissionStatus, i
                 <Terminal size={14} />
                 <span>Result</span>
               </button>
+              {isAuthenticated && (
+                <button
+                  onClick={() => setActiveTab('history')}
+                  className={`flex items-center space-x-2 text-xs font-bold uppercase tracking-wider h-full border-b-2 transition-all ${
+                    activeTab === 'history' ? 'text-white border-orange-500' : 'text-gray-500 border-transparent hover:text-gray-300'
+                  }`}
+                >
+                  <History size={14} />
+                  <span>History</span>
+                </button>
+              )}
             </div>
           )}
         </div>
         
         <div className="flex items-center space-x-2">
-          <button
-            onClick={onRun}
-            disabled={isSubmitting}
-            className="flex items-center space-x-1 px-3 py-1 bg-[#3c3c3c] hover:bg-[#4c4c4c] text-gray-200 text-sm rounded transition-colors disabled:opacity-50"
-          >
-            <Play size={14} fill="currentColor" />
-            <span>Run</span>
-          </button>
-          <button
-            onClick={onSubmit}
-            disabled={isSubmitting}
-            className="flex items-center space-x-1 px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-sm rounded transition-colors disabled:opacity-50"
-          >
-            <Send size={14} fill="currentColor" />
-            <span>Submit</span>
-          </button>
+          {hasPermission('SUBMISSION_SUBMIT') && (
+            <>
+              <button
+                onClick={onRun}
+                disabled={isSubmitting}
+                className="flex items-center space-x-1 px-3 py-1 bg-[#3c3c3c] hover:bg-[#4c4c4c] text-gray-200 text-sm rounded transition-colors disabled:opacity-50"
+              >
+                <Play size={14} fill="currentColor" />
+                <span>Run</span>
+              </button>
+              <button
+                onClick={onSubmit}
+                disabled={isSubmitting}
+                className="flex items-center space-x-1 px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-sm rounded transition-colors disabled:opacity-50"
+              >
+                <Send size={14} fill="currentColor" />
+                <span>Submit</span>
+              </button>
+            </>
+          )}
         </div>
       </div>
 
@@ -137,11 +155,8 @@ const ConsolePanel: React.FC<Props> = ({ results, testCases, submissionStatus, i
               )}
 
               {submissionStatus && submissionStatus !== SubmissionStatus.PENDING && submissionStatus !== SubmissionStatus.RUNNING && (
-                <div className="mb-6 pb-4 border-b border-gray-800">
-                  <div className="text-[10px] text-gray-500 uppercase font-bold mb-1 tracking-wider">Final Status</div>
-                  <div className={`text-xl font-bold ${getStatusColor(submissionStatus)}`}>
-                    {submissionStatus.replace('SUBMISSION_STATUS_', '').replace('_', ' ')}
-                  </div>
+                <div className={`text-xl font-bold mb-6 pb-4 border-b border-gray-800 ${getStatusColor(submissionStatus)}`}>
+                  {submissionStatus.replace('SUBMISSION_STATUS_', '').replace('_', ' ')}
                 </div>
               )}
 
@@ -170,6 +185,42 @@ const ConsolePanel: React.FC<Props> = ({ results, testCases, submissionStatus, i
                       )}
                     </div>
                   ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'history' && (
+            <div className="space-y-2">
+              {!pastSubmissions || pastSubmissions.length === 0 ? (
+                <div className="text-gray-500 italic">No past submissions for this problem.</div>
+              ) : (
+                <div className="overflow-hidden rounded border border-gray-800">
+                  <table className="w-full text-left text-xs">
+                    <thead className="bg-[#2d2d2d] text-gray-500 uppercase font-bold">
+                      <tr>
+                        <th className="p-2">Status</th>
+                        <th className="p-2">Lang</th>
+                        <th className="p-2 text-right">Time</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-800">
+                      {pastSubmissions.map((s) => (
+                        <tr key={s.id} className="hover:bg-[#252526]">
+                          <td className={`p-2 font-bold ${getStatusColor(s.status)}`}>
+                            {s.status.replace('SUBMISSION_STATUS_', '')}
+                          </td>
+                          <td className="p-2 text-gray-400 uppercase">{s.language}</td>
+                          <td className="p-2 text-gray-500 text-right tabular-nums">
+                            <div className="flex items-center justify-end space-x-1">
+                              <Clock size={10} />
+                              <span>{s.created_at}</span>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               )}
             </div>

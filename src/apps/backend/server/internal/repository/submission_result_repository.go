@@ -11,6 +11,7 @@ import (
 type SubmissionResultRepository interface {
 	ListBySubmission(ctx context.Context, submissionID string) ([]*models.TestCaseResult, error)
 	Create(ctx context.Context, result *models.TestCaseResult) error
+	CreateBatch(ctx context.Context, results []*models.TestCaseResult) error
 }
 
 type submissionResultRepository struct {
@@ -43,6 +44,21 @@ func (r *submissionResultRepository) Create(ctx context.Context, result *models.
 	err = db.Create(result).Error
 	if err != nil {
 		r.logger.Error("failed to create submission result", zap.Error(err))
+	}
+	return err
+}
+
+func (r *submissionResultRepository) CreateBatch(ctx context.Context, results []*models.TestCaseResult) error {
+	if len(results) == 0 {
+		return nil
+	}
+	db, err := database.GetTx(ctx)
+	if err != nil {
+		return err
+	}
+	err = db.Create(results).Error
+	if err != nil {
+		r.logger.Error("failed to create submission results batch", zap.Error(err))
 	}
 	return err
 }

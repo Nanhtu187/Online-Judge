@@ -100,11 +100,15 @@ message Problem {
   repeated TestCase test_cases = 6;
   int32 time_limit = 7;
   int32 memory_limit = 8;
+  Difficulty difficulty = 9;
+  repeated string tags = 10;
 }
 
 message ProblemSummary {
   string id = 1;
   string title = 2;
+  Difficulty difficulty = 3;
+  repeated string tags = 4;
 }
 
 enum SubmissionStatus {
@@ -117,6 +121,13 @@ enum SubmissionStatus {
   SUBMISSION_STATUS_RUNTIME_ERROR = 6;
   SUBMISSION_STATUS_LIMIT_EXCEEDED = 7;
   SUBMISSION_STATUS_COMPILE_ERROR = 8;
+}
+
+enum Difficulty {
+  DIFFICULTY_UNSPECIFIED = 0;
+  DIFFICULTY_EASY = 1;
+  DIFFICULTY_MEDIUM = 2;
+  DIFFICULTY_HARD = 3;
 }
 
 message TestCase {
@@ -134,6 +145,8 @@ message UpsertProblemRequest {
   string output_format = 5;
   int32 time_limit = 6;
   int32 memory_limit = 7;
+  Difficulty difficulty = 8;
+  repeated string tags = 9;
 }
 
 message UpsertProblemResponse {
@@ -170,6 +183,7 @@ message ListSubmissionsRequest {
   string problem_id = 1;
   int32 page = 2;
   int32 page_size = 3;
+  string user_id = 4;
 }
 
 message ListSubmissionsResponse {
@@ -191,6 +205,9 @@ message Submission {
   SubmissionStatus status = 4;
   string language = 5;
   SubmissionType submission_type = 6;
+  string user_id = 7;
+  string problem_title = 8;
+  string created_at = 9;
 }
 
 message ListSubmissionResultsRequest {
