@@ -4,6 +4,7 @@ go_library(
     name = "service",
     srcs = [
         "problem_service.go",
+        "result_consumer_service.go",
         "submission_service.go",
     ],
     importpath = "github.com/Nanhtu187/online-judge/src/apps/backend/server/internal/service",
@@ -12,6 +13,7 @@ go_library(
         "//src/apps/backend/server/internal/models",
         "//src/apps/backend/server/internal/repository",
         "//src/packages/database",
+        "//src/packages/iam",
         "//src/packages/kafka",
         "//src/packages/proto/gen/go/server",
         "@com_github_segmentio_kafka_go//:kafka-go",

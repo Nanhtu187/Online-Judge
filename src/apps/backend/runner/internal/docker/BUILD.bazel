@@ -6,8 +6,8 @@ go_library(
     importpath = "github.com/Nanhtu187/online-judge/src/apps/backend/runner/internal/docker",
     visibility = ["//src/apps/backend/runner:__subpackages__"],
     deps = [
-        "@com_github_docker_docker//api/types",
         "@com_github_docker_docker//api/types/container",
         "@com_github_docker_docker//client",
+        "@com_github_docker_docker//pkg/stdcopy",
     ],
 )

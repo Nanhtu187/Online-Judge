@@ -1,13 +1,13 @@
 load("@rules_go//go:def.bzl", "go_library")
 
 go_library(
-    name = "iam",
+    name = "server",
     srcs = [
-        "iam.pb.go",
-        "iam.pb.gw.go",
-        "iam_grpc.pb.go",
+        "server.pb.go",
+        "server.pb.gw.go",
+        "server_grpc.pb.go",
     ],
-    importpath = "github.com/Nanhtu187/online-judge/src/packages/proto/gen/go/iam",
+    importpath = "github.com/Nanhtu187/online-judge/src/packages/proto/gen/go/server",
     visibility = ["//visibility:public"],
     deps = [
         "//src/packages/proto/gen/go/common",

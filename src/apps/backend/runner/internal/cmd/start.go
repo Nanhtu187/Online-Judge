@@ -3,6 +3,9 @@ package cmd
 import (
 	"context"
 	"log"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/Nanhtu187/online-judge/src/apps/backend/runner/config"
 	"github.com/Nanhtu187/online-judge/src/apps/backend/runner/internal/adapter"
@@ -69,7 +72,10 @@ func runRunner() {
 	judgerSvc := service.NewJudgerService(comp, exec, serverClient, resultWriter)
 	judgerHandler := handler.NewJudgerHandler(judgerSvc, reader)
 
-	if err := judgerHandler.Start(context.Background()); err != nil {
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer cancel()
+
+	if err := judgerHandler.Start(ctx); err != nil {
 		log.Fatalf("runner handler failed: %v", err)
 	}
 }

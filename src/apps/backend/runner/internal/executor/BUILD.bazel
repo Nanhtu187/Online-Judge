@@ -5,9 +5,5 @@ go_library(
     srcs = ["executor.go"],
     importpath = "github.com/Nanhtu187/online-judge/src/apps/backend/runner/internal/executor",
     visibility = ["//src/apps/backend/runner:__subpackages__"],
-    deps = [
-        "//src/apps/backend/runner/internal/docker",
-        "@com_github_docker_docker//api/types/container",
-        "@com_github_docker_docker//pkg/stdcopy",
-    ],
+    deps = ["//src/apps/backend/runner/internal/docker"],
 )

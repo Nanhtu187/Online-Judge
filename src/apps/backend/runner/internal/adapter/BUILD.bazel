@@ -1,0 +1,12 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "adapter",
+    srcs = ["kafka_writer.go"],
+    importpath = "github.com/Nanhtu187/online-judge/src/apps/backend/runner/internal/adapter",
+    visibility = ["//src/apps/backend/runner:__subpackages__"],
+    deps = [
+        "//src/packages/kafka",
+        "@com_github_segmentio_kafka_go//:kafka-go",
+    ],
+)

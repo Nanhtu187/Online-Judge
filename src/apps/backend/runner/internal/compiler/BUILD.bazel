@@ -5,8 +5,5 @@ go_library(
     srcs = ["compiler.go"],
     importpath = "github.com/Nanhtu187/online-judge/src/apps/backend/runner/internal/compiler",
     visibility = ["//src/apps/backend/runner:__subpackages__"],
-    deps = [
-        "//src/apps/backend/runner/internal/docker",
-        "@com_github_docker_docker//api/types/container",
-    ],
+    deps = ["//src/apps/backend/runner/internal/docker"],
 )
